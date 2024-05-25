@@ -13,14 +13,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true, //button to debug
       home: Scaffold(
-        appBar: AppBar(title: const Text("NINTVENTARIO"),),
         body: const CustomTabBar(),
       ),
     );
-
-
   }
-
-
-
 }
