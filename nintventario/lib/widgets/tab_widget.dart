@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '/screens/historial.dart';
 import '/screens/settings.dart';
-import '/screens/nuevo_inv.dart';
-import '/screens/productos.dart';
+import '../screens/new_inventory.dart';
+import '../screens/products.dart';
 
 class CustomTabBar extends StatelessWidget {
   const CustomTabBar({super.key});
