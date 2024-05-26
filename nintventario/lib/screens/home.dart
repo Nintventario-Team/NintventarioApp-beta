@@ -1,154 +1,150 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import '../screens/inventory_details.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
-String local = "La entrada a la 8";
-
+String _local = "La entrada a la 8";
+double _spaceSize = 20;
+double _crossAxisSpacingVar = 20;
+double _fontTitleSizeVar = 40;
+double _fontTextSizeVar = 18;
+double _iconSize = 40;
 
 void main() {
-  runApp(Home());
+  runApp(const Home());
 }
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key});
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Column(
-            children: [
-              const SizedBox(height: 20),
-              const Center(child: Text("HOME", style: TextStyle(fontSize: 40),)),
-              const SizedBox(height: 10),
-              Text("Bienvenido a $local"),
-              const SizedBox(height: 20,)
-            ],
-            ),
-          toolbarHeight: 200,
+          title: Text("HOME", style: TextStyle(fontSize: _fontTitleSizeVar)),
         ),
-        body: GridView.count(
-          crossAxisSpacing: 20,
-          crossAxisCount: 2,
-          children: const [
-            NewInventoryWidget(),
-            HistorialWidget(),
-            SettingsWidget(),
-            ExitWidget()
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: _spaceSize),
+            Text("Bienvenido a $_local"),
+            SizedBox(height: _spaceSize),
+            Expanded( // Envuelve el GridView en un Expanded
+              child: GridView.count(
+                crossAxisSpacing: _crossAxisSpacingVar,
+                crossAxisCount: 2,
+                children: const [
+                  NewInventoryWidget(),
+                  HistorialWidget(),
+                  SettingsWidget(),
+                  ExitWidget(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-
 }
 
-class NewInventoryWidget extends StatelessWidget{
+class NewInventoryWidget extends StatelessWidget {
   const NewInventoryWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Crear Inventario", style:TextStyle(fontSize: 18)))),
-      body: Container(
-        alignment: Alignment.center,
+    return Material(
+      child: InkWell( // Usa InkWell para capturar gestos
+        onTap: () {
+          print("Crear Inventario presionado");
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const InventoryDetails()),
+          );
+        },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: IconButton(
-              onPressed: () {
-                //cuando se presiona
-                print("XD");
-               },
-              icon: const Icon(Icons.edit_document, size: 70,), 
-            ))
-            
+            Icon(Icons.edit_document, size: _iconSize),
+            Text("Crear Inventario", style: TextStyle(fontSize: _fontTextSizeVar)),
           ],
         ),
-      )
+      ),
     );
   }
 }
 
-
-class HistorialWidget extends StatelessWidget{
-
+class HistorialWidget extends StatelessWidget {
   const HistorialWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Historial", style:TextStyle(fontSize: 18)))),
-      body: Container(
-        alignment: Alignment.center,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          print("Historial presionado");
+        },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: IconButton(
-              onPressed: () {
-                //cuando se presiona
-                print("XD");
-               },
-              icon: const Icon(Icons.history, size: 70,), 
-            ))
-            
+            Icon(Icons.history, size: _iconSize),
+            Text("Historial", style: TextStyle(fontSize: _fontTextSizeVar)),
           ],
         ),
-      )
+      ),
     );
   }
 }
 
-class SettingsWidget extends StatelessWidget{
-
+class SettingsWidget extends StatelessWidget {
   const SettingsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Ajustes", style:TextStyle(fontSize: 18)))),
-      body: Container(
-        alignment: Alignment.center,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          print("Ajustes presionado");
+        },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: IconButton(
-              onPressed: () {
-                //cuando se presiona
-                print("XD");
-               },
-              icon: const Icon(Icons.settings, size: 70,), 
-            ))
-            
+            Icon(Icons.settings, size: _iconSize),
+            Text("Ajustes", style: TextStyle(fontSize: _fontTextSizeVar)),
           ],
         ),
-      )
+      ),
     );
   }
 }
 
-class ExitWidget extends StatelessWidget{
-
+class ExitWidget extends StatelessWidget {
   const ExitWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Salir", style:TextStyle(fontSize: 18)))),
-      body: Container(
-        alignment: Alignment.center,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          print("Salir presionado");
+          if (Platform.isAndroid) {
+            SystemNavigator.pop(); // Cierra la aplicación en Android
+          } else if (Platform.isIOS) {
+            // Para iOS, podrías navegar a la pantalla de inicio o manejar la navegación
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+        },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: IconButton(
-              onPressed: () {
-                //cuando se presiona
-                print("XD");
-               },
-              icon: const Icon(Icons.exit_to_app, size: 70,), 
-            ))
-            
+            Icon(Icons.exit_to_app, size: _iconSize),
+            Text("Salir", style: TextStyle(fontSize: _fontTextSizeVar)),
           ],
         ),
-      )
+      ),
     );
   }
 }
