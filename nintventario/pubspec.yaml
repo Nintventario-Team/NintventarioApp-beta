@@ -23,3 +23,7 @@ flutter:
   
   assets:
     - images/login.jpg
+    - images/ceibos.jpg
+    - images/machala.jpg
+    - images/puntilla.jpg
+    - images/terminal.jpg
