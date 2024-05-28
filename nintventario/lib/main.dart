@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'widgets/tab_widget.dart';
+import "package:nintventario/screens/login_page.dart";
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.cyan),
+      home: Login(),
+    ));
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: true, //button to debug
-      home: Scaffold(
-        body: const CustomTabBar(),
-      ),
+    return Scaffold(
+      body: LoginApp(),
     );
   }
 }
