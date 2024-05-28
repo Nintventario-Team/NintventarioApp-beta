@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/screens/historial.dart';
+import '../screens/history.dart';
 import '/screens/settings.dart';
 import '../screens/new_inventory.dart';
 import '../screens/products.dart';
@@ -25,9 +25,9 @@ class TabBar1 extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Ninventario'),
         ),
-        body: Column(
+        body: const Column(
           children: [
-            const Expanded(
+            Expanded(
               child: TabBarView(
                 children: [
                   NewInventaryScreen(),
@@ -37,18 +37,16 @@ class TabBar1 extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              child: const TabBar(
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                tabs: [
-                  Tab(icon: Icon(Icons.edit_document), text: "Nuevo"),
-                  Tab(icon: Icon(Icons.list), text: "Productos"),
-                  Tab(icon: Icon(Icons.history), text: "Historial"),
-                  Tab(icon: Icon(Icons.settings), text: "Ajustes"),
-                ],
-                labelStyle: TextStyle(fontSize: 12),
-              ),
+            TabBar(
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey,
+              tabs: [
+                Tab(icon: Icon(Icons.edit_document), text: "Nuevo"),
+                Tab(icon: Icon(Icons.list), text: "Productos"),
+                Tab(icon: Icon(Icons.history), text: "Historial"),
+                Tab(icon: Icon(Icons.settings), text: "Ajustes"),
+              ],
+              labelStyle: TextStyle(fontSize: 12),
             ),
           ],
         ),
