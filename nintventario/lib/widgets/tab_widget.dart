@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../screens/history.dart';
 import '../screens/settings.dart';
 import '../screens/new_inventory.dart';
-import '../screens/products.dart';
 import '../screens/home.dart';
+
+double _fontTitleSize = 40;
 
 class CustomTabBar extends StatelessWidget {
   final int initialIndex;
@@ -27,11 +28,11 @@ class TabBar1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       initialIndex: initialIndex,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Ninventario'),
+          title: Text('Ninventario', style: (TextStyle(fontSize: _fontTitleSize)),),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -48,7 +49,6 @@ class TabBar1 extends StatelessWidget {
               child: TabBarView(
                 children: [
                   NewInventaryScreen(),
-                  ProductsScreen(),
                   HistoryScreen(),
                   SettingsScreen(),
                 ],
@@ -59,7 +59,6 @@ class TabBar1 extends StatelessWidget {
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(icon: Icon(Icons.edit_document), text: "Nuevo"),
-                Tab(icon: Icon(Icons.list), text: "Productos"),
                 Tab(icon: Icon(Icons.history), text: "Historial"),
                 Tab(icon: Icon(Icons.settings), text: "Ajustes"),
               ],

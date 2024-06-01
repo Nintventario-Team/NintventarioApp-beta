@@ -112,7 +112,7 @@ class SettingsWidget extends StatelessWidget {
           Navigator.push(
            context,
             MaterialPageRoute(
-              builder: (context) => const CustomTabBar(initialIndex: 3),
+              builder: (context) => const CustomTabBar(initialIndex: 2),
             ),
           );
         },
