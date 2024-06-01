@@ -52,7 +52,6 @@ class LoginApp extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Aquí puedes añadir la lógica que desees al presionar el botón
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SaleSptosPage()),

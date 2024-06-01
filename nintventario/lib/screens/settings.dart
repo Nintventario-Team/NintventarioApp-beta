@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/screens/login_page.dart';
+import 'package:nintventario/screens/sale_spots.dart';
 
 double _spaceSize = 20;
 double _fontOptionSize = 20;
 double _fontTitleSize = 25;
+double _hButton = 10;
+double _vButton = 10; 
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -63,42 +66,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Navegar a la pantalla de acerca de
             },
           ),
+          const Spacer(),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SaleSptosPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 26, 107, 237),
+                  minimumSize:
+                      const Size(200, 40),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: _hButton, vertical: _vButton),
+                  textStyle:
+                      const TextStyle(fontSize: 20),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
+              child: const Text('Establecimiento'),
+            ),
+          ),
           SizedBox(height: _spaceSize),
           Center(
-              child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginApp()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 26, 107, 237),
-                minimumSize: const Size(200, 50),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                textStyle: const TextStyle(fontSize: 25),
-                foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
-            child: const Text('Establecimiento'),
-          )),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginApp()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 237, 26, 26),
+                  minimumSize:
+                      const Size(200, 40),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: _hButton, vertical: _vButton),
+                  textStyle:
+                      const TextStyle(fontSize: 20),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
+              child: const Text('Cerrar Sesión'),
+            ),
+          ),
           SizedBox(height: _spaceSize),
-          Center(
-              child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginApp()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 237, 26, 26),
-                minimumSize: const Size(200, 50),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                textStyle: const TextStyle(fontSize: 25),
-                foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
-            child: const Text('Cerrar Sesión'),
-          )),
         ],
       ),
     );

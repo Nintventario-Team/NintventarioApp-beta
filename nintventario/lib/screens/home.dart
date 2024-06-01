@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
             SizedBox(height: _spaceSize),
             Text("Bienvenido a $_local"),
             SizedBox(height: _spaceSize),
-            Expanded( // Envuelve el GridView en un Expanded
+            Expanded(
               child: GridView.count(
                 crossAxisSpacing: _crossAxisSpacingVar,
                 crossAxisCount: 2,
@@ -62,8 +62,10 @@ class NewInventoryWidget extends StatelessWidget {
         onTap: () {
           print("Crear Inventario presionado");
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const InventoryDetails()),
+           context,
+            MaterialPageRoute(
+              builder: (context) => const InventoryDetails(),
+            ),
           );
         },
         child: Column(
@@ -112,7 +114,7 @@ class SettingsWidget extends StatelessWidget {
           Navigator.push(
            context,
             MaterialPageRoute(
-              builder: (context) => const CustomTabBar(initialIndex: 2),
+              builder: (context) => const CustomTabBar(initialIndex: 3),
             ),
           );
         },

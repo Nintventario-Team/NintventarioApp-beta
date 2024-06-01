@@ -3,29 +3,28 @@ import '../screens/home.dart';
 
 String _local = ''; // Variable global para almacenar la selección
 
-class SaleSptosPage extends StatefulWidget {
+class SaleSptosPage extends StatelessWidget {
   const SaleSptosPage({super.key});
 
-  @override
-  _SaleSptosPageState createState() => _SaleSptosPageState();
-}
-
-class _SaleSptosPageState extends State<SaleSptosPage> {
-  final List<Map<String, String>> _locations = [
+  final List<Map<String, String>> _locations = const [
     {"image": "images/ceibos.jpg", "name": "Ceibos"},
     {"image": "images/machala.jpg", "name": "Machala"},
     {"image": "images/puntilla.jpg", "name": "Puntilla"},
     {"image": "images/terminal.jpg", "name": "Terminal"},
   ];
 
-  void _selectLocation(String location) {
-    setState(() {
-      _local = location;
-    });
+  void _selectLocation(BuildContext context, String location) {
+    _local = location;
     print('Selected location: $_local');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Home(),
+      ),
+    );
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,13 +35,7 @@ class _SaleSptosPageState extends State<SaleSptosPage> {
           children: _locations.map((location) {
             return GestureDetector(
               onTap: () {
-                _selectLocation(location['name']!); // Forzar a no nulo
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Home(),
-                  ),
-                );
+                _selectLocation(context, location['name']!); // Forzar a no nulo
               },
               child: Column(
                 children: <Widget>[

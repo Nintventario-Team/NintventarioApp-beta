@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screens/history.dart';
+import 'package:nintventario/screens/home.dart';
+import 'package:nintventario/screens/inventoryScreens/details.dart';
+import 'package:nintventario/screens/inventoryScreens/report.dart';
 import '../screens/settings.dart';
-import '../screens/new_inventory.dart';
-import '../screens/home.dart';
+import '../screens/inventoryScreens/products.dart';
 
 double _fontTitleSize = 40;
 
@@ -28,18 +29,22 @@ class TabBar1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       initialIndex: initialIndex,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Ninventario', style: (TextStyle(fontSize: _fontTitleSize)),),
+          title: Text(
+            'Ninventario',
+            style: TextStyle(fontSize: _fontTitleSize),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(      
                 context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
+                MaterialPageRoute(
+                  builder: (context) => const Home(),
+                )); 
             },
           ),
         ),
@@ -48,8 +53,9 @@ class TabBar1 extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  NewInventaryScreen(),
-                  HistoryScreen(),
+                  ProductsList(),
+                  InventoryDetails(),
+                  InventoryReport(),
                   SettingsScreen(),
                 ],
               ),
@@ -58,8 +64,9 @@ class TabBar1 extends StatelessWidget {
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
               tabs: [
-                Tab(icon: Icon(Icons.edit_document), text: "Nuevo"),
-                Tab(icon: Icon(Icons.history), text: "Historial"),
+                Tab(icon: Icon(Icons.list), text: "Productos"),
+                Tab(icon: Icon(Icons.info), text: "Detalles"),
+                Tab(icon: Icon(Icons.edit_document), text: "Reporte"),
                 Tab(icon: Icon(Icons.settings), text: "Ajustes"),
               ],
               labelStyle: TextStyle(fontSize: 12),
