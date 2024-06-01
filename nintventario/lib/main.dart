@@ -4,13 +4,15 @@ import "package:nintventario/screens/login_page.dart";
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.cyan),
-      home: Login(),
+      home: const Login(),
     ));
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: LoginApp(),
     );
   }

@@ -1,29 +1,46 @@
 import 'package:flutter/material.dart';
 import '../screens/history.dart';
-import '/screens/settings.dart';
+import '../screens/settings.dart';
 import '../screens/new_inventory.dart';
 import '../screens/products.dart';
+import '../screens/home.dart';
 
 class CustomTabBar extends StatelessWidget {
-  const CustomTabBar({super.key});
+  final int initialIndex;
+
+  const CustomTabBar({super.key, this.initialIndex = 0});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(useMaterial3: true), home: const TabBar1());
+      theme: ThemeData(useMaterial3: true),
+      home: TabBar1(initialIndex: initialIndex),
+    );
   }
 }
 
 class TabBar1 extends StatelessWidget {
-  const TabBar1({super.key});
+  final int initialIndex;
+
+  const TabBar1({super.key, this.initialIndex = 0});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
+      initialIndex: initialIndex,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Ninventario'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Home()),
+              );
+            },
+          ),
         ),
         body: const Column(
           children: [

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:nintventario/widgets/tab_widget.dart';
 import '../screens/inventory_details.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ void main() {
 }
 
 class Home extends StatelessWidget {
-  const Home({Key? key});
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class NewInventoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell( // Usa InkWell para capturar gestos
+      child: InkWell( 
         onTap: () {
           print("Crear Inventario presionado");
           Navigator.push(
@@ -108,6 +109,12 @@ class SettingsWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           print("Ajustes presionado");
+          Navigator.push(
+           context,
+            MaterialPageRoute(
+              builder: (context) => const CustomTabBar(initialIndex: 3),
+            ),
+          );
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -131,9 +138,8 @@ class ExitWidget extends StatelessWidget {
         onTap: () {
           print("Salir presionado");
           if (Platform.isAndroid) {
-            SystemNavigator.pop(); // Cierra la aplicación en Android
+            SystemNavigator.pop(); 
           } else if (Platform.isIOS) {
-            // Para iOS, podrías navegar a la pantalla de inicio o manejar la navegación
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
         },

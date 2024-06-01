@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/date_selector_widget.dart';
 import 'package:flutter/services.dart';
+import '../widgets/tab_widget.dart';
 
 double _fontTitleSizeVar = 25;
 double _widhtBorderBox = 1.5;
@@ -87,7 +88,7 @@ class _DetailsWidgetState extends State<InventoryDetails> {
                         borderRadius: BorderRadius.circular(_radiusBorderBox),
                         borderSide: BorderSide(
                             color: Colors.black,
-                            width: _widhtBorderBox), // Define el color y el ancho del borde
+                            width: _widhtBorderBox),
                       ),
                       contentPadding: EdgeInsets.all(_interPaddingBox),
                     ),
@@ -113,7 +114,7 @@ class _DetailsWidgetState extends State<InventoryDetails> {
                         borderRadius: BorderRadius.circular(_radiusBorderBox),
                         borderSide: BorderSide(
                             color: Colors.black,
-                            width: _widhtBorderBox), // Define el color y el ancho del borde
+                            width: _widhtBorderBox),
                       ),
                       contentPadding: EdgeInsets.all(_interPaddingBox),
                     ),
@@ -126,7 +127,10 @@ class _DetailsWidgetState extends State<InventoryDetails> {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Acción al presionar el botón
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CustomTabBar()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,

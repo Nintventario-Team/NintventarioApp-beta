@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../screens/home.dart';
 
 String _local = ''; // Variable global para almacenar la selección
 
 class SaleSptosPage extends StatefulWidget {
+  const SaleSptosPage({super.key});
+
   @override
   _SaleSptosPageState createState() => _SaleSptosPageState();
 }
@@ -22,18 +25,25 @@ class _SaleSptosPageState extends State<SaleSptosPage> {
     print('Selected location: $_local');
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sale Sptos'),
+        title: const Text('Sale Sptos'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: _locations.map((location) {
             return GestureDetector(
-              onTap: () =>
-                  _selectLocation(location['name']!), // Forzar a no nulo
+              onTap: () {
+                _selectLocation(location['name']!); // Forzar a no nulo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                );
+              },
               child: Column(
                 children: <Widget>[
                   Center(
@@ -43,10 +53,8 @@ class _SaleSptosPageState extends State<SaleSptosPage> {
                       height: 200,
                     ),
                   ),
-
                   Text(location['name']!),
-                  SizedBox(
-                      height: 20), // Añade un espaciado entre cada elemento
+                  const SizedBox(height: 20),
                 ],
               ),
             );
