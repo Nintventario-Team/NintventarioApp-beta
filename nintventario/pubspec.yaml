@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-
+  http: ^0.13.4
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -19,11 +20,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  
-  assets:
-    - images/login.jpg
-    - images/ceibos.jpg
-    - images/machala.jpg
-    - images/puntilla.jpg
-    - images/terminal.jpg
