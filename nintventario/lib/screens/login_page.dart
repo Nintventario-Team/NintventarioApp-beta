@@ -22,7 +22,7 @@ class LoginApp extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 100,
                   backgroundColor: Colors.white,
-                  backgroundImage: AssetImage("images/login.jpg"),
+                  backgroundImage: AssetImage('src/images/login.jpg'),
                 ),
               ),
             ],

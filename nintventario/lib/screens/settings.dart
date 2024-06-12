@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/screens/login_page.dart';
 import 'package:nintventario/screens/sale_spots.dart';
+import 'about.dart';
 
 double _spaceSize = 20;
 double _fontOptionSize = 20;
 double _fontTitleSize = 25;
 double _hButton = 10;
-double _vButton = 10; 
+double _vButton = 10;
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -63,6 +64,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(fontSize: _fontOptionSize),
             ),
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutScreen()),
+              );
               // Navegar a la pantalla de acerca de
             },
           ),
@@ -72,17 +77,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SaleSptosPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const SaleSptosPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 26, 107, 237),
-                  minimumSize:
-                      const Size(200, 40),
+                  minimumSize: const Size(200, 40),
                   padding: EdgeInsets.symmetric(
                       horizontal: _hButton, vertical: _vButton),
-                  textStyle:
-                      const TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
                   foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
               child: const Text('Establecimiento'),
             ),
@@ -98,12 +102,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 237, 26, 26),
-                  minimumSize:
-                      const Size(200, 40),
+                  minimumSize: const Size(200, 40),
                   padding: EdgeInsets.symmetric(
                       horizontal: _hButton, vertical: _vButton),
-                  textStyle:
-                      const TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
                   foregroundColor: const Color.fromARGB(255, 255, 255, 255)),
               child: const Text('Cerrar Sesión'),
             ),

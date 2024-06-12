@@ -5,8 +5,9 @@ import 'package:nintventario/widgets/tab_widget.dart';
 import '../screens/inventory_details.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'sale_spots.dart';
 
-String _local = "La entrada a la 8";
+String _place = "";
 double _spaceSize = 20;
 double _crossAxisSpacingVar = 20;
 double _fontTitleSizeVar = 40;
@@ -31,7 +32,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: _spaceSize),
-            Text("Bienvenido a $_local"),
+            Text("Bienvenido a $_place"),
             SizedBox(height: _spaceSize),
             Expanded(
               child: GridView.count(
@@ -58,11 +59,11 @@ class NewInventoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell( 
+      child: InkWell(
         onTap: () {
           print("Crear Inventario presionado");
           Navigator.push(
-           context,
+            context,
             MaterialPageRoute(
               builder: (context) => const InventoryDetails(),
             ),
@@ -72,7 +73,8 @@ class NewInventoryWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.edit_document, size: _iconSize),
-            Text("Crear Inventario", style: TextStyle(fontSize: _fontTextSizeVar)),
+            Text("Crear Inventario",
+                style: TextStyle(fontSize: _fontTextSizeVar)),
           ],
         ),
       ),
@@ -112,7 +114,7 @@ class SettingsWidget extends StatelessWidget {
         onTap: () {
           print("Ajustes presionado");
           Navigator.push(
-           context,
+            context,
             MaterialPageRoute(
               builder: (context) => const CustomTabBar(initialIndex: 3),
             ),
@@ -140,7 +142,7 @@ class ExitWidget extends StatelessWidget {
         onTap: () {
           print("Salir presionado");
           if (Platform.isAndroid) {
-            SystemNavigator.pop(); 
+            SystemNavigator.pop();
           } else if (Platform.isIOS) {
             Navigator.of(context).popUntil((route) => route.isFirst);
           }
