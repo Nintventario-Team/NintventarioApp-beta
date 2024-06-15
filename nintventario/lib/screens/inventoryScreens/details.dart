@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../widgets/date_selector_widget.dart';
 import 'package:flutter/services.dart';
+import 'package:nintventario/screens/home.dart';
+import '../../widgets/date_selector_widget.dart';
+import 'package:nintventario/screens/history.dart';
 
 double _fontTitleSizeVar = 25;
-double _widhtBorderBox = 1.5;
-double _leftPadding = 30.0;
-double _rightPadding = 30.0;
-double _spacingBetweenBox = 10;
-double _spacingBetweenItems = 20;
-double _interPaddingBox = 10;
-double _radiusBorderBox = 8.0;
 
-String _inventoryId = "99999";
-String _employeeName = "Kevin Daniel Mawyin Pilozo";
-
-
+void main() {
+  runApp(
+    const MaterialApp(
+      home: InventoryDetails(),
+    ),
+  );
+}
 
 class InventoryDetails extends StatefulWidget {
   const InventoryDetails({super.key});
@@ -23,99 +21,118 @@ class InventoryDetails extends StatefulWidget {
   State<StatefulWidget> createState() => _DetailsWidgetState();
 }
 
-class _DetailsWidgetState extends State<InventoryDetails> {
-  final TextEditingController _textFieldController =
-      TextEditingController(text: _employeeName);
-  final TextEditingController _textFieldController2 =
-      TextEditingController(text: "0");
+class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliveClientMixin {
+  final TextEditingController _employeeController = TextEditingController(text: globalEmployeeName);
+  final TextEditingController _durationController = TextEditingController(text: '0');
+
+  List<Map<String, String>> drafts = [];
+
+  void _saveDraft() {
+    drafts.add({
+      'id': inventoryId,
+      'employee': _employeeController.text,
+      'duration': _durationController.text,
+      'creationDate': globalDate,
+    });
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Borrador guardado!')));
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Detalles del inventario",
           style: TextStyle(fontSize: _fontTitleSizeVar),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DraftsScreen(drafts: globalDrafts)),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: _leftPadding, right: _rightPadding),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: _spacingBetweenItems),
+            const SizedBox(height: 20),
             const Text("ID del inventario:"),
-            SizedBox(
-              height: _spacingBetweenBox,
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1.5),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Text(inventoryId),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.grey, width: _widhtBorderBox),
-                      borderRadius: BorderRadius.circular(_radiusBorderBox),
-                    ),
-                    padding: EdgeInsets.all(_interPaddingBox),
-                    child: Text(_inventoryId),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: _spacingBetweenItems),
-            const Text("Fecha de creación: "),
-            SizedBox(height: _spacingBetweenBox),
-            const DateSelectorWidget(),
-            SizedBox(height: _spacingBetweenItems,),
-            const Text("Duración del inventariado: "),
-            SizedBox(height: _spacingBetweenBox),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textFieldController2,
-                    decoration: InputDecoration(
-                      hintText: 'Ingrese el número de horas',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_radiusBorderBox),
-                        borderSide: BorderSide(
-                            color: Colors.black,
-                            width: _widhtBorderBox),
-                      ),
-                      contentPadding: EdgeInsets.all(_interPaddingBox),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: _spacingBetweenItems),
+            const SizedBox(height: 20),
             const Text("Encargado del Inventario: "),
-            SizedBox(height: _spacingBetweenBox),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textFieldController,
-                    decoration: InputDecoration(
-                      hintText: 'Ingrese su nombre',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(_radiusBorderBox),
-                        borderSide: BorderSide(
-                            color: Colors.black,
-                            width: _widhtBorderBox),
-                      ),
-                      contentPadding: EdgeInsets.all(_interPaddingBox),
-                    ),
-                  ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _employeeController,
+              decoration: InputDecoration(
+                hintText: 'Ingrese su nombre',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: Colors.black, width: 1.5),
                 ),
+                contentPadding: const EdgeInsets.all(10),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text("Duración del inventariado: "),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _durationController,
+              decoration: InputDecoration(
+                hintText: 'Ingrese el número de horas',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: Colors.black, width: 1.5),
+                ),
+                contentPadding: const EdgeInsets.all(10),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly,
               ],
             ),
-            SizedBox(height: _spacingBetweenItems),
+            const SizedBox(height: 20),
+            const Text("Fecha de creación: "),
+            const SizedBox(height: 10),
+            DateSelectorWidget(
+              onDateSelected: (newDate) {
+                setState(() {
+                  globalDate = newDate.toString();
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: _saveDraft,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  minimumSize: const Size(200, 50),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  textStyle: const TextStyle(fontSize: 20),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('GUARDAR BORRADOR'),
+              ),
+            ),
           ],
         ),
       ),

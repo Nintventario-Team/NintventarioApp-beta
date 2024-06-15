@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DateSelectorWidget extends StatefulWidget {
-  const DateSelectorWidget({super.key});
+  final void Function(DateTime) onDateSelected;
+
+  const DateSelectorWidget({super.key, required this.onDateSelected});
 
   @override
   DateSelectorWidgetState createState() => DateSelectorWidgetState();
@@ -26,6 +28,7 @@ class DateSelectorWidgetState extends State<DateSelectorWidget> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
+        widget.onDateSelected(_selectedDate); // Notificar la nueva fecha seleccionada
       });
     }
   }

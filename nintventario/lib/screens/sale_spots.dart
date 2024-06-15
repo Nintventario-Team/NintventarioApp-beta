@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../screens/home.dart';
 
-String _local = ''; // Variable global para almacenar la selección
+String local = ''; // Variable global para almacenar la selección
+//String _idLocal = '';
 
 class SaleSptosPage extends StatelessWidget {
-  const SaleSptosPage({Key? key});
+  
 
   final List<Map<String, String>> _locations = const [
     {"image": "src/images/ceibos.jpg", "name": "Ceibos"},
@@ -13,9 +14,11 @@ class SaleSptosPage extends StatelessWidget {
     {"image": "src/images/terminal.jpg", "name": "Terminal"},
   ];
 
+  const SaleSptosPage({super.key});
+
   void _selectLocation(BuildContext context, String location) {
-    _local = location;
-    print('Selected location: $_local');
+    local = location;
+    print('Selected location: $local');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -73,7 +76,7 @@ class SaleSptosPage extends StatelessWidget {
                             left: 16.0,
                             child: Text(
                               location['name']!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontFamily: 'Roboto',

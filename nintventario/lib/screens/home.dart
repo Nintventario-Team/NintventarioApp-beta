@@ -1,13 +1,23 @@
 // ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:nintventario/classes/draft.dart';
+import 'package:nintventario/classes/product.dart';
+import 'package:nintventario/screens/history.dart';
+import 'package:nintventario/screens/settings.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
-import '../screens/inventory_details.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'sale_spots.dart';
+
 
 String _place = "";
+List<Draft> globalDrafts = [];
+List<Product> globalProducts = [];
+String inventoryId = "99999";
+String globalTime = "";
+String globalDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+String globalEmployeeName = "Kevin Daniel Mawyin Pilozo";
+
 double _spaceSize = 20;
 double _crossAxisSpacingVar = 20;
 double _fontTitleSizeVar = 40;
@@ -16,6 +26,17 @@ double _iconSize = 40;
 
 void main() {
   runApp(const Home());
+}
+
+class GlobalState extends ChangeNotifier {
+  String _globalDate = DateTime.now().toString();
+
+  String get globalDate => _globalDate;
+
+  set globalDate(String newDate) {
+    _globalDate = newDate;
+    notifyListeners();
+  }
 }
 
 class Home extends StatelessWidget {
@@ -65,7 +86,7 @@ class NewInventoryWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const InventoryDetails(),
+              builder: (context) => const CustomTabBar(),
             ),
           );
         },
@@ -91,6 +112,12 @@ class HistorialWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           print("Historial presionado");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DraftsScreen(drafts: globalDrafts),
+            ),
+          );
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +143,7 @@ class SettingsWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CustomTabBar(initialIndex: 3),
+              builder: (context) => const SettingsScreen(),
             ),
           );
         },

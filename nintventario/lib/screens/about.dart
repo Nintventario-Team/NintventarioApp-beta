@@ -9,13 +9,15 @@ class AboutScreen extends StatelessWidget {
     'Roldan Kevin',
     'Tomala Angel'
   ];
+  
   final String currentDate = DateFormat.yMMMMd().format(DateTime.now());
+  AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Acerca de'),
+        title: const Text('Acerca de'),
       ),
       body: Center(
         child: Column(
@@ -24,31 +26,31 @@ class AboutScreen extends StatelessWidget {
           children: [
             Text(
               'Ninventario $version',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Creado por:',
               style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Column(
               children: creators.map((creator) {
                 return Text(
                   creator,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Fecha de creación:',
               style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               currentDate,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 # Leer el archivo Excel
-excel_file = 'src\\files\\inventario.xlsx'  # Reemplaza con el nombre de tu archivo Excel
+excel_file = 'nintventario\\src\\files\\inventario.xlsx'  # Reemplaza con el nombre de tu archivo Excel
 df = pd.read_excel(excel_file, skiprows=5)
 
 # Mostrar los nombres de las columnas para verificar
@@ -25,7 +25,7 @@ filtered_df.columns = ['codigo', 'nombre', 'stock']
 data = filtered_df.to_dict(orient='records')
 
 # Variable para el path específico del archivo JSON
-json_file_path = 'src\\files\\inventario.json'  # Reemplaza con el path específico donde quieres guardar el JSON
+json_file_path = 'nintventario\\src\\files\\inventario.json'  # Reemplaza con el path específico donde quieres guardar el JSON
 
 # Guardar los datos en un archivo JSON
 with open(json_file_path, 'w') as f:
