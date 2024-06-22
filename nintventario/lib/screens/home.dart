@@ -31,19 +31,19 @@ String globalDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 String globalEmployeeName = 'Kevin Daniel Mawyin Pilozo';
 
 /// Global space size.
-double _spaceSize = 20;
+double spaceSize = 20;
 
 /// Global cross-axis spacing.
-double _crossAxisSpacingVar = 20;
+double crossAxisSpacingVar = 20;
 
 /// Global font size for title.
-double _fontTitleSizeVar = 40;
+double fontTitleSizeVar = 40;
 
 /// Global font size for text.
-double _fontTextSizeVar = 18;
+double fontTextSizeVar = 18;
 
 /// Global icon size.
-double _iconSize = 40;
+double iconSize = 40;
 
 /// Entry point of the application.
 void main() {
@@ -69,28 +69,95 @@ class Home extends StatelessWidget {
   /// Creates an instance of [Home].
   const Home({super.key});
 
+  // Method to navigate to the custom tab bar screen
+  void _navigateToCustomTabBar(BuildContext context) {
+    if (kDebugMode) {
+      print('Create Inventory pressed');
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const CustomTabBar(),
+      ),
+    );
+  }
+
+  // Method to navigate to the drafts screen
+  void _navigateToDraftsScreen(BuildContext context) {
+    if (kDebugMode) {
+      print('History pressed');
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => DraftsScreen(drafts: globalDrafts),
+      ),
+    );
+  }
+
+  // Method to navigate to the settings screen
+  void _navigateToSettingsScreen(BuildContext context) {
+    if (kDebugMode) {
+      print('Settings pressed');
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const SettingsScreen(),
+      ),
+    );
+  }
+
+  // Method to exit the app
+  void _exitApp(BuildContext context) {
+    if (kDebugMode) {
+      print('Exit pressed');
+    }
+    if (Platform.isAndroid) {
+      SystemNavigator.pop();
+    } else if (Platform.isIOS) {
+      Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('HOME', style: TextStyle(fontSize: _fontTitleSizeVar)),
+          title: Text('HOME', style: TextStyle(fontSize: fontTitleSizeVar)),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: _spaceSize),
-            Text('Welcome to $_place'),
-            SizedBox(height: _spaceSize),
+            SizedBox(height: spaceSize),
+            Text('Bienvenido a $_place'),
+            SizedBox(height: spaceSize),
             Expanded(
               child: GridView.count(
-                crossAxisSpacing: _crossAxisSpacingVar,
+                crossAxisSpacing: crossAxisSpacingVar,
                 crossAxisCount: 2,
-                children: const <Widget>[
-                  NewInventoryWidget(),
-                  HistorialWidget(),
-                  SettingsWidget(),
-                  ExitWidget(),
+                children: <Widget>[
+                  MenuItem(
+                    icon: Icons.edit_document,
+                    label: 'Crear Inventario',
+                    onTap: () => _navigateToCustomTabBar(context),
+                  ),
+                  MenuItem(
+                    icon: Icons.history,
+                    label: 'Historial',
+                    onTap: () => _navigateToDraftsScreen(context),
+                  ),
+                  MenuItem(
+                    icon: Icons.settings,
+                    label: 'Ajustes',
+                    onTap: () => _navigateToSettingsScreen(context),
+                  ),
+                  MenuItem(
+                    icon: Icons.exit_to_app,
+                    label: 'Salir',
+                    onTap: () => _exitApp(context),
+                  ),
                 ],
               ),
             ),
@@ -101,127 +168,33 @@ class Home extends StatelessWidget {
   }
 }
 
-/// Widget for creating a new inventory.
-class NewInventoryWidget extends StatelessWidget {
-  /// Creates an instance of [NewInventoryWidget].
-  const NewInventoryWidget({super.key});
+/// Widget for the menu items.
+class MenuItem extends StatelessWidget {
+  /// icon for the rectangle.
+  final IconData icon;
+  /// label for the rectangle.
+  final String label;
+  /// signal for the action.
+  final VoidCallback onTap;
+
+  /// Creates an instance of [MenuItem].
+  const MenuItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () {
-          if (kDebugMode) {
-            print('Create Inventory pressed');
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const CustomTabBar(),
-            ),
-          );
-        },
+        onTap: onTap,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.edit_document, size: _iconSize),
-            Text('Create Inventory',
-                style: TextStyle(fontSize: _fontTextSizeVar)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Widget for viewing the history.
-class HistorialWidget extends StatelessWidget {
-  /// Creates an instance of [HistorialWidget].
-  const HistorialWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (kDebugMode) {
-            print('History pressed');
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => DraftsScreen(drafts: globalDrafts),
-            ),
-          );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.history, size: _iconSize),
-            Text('History', style: TextStyle(fontSize: _fontTextSizeVar)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Widget for settings.
-class SettingsWidget extends StatelessWidget {
-  /// Creates an instance of [SettingsWidget].
-  const SettingsWidget({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (kDebugMode) {
-            print('Settings pressed');
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const SettingsScreen(),
-            ),
-          );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.settings, size: _iconSize),
-            Text('Settings', style: TextStyle(fontSize: _fontTextSizeVar)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Widget for exiting the application.
-class ExitWidget extends StatelessWidget {
-  /// Creates an instance of [ExitWidget].
-  const ExitWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (kDebugMode) {
-            print('Exit pressed');
-          }
-          if (Platform.isAndroid) {
-            SystemNavigator.pop();
-          } else if (Platform.isIOS) {
-            Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.exit_to_app, size: _iconSize),
-            Text('Exit', style: TextStyle(fontSize: _fontTextSizeVar)),
+            Icon(icon, size: iconSize),
+            Text(label, style: TextStyle(fontSize: fontTextSizeVar)),
           ],
         ),
       ),

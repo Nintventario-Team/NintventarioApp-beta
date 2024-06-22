@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
+import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/screens/inventoryScreens/product_details.dart';
-import 'package:nintventario/screens/home.dart'; // Ensure you import the file where globalProducts is declared
 
 /// A StatefulWidget that displays a list of products.
 class ProductsList extends StatefulWidget {
@@ -100,9 +100,9 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text('ID: $productId'),
-                    Text('Previous Stock: $stockAnterior'),
-                    Text('Current Stock: $stockActual'),
-                    Text('State: $productState'),
+                    Text('Anterior Stock: $stockAnterior'),
+                    Text('Actual Stock: $stockActual'),
+                    Text('Estado: $productState'),
                   ],
                 ),
                 onTap: () async {

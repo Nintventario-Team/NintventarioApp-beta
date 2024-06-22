@@ -96,7 +96,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Ninventario',
+          'Nintventario',
           style: TextStyle(fontSize: _fontTitleSize),
         ),
         leading: IconButton(
@@ -119,7 +119,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Ninventario',
+          'Nintventario',
           style: TextStyle(fontSize: _fontTitleSize),
         ),
         leading: IconButton(
@@ -142,7 +142,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Ninventario',
+          'Nintventario',
           style: TextStyle(fontSize: _fontTitleSize),
         ),
         leading: IconButton(
@@ -168,7 +168,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Ninventario',
+            'Nintventario',
             style: TextStyle(fontSize: _fontTitleSize),
           ),
           leading: IconButton(
@@ -211,9 +211,9 @@ class InventoryTabBarState extends State<InventoryTabBar> {
                 );
               },
               tabs: const <Widget>[
-                Tab(icon: Icon(Icons.list), text: 'Products'),
-                Tab(icon: Icon(Icons.info), text: 'Details'),
-                Tab(icon: Icon(Icons.edit_document), text: 'Report'),
+                Tab(icon: Icon(Icons.list), text: 'Productos'),
+                Tab(icon: Icon(Icons.info), text: 'Detalles'),
+                Tab(icon: Icon(Icons.edit_document), text: 'Reporte'),
               ],
               labelStyle: const TextStyle(fontSize: 12),
             ),

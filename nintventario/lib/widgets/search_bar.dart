@@ -17,7 +17,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         decoration: const InputDecoration(
-          labelText: 'Search by code or name',
+          labelText: 'Buscar por nombre, código o estado',
           prefixIcon: Icon(Icons.search),
         ),
       ),

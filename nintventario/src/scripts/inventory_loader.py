@@ -1,39 +1,30 @@
-import pandas as pd
+"""
+Script para cargar datos del inventario desde un archivo Excel y guardarlos en formato JSON.
+"""
 import json
+import pandas as pd
 
-# Leer el archivo Excel
-excel_file = 'nintventario\\src\\files\\inventario.xlsx'  # Reemplaza con el nombre de tu archivo Excel
-df = pd.read_excel(excel_file, skiprows=5)
+EXCEL_FILE = 'nintventario\\src\\files\\inventario.xlsx'
+df = pd.read_excel(EXCEL_FILE, skiprows=5)
 
-# Mostrar los nombres de las columnas para verificar
 print("Columnas en el DataFrame:", df.columns)
 
-# Limpiar los nombres de las columnas para asegurarse de que no haya espacios en blanco adicionales
 df.columns = df.columns.str.strip()
 
-# Imprimir las primeras 20 filas del DataFrame para comprobar que se lee bien
 print("Primeras 20 filas del DataFrame:")
 print(df.head(20))
 
-# Seleccionar las columnas necesarias (asegurarse de que los nombres coincidan exactamente)
 filtered_df = df[['Código', 'Nombre', 'Stock Final']]
-
-# Renombrar las columnas
 filtered_df.columns = ['codigo', 'nombre', 'stock']
-
-# Convertir el DataFrame a una lista de diccionarios
 data = filtered_df.to_dict(orient='records')
 
-# Variable para el path específico del archivo JSON
-json_file_path = 'nintventario\\src\\files\\inventario.json'  # Reemplaza con el path específico donde quieres guardar el JSON
+JSON_FILE_PATH = 'nintventario\\src\\files\\inventario.json'
 
-# Guardar los datos en un archivo JSON
-with open(json_file_path, 'w') as f:
+with open(JSON_FILE_PATH, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent=4)
 
-print(f"Datos guardados en {json_file_path}")
+print(f"Datos guardados en {JSON_FILE_PATH}")
 
-# Imprimir las columnas 'codigo', 'nombre' y 'stock'
 print("Código\tNombre\tStock")
 for item in data:
     print(f"{item['codigo']}\t{item['nombre']}\t{item['stock']}")

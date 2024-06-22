@@ -23,5 +23,6 @@ analyzer:
   errors:
     prefer_const_constructors_in_immutables: error
     avoid_return_types_on_setters: error
+    depend_on_referenced_packages: ignore
   exclude:
     - "**/*.g.dart"
