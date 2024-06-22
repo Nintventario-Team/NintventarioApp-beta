@@ -4,8 +4,10 @@ import 'package:nintventario/screens/home.dart';
 import '../../widgets/date_selector_widget.dart';
 import 'package:nintventario/screens/history.dart';
 
-double _fontTitleSizeVar = 25;
+/// Font size for the title text.
+const double _fontTitleSizeVar = 25;
 
+/// Entry point of the application.
 void main() {
   runApp(
     const MaterialApp(
@@ -14,27 +16,35 @@ void main() {
   );
 }
 
+/// A StatefulWidget that displays inventory details.
 class InventoryDetails extends StatefulWidget {
+  /// Creates an instance of [InventoryDetails].
   const InventoryDetails({super.key});
 
   @override
   State<StatefulWidget> createState() => _DetailsWidgetState();
 }
 
+/// State class for [InventoryDetails].
 class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliveClientMixin {
+  /// Controller for the employee name input field.
   final TextEditingController _employeeController = TextEditingController(text: globalEmployeeName);
+
+  /// Controller for the duration input field.
   final TextEditingController _durationController = TextEditingController(text: '0');
 
-  List<Map<String, String>> drafts = [];
+  /// List of drafts.
+  final List<Map<String, String>> drafts = <Map<String, String>>[];
 
+  /// Saves a draft.
   void _saveDraft() {
-    drafts.add({
+    drafts.add(<String, String>{
       'id': inventoryId,
       'employee': _employeeController.text,
       'duration': _durationController.text,
       'creationDate': globalDate,
     });
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Borrador guardado!')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Draft saved!')));
   }
 
   @override
@@ -45,17 +55,17 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Detalles del inventario",
+        title: const Text(
+          'Inventory Details',
           style: TextStyle(fontSize: _fontTitleSizeVar),
         ),
-        actions: [
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.list),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DraftsScreen(drafts: globalDrafts)),
+                MaterialPageRoute<Widget>(builder: (BuildContext context) => DraftsScreen(drafts: globalDrafts)),
               );
             },
           ),
@@ -65,9 +75,9 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const SizedBox(height: 20),
-            const Text("ID del inventario:"),
+            const Text('Inventory ID:'),
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
@@ -78,12 +88,12 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
               child: Text(inventoryId),
             ),
             const SizedBox(height: 20),
-            const Text("Encargado del Inventario: "),
+            const Text('Inventory Manager: '),
             const SizedBox(height: 10),
             TextField(
               controller: _employeeController,
               decoration: InputDecoration(
-                hintText: 'Ingrese su nombre',
+                hintText: 'Enter your name',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
@@ -92,12 +102,12 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
               ),
             ),
             const SizedBox(height: 20),
-            const Text("Duración del inventariado: "),
+            const Text('Inventory Duration: '),
             const SizedBox(height: 10),
             TextField(
               controller: _durationController,
               decoration: InputDecoration(
-                hintText: 'Ingrese el número de horas',
+                hintText: 'Enter the number of hours',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
@@ -110,10 +120,10 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
               ],
             ),
             const SizedBox(height: 20),
-            const Text("Fecha de creación: "),
+            const Text('Creation Date: '),
             const SizedBox(height: 10),
             DateSelectorWidget(
-              onDateSelected: (newDate) {
+              onDateSelected: (DateTime newDate) {
                 setState(() {
                   globalDate = newDate.toString();
                 });
@@ -130,7 +140,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   textStyle: const TextStyle(fontSize: 20),
                   foregroundColor: Colors.white,
                 ),
-                child: const Text('GUARDAR BORRADOR'),
+                child: const Text('SAVE DRAFT'),
               ),
             ),
           ],

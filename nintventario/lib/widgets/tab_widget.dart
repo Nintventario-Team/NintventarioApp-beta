@@ -9,9 +9,11 @@ import 'package:flutter/services.dart' show rootBundle;
 
 const double _fontTitleSize = 40;
 
+/// A custom tab bar widget for managing inventory-related screens.
 class CustomTabBar extends StatelessWidget {
+  /// The initial index of the tab to be selected.
   final int initialIndex;
-
+  /// Creates an instance of [CustomTabBar].
   const CustomTabBar({super.key, this.initialIndex = 0});
 
   @override
@@ -23,15 +25,18 @@ class CustomTabBar extends StatelessWidget {
   }
 }
 
+/// The tab bar widget for inventory management.
 class InventoryTabBar extends StatefulWidget {
+  /// The initial index of the tab to be selected.
   final int initialIndex;
-
+  /// Creates an instance of [InventoryTabBar].
   const InventoryTabBar({super.key, this.initialIndex = 0});
 
   @override
   InventoryTabBarState createState() => InventoryTabBarState();
 }
 
+/// The state for the `InventoryTabBar` widget.
 class InventoryTabBarState extends State<InventoryTabBar> {
   late Future<List<Product>> _futureProducts;
   final PageController _pageController = PageController();
@@ -49,21 +54,22 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     });
   }
 
+  /// Loads the list of products from a JSON file.
   Future<List<Product>> loadProducts() async {
     try {
       final String response = await rootBundle.loadString('src/files/inventario.json');
       final List<dynamic> data = jsonDecode(response);
-      globalProducts = data.map((product) {
+      globalProducts = data.map((dynamic product) {
         return Product(
           id: product['codigo'],
           name: product['nombre'],
           stockAnterior: product['stock'],
-          state: ProductState.unchecked, // Por defecto, estado No Revisado
+          state: ProductState.unchecked, // Default state is unchecked
         );
       }).toList();
       return globalProducts;
     } catch (e) {
-      throw Exception("Error loading JSON: $e");
+      throw Exception('Error loading JSON: $e');
     }
   }
 
@@ -71,7 +77,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Product>>(
       future: _futureProducts,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoading();
         } else if (snapshot.hasError) {
@@ -79,7 +85,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return _buildNoProductsFound();
         } else {
-          final products = snapshot.data!;
+          final List<Product> products = snapshot.data!;
           return _buildTabBar(products);
         }
       },
@@ -98,8 +104,8 @@ class InventoryTabBarState extends State<InventoryTabBar> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Home(),
+              MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => const Home(),
               ),
             );
           },
@@ -121,8 +127,8 @@ class InventoryTabBarState extends State<InventoryTabBar> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Home(),
+              MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => const Home(),
               ),
             );
           },
@@ -144,8 +150,8 @@ class InventoryTabBarState extends State<InventoryTabBar> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const Home(),
+              MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => const Home(),
               ),
             );
           },
@@ -170,24 +176,24 @@ class InventoryTabBarState extends State<InventoryTabBar> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const Home(),
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => const Home(),
                 ),
               );
             },
           ),
         ),
         body: Column(
-          children: [
+          children: <Widget>[
             Expanded(
               child: PageView(
                 controller: _pageController,
-                onPageChanged: (index) {
+                onPageChanged: (int index) {
                   setState(() {
                     _currentPageIndex = index;
                   });
                 },
-                children: [
+                children: <Widget>[
                   ProductsList(currentPageIndex: _currentPageIndex),
                   const InventoryDetails(),
                   const ReportScreen(),
@@ -197,17 +203,17 @@ class InventoryTabBarState extends State<InventoryTabBar> {
             TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
-              onTap: (index) {
+              onTap: (int index) {
                 _pageController.animateToPage(
                   index,
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
               },
-              tabs: const [
-                Tab(icon: Icon(Icons.list), text: "Productos"),
-                Tab(icon: Icon(Icons.info), text: "Detalles"),
-                Tab(icon: Icon(Icons.edit_document), text: "Reporte"),
+              tabs: const <Widget>[
+                Tab(icon: Icon(Icons.list), text: 'Products'),
+                Tab(icon: Icon(Icons.info), text: 'Details'),
+                Tab(icon: Icon(Icons.edit_document), text: 'Report'),
               ],
               labelStyle: const TextStyle(fontSize: 12),
             ),
@@ -217,3 +223,4 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     );
   }
 }
+

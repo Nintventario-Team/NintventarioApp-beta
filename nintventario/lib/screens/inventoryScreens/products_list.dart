@@ -1,49 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/inventoryScreens/product_details.dart';
-import 'package:nintventario/screens/home.dart'; // Asegúrate de importar el archivo donde declaraste globalProducts
+import 'package:nintventario/screens/home.dart'; // Ensure you import the file where globalProducts is declared
 
+/// A StatefulWidget that displays a list of products.
 class ProductsList extends StatefulWidget {
+  /// The current page index.
   final int currentPageIndex;
 
+  /// Creates an instance of [ProductsList].
   const ProductsList({super.key, required this.currentPageIndex});
 
   @override
   ProductsListState createState() => ProductsListState();
 }
 
+/// State class for [ProductsList].
 class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
+  /// List of filtered products to be displayed.
   late List<Product> _filteredProducts;
 
   @override
   void initState() {
     super.initState();
-    _filteredProducts = List.from(globalProducts); // Cambio aquí
+    _filteredProducts = List<Product>.from(globalProducts);
     _sortProducts();
   }
 
+  /// Filters the products based on the search term.
   void _onSearchChanged(String searchTerm) {
     setState(() {
-      _filteredProducts = globalProducts.where((product) { // Cambio aquí
+      _filteredProducts = globalProducts.where((Product product) {
         final String term = searchTerm.toLowerCase();
         final String productName = product.name.toLowerCase();
         final String productId = product.id.toLowerCase();
         final String productState = product.state.toString().split('.').last.toLowerCase();
 
         return productName.contains(term) ||
-               productId.contains(term) ||
-               (term == 'checked' && productState == 'checked') || // Filtrar por estado checked
-               (term == 'unchecked' && productState == 'unchecked'); // Filtrar por estado unchecked
+            productId.contains(term) ||
+            (term == 'checked' && productState == 'checked') || // Filter by checked state
+            (term == 'unchecked' && productState == 'unchecked'); // Filter by unchecked state
       }).toList();
       _sortProducts();
     });
   }
 
+  /// Sorts the products, giving priority to unchecked products.
   void _sortProducts() {
-    _filteredProducts.sort((a, b) {
+    _filteredProducts.sort((Product a, Product b) {
       if (a.state == ProductState.unchecked && b.state != ProductState.unchecked) {
         return -1;
       } else if (a.state != ProductState.unchecked && b.state == ProductState.unchecked) {
@@ -53,6 +60,7 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
     });
   }
 
+  /// Returns the color associated with the product state.
   Color _getStateColor(ProductState state) {
     switch (state) {
       case ProductState.checked:
@@ -66,7 +74,7 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
   Widget build(BuildContext context) {
     super.build(context);
     return Column(
-      children: [
+      children: <Widget>[
         SearchBar(onChanged: _onSearchChanged),
         Expanded(
           child: ListView.separated(
@@ -77,8 +85,8 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
               final String productName = product.name;
               final String productId = product.id;
               final String stockAnterior = product.stockAnterior.toString();
-              String stockActual = product.stockActual.toString();
-              String productState = product.state.toString().split('.').last;
+              final String stockActual = product.stockActual.toString();
+              final String productState = product.state.toString().split('.').last;
 
               return ListTile(
                 title: Text(
@@ -90,23 +98,23 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Código: $productId'),
-                    Text('Stock Anterior: $stockAnterior'),
-                    Text('Stock Actual: $stockActual'),
-                    Text('Estado: $productState'),
+                  children: <Widget>[
+                    Text('ID: $productId'),
+                    Text('Previous Stock: $stockAnterior'),
+                    Text('Current Stock: $stockActual'),
+                    Text('State: $productState'),
                   ],
                 ),
                 onTap: () async {
-                  final updatedProduct = await Navigator.push(
+                  final Product? updatedProduct = await Navigator.push<Product>(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductDetails(product: product),
+                    MaterialPageRoute<Product>(
+                      builder: (BuildContext context) => ProductDetails(product: product),
                     ),
                   );
                   if (updatedProduct != null) {
                     setState(() {
-                      globalProducts[globalProducts.indexOf(product)] = updatedProduct; // Cambio aquí
+                      globalProducts[globalProducts.indexOf(product)] = updatedProduct;
                       _onSearchChanged('');
                     });
                   }
@@ -120,9 +128,12 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
   }
 }
 
+/// A stateless widget that represents a search bar.
 class SearchBar extends StatelessWidget {
+  /// Callback function to handle search term changes.
   final ValueChanged<String> onChanged;
 
+  /// Creates an instance of [SearchBar].
   const SearchBar({super.key, required this.onChanged});
 
   @override
@@ -132,7 +143,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         decoration: const InputDecoration(
-          labelText: 'Buscar por código, nombre o estado',
+          labelText: 'Search by ID, name, or state',
           prefixIcon: Icon(Icons.search),
         ),
       ),

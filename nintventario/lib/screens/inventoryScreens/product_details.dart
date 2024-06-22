@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 
+/// A StatefulWidget that displays details of a [Product].
 class ProductDetails extends StatefulWidget {
+  /// The [Product] whose details are to be displayed.
   final Product product;
 
+  /// Creates an instance of [ProductDetails].
   const ProductDetails({super.key, required this.product});
 
   @override
   ProductDetailsState createState() => ProductDetailsState();
 }
 
+/// State class for [ProductDetails].
 class ProductDetailsState extends State<ProductDetails> {
+  /// Controller for the current stock input field.
   final TextEditingController _stockActualController = TextEditingController();
-  late int _initialStockActual;
+
+  /// Initial value of the current stock.
+  late final int _initialStockActual;
 
   @override
   void initState() {
@@ -31,14 +38,14 @@ class ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles del Producto'),
+        title: const Text('Product Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("ID del Producto:", style: TextStyle(color: Colors.grey)), // Cambio de color del texto
+          children: <Widget>[
+            const Text('Product ID:', style: TextStyle(color: Colors.grey)), // Text color change
             const SizedBox(height: 8),
             TextField(
               controller: TextEditingController(text: widget.product.id),
@@ -48,7 +55,7 @@ class ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text("Nombre del Producto:", style: TextStyle(color: Colors.grey)), // Cambio de color del texto
+            const Text('Product Name:', style: TextStyle(color: Colors.grey)), // Text color change
             const SizedBox(height: 8),
             TextField(
               controller: TextEditingController(text: widget.product.name),
@@ -58,7 +65,7 @@ class ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text("Stock Anterior:", style: TextStyle(color: Colors.grey)), // Cambio de color del texto
+            const Text('Previous Stock:', style: TextStyle(color: Colors.grey)), // Text color change
             const SizedBox(height: 8),
             TextField(
               controller: TextEditingController(text: widget.product.stockAnterior.toString()),
@@ -68,13 +75,13 @@ class ProductDetailsState extends State<ProductDetails> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text("Stock Actual:"),
+            const Text('Current Stock:'),
             const SizedBox(height: 8),
             TextField(
               controller: _stockActualController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Ingrese el stock actual',
+                hintText: 'Enter current stock',
               ),
               keyboardType: TextInputType.number,
             ),
@@ -97,7 +104,7 @@ class ProductDetailsState extends State<ProductDetails> {
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                child: const Text('CONFIRMAR'),
+                child: const Text('CONFIRM'),
               ),
             ),
           ],

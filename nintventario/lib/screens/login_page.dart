@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import "sale_spots.dart";
+import 'sale_spots.dart';
 
+/// Controller for the password input field.
 final TextEditingController _passwordController = TextEditingController();
 
+/// Main widget for the login screen.
 class LoginApp extends StatelessWidget {
+  /// Creates an instance of [LoginApp].
   const LoginApp({super.key});
 
   @override
@@ -54,7 +57,7 @@ class LoginApp extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SaleSptosPage()),
+                MaterialPageRoute<dynamic>(builder: (BuildContext context) => const SaleSptosPage()),
               );
             },
             child: const Text('Iniciar sesión'),

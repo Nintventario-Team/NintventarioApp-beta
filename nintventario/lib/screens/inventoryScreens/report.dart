@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 
+/// A stateless widget that represents the report screen.
 class ReportScreen extends StatelessWidget {
-
+  /// Creates an instance of [ReportScreen].
   const ReportScreen({super.key});
 
   @override
@@ -11,7 +12,8 @@ class ReportScreen extends StatelessWidget {
     int checkedProductsCount = 0;
     int uncheckedProductsCount = 0;
 
-    for (var product in globalProducts) {
+    // Count checked and unchecked products
+    for (Product product in globalProducts) {
       if (product.state == ProductState.checked) {
         checkedProductsCount++;
       } else {
@@ -19,22 +21,22 @@ class ReportScreen extends StatelessWidget {
       }
     }
 
-    TextEditingController observationsController = TextEditingController();
+    final TextEditingController observationsController = TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Reporte del inventario'),
+        title: const Text('Reporte del Inventario'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               const SizedBox(height: 20),
               const Text(
-                "Productos checkeados:",
+                'Productos checkeados:',
                 style: TextStyle(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
@@ -42,7 +44,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -60,7 +62,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                "Productos No checkeados:",
+                'Productos no checkeados:',
                 style: TextStyle(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
@@ -68,7 +70,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -86,7 +88,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                "Fecha de Creación:",
+                'Fecha de creación:',
                 style: TextStyle(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
@@ -94,7 +96,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -112,7 +114,7 @@ class ReportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                "Observaciones:",
+                'Observaciones:',
                 style: TextStyle(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
@@ -131,12 +133,13 @@ class ReportScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Lógica para finalizar
+                    // Logic to finalize
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
                   ),
-                  child: const Text('FINALIZAR'),
+                  child: const Text('FINALIZE'),
                 ),
               ),
             ],

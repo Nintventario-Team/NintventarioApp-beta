@@ -1,28 +1,35 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../screens/home.dart';
 
-String local = ''; // Variable global para almacenar la selección
+/// Global Variable to save the local
+String local = ''; 
 //String _idLocal = '';
 
+/// Main widget for the sale spots page.
 class SaleSptosPage extends StatelessWidget {
-  
-
-  final List<Map<String, String>> _locations = const [
-    {"image": "src/images/ceibos.jpg", "name": "Ceibos"},
-    {"image": "src/images/machala.jpg", "name": "Machala"},
-    {"image": "src/images/puntilla.jpg", "name": "Puntilla"},
-    {"image": "src/images/terminal.jpg", "name": "Terminal"},
+  // List of sale spot locations.
+  final List<Map<String, String>> _locations = const <Map<String, String>>[
+    <String, String>{'image': 'src/images/ceibos.jpg', 'name': 'Ceibos'},
+    <String, String>{'image': 'src/images/machala.jpg', 'name': 'Machala'},
+    <String, String>{'image': 'src/images/puntilla.jpg', 'name': 'Puntilla'},
+    <String, String>{'image': 'src/images/terminal.jpg', 'name': 'Terminal'},
   ];
 
+  /// Creates an instance of [SaleSptosPage].
   const SaleSptosPage({super.key});
 
+  /// Function to handle location selection.
   void _selectLocation(BuildContext context, String location) {
-    local = location;
-    print('Selected location: $local');
+    local = location; // Update the global variable
+    if (kDebugMode) {
+      print('Selected location: $local');
+    }
+    // Navigate to the Home screen
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => const Home(),
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const Home(),
       ),
     );
   }
@@ -37,10 +44,10 @@ class SaleSptosPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: _locations.map((location) {
+          children: _locations.map((Map<String, String> location) {
             return GestureDetector(
               onTap: () {
-                _selectLocation(context, location['name']!); // Forzar a no nulo
+                _selectLocation(context, location['name']!); // Handle location selection
               },
               child: Column(
                 children: <Widget>[
@@ -50,7 +57,8 @@ class SaleSptosPage extends StatelessWidget {
                       height: 200,
                       child: Stack(
                         fit: StackFit.expand,
-                        children: [
+                        children: <Widget>[
+                          // Image representing the sale spot
                           Image.asset(
                             location['image']!,
                             fit: BoxFit.cover,
@@ -61,7 +69,7 @@ class SaleSptosPage extends StatelessWidget {
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                  colors: [
+                                  colors: <Color>[
                                     Colors.black.withOpacity(0.4),
                                     Colors.transparent,
                                     Colors.transparent,

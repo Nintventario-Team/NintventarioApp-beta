@@ -1,1 +1,27 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - always_declare_return_types
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - avoid_function_literals_in_foreach_calls
+    - prefer_typing_uninitialized_variables
+    - prefer_final_fields
+    - prefer_final_locals
+    - public_member_api_docs
+    - always_put_control_body_on_new_line
+    - always_specify_types
+    - prefer_single_quotes
+
+flutter:
+  - avoid_unnecessary_containers
+  - prefer_const_constructors
+  - sized_box_for_whitespace
+
+analyzer:
+  errors:
+    prefer_const_constructors_in_immutables: error
+    avoid_return_types_on_setters: error
+  exclude:
+    - "**/*.g.dart"
