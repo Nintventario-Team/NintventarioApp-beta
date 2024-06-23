@@ -8,7 +8,7 @@ import 'package:nintventario/screens/history.dart';
 import 'package:nintventario/screens/settings.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 import 'package:flutter/services.dart';
-
+ 
 /// Global variable representing the place.
 String _place = '';
 
