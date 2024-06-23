@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nintventario/screens/login_page.dart';
-
+ 
 /// Entry point of the application.
 ///
 /// This file defines the `main` function that starts the execution of the
