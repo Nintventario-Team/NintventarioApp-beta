@@ -1,0 +1,55 @@
+name: Build APK and Release
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Build APK
+        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/build-apk')
+        run: |
+          flutter clean
+          flutter build apk --release
+          mv build/app/outputs/flutter-apk/app-release.apk ${{ github.workspace }}/tu_aplicacion_nombre.apk
+
+  release:
+    needs: build-and-release
+    runs-on: ubuntu-latest
+    if: always()  # Este trabajo solo se ejecutará si el trabajo 'build-and-release' se ejecuta
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v0.0.1  # Cambia la etiqueta del lanzamiento según sea necesario
+          release_name: Alpha Release v0.0.1  # Cambia el nombre del lanzamiento según sea necesario
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/tu_aplicacion_nombre.apk
+          asset_name: tu_aplicacion_nombre.apk
+          asset_content_type: application/vnd.android.package-archive
