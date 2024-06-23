@@ -1,55 +1,52 @@
-name: Build APK and Release
+name: Build and Release APK
 
 on:
-  issue_comment:
-    types: [created]
-  pull_request:
+  push:
     branches:
       - main
 
 jobs:
-  build-and-release:
+  build:
+    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: 'stable'
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.1'
 
-      - name: Build APK
-        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/build-apk')
-        run: |
-          flutter clean
-          flutter build apk --release
-          mv build/app/outputs/flutter-apk/app-release.apk ${{ github.workspace }}/tu_aplicacion_nombre.apk
+    - name: Install Dependencies
+      run: flutter pub get
 
-  release:
-    needs: build-and-release
-    runs-on: ubuntu-latest
-    if: always()  # Este trabajo solo se ejecutará si el trabajo 'build-and-release' se ejecuta
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v0.0.1  # Cambia la etiqueta del lanzamiento según sea necesario
-          release_name: Alpha Release v0.0.1  # Cambia el nombre del lanzamiento según sea necesario
-          draft: false
-          prerelease: false
+    - name: Build APK
+      if: contains(github.event.head_commit.message, '/build_apk')
+      run: flutter build apk
 
-      - name: Upload APK to Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/tu_aplicacion_nombre.apk
-          asset_name: tu_aplicacion_nombre.apk
-          asset_content_type: application/vnd.android.package-archive
+    - name: Create Release
+      id: create_release
+      if: contains(github.event.head_commit.message, '/build_apk')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        body: |
+          Automatic APK build triggered by commit message.
+        draft: false
+        prerelease: false
+
+    - name: Upload APK
+      if: contains(github.event.head_commit.message, '/build_apk')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/app/outputs/flutter-apk/app-release.apk
+        asset_name: Nintventario.apk
+        asset_content_type: application/vnd.android.package-archive
