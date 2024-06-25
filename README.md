@@ -29,3 +29,93 @@ To install the Nintventario app, follow the steps below:
    </div>
 
 
+## Mobile Manual
+
+### User Guide for Navigating in the Mobile App
+
+Once we have the mobile app on our device, we should get in it.
+
+![Mobile App](imgs-github/Picture1.png)
+
+**Login**
+
+The first screen that is going to appear when you open the mobile app is the login. Now in development, we have two buttons. The first login is going to be an authentication that is going to let you in only if you have the credentials of a PRICOTERCORP’s employee. The other button is going to let you in without any credentials, so in this case we use the Bypass Login (the button is only there until the development stage is finished)
+
+![Mobile Login](imgs-github/Picture2.png)
+
+**Sale Spots screen**
+
+After we login, the app is going to display a list of the sale spots of the company PRICOTERCORP S.A. in this case we can select any commercial center that we are interested in.
+
+![Sale Spot](imgs-github/Picture3.png)
+
+**Home screen**
+
+Once we have selected a sale spot, we are going to be directed to the “home page” this screen displays four options.
+
+![Home picture](imgs-github/Picture4.png)
+
+**Create inventory**
+
+If we select the option “Crear inventario” the app is going to display the list of products with its properties (“ID”, “Anterior Stock”, “Actual Stock” , “Estado”) of the unfinished inventory that the user was working on.
+
+![Home picture Crear inventario](imgs-github/Picture5.png)
+
+![Inventory List](imgs-github/Picture6.png)
+
+Here are some important points to take into mind. The first element of this page is going to be the search bar, in this tool we can put as an input the name, ID or state of a product and automatically is displaying the related product with the input. As you can see in the next picture:
+
+![Inventory seek option](imgs-github/Picture7.png)
+
+By selecting confirm you are going to return to the list of products in the inventory applying the changes.
+
+The other part to take in mind are the products that appear in this list, by selecting one of them just pressing on them. The app is going to display the following widget. In the real environment, the main goal of the user is going to change the “current Stock” with the total number of products that are in the local, so, in this widget is possible to do that just introducing the number. And also, in the same way you can modify the others properties.
+
+![Object view](imgs-github/Picture8.png)
+
+**Inventory Details screen**
+
+While working on the inventory, you can save drafts to work later. To do this we have to select the option “Detalles” in the bottom bar. After selecting that option, the following screen is going to appear:
+
+![Details view](imgs-github/Picture10.png)
+
+Here are the details of the inventory, the ID of the inventory, the name of the person that created the inventory. The inventory duration based on the lapse of time between the creation date and the current date. If everything is okay push the “SAVE DRAFT” button, you should see the following message in the bottom of the screen.
+
+![Mobile App Details view](imgs-github/Picture11.png)
+
+**Inventory Report screen**
+
+Once the inventory is finished, we should go to option “Reporte” in the bottom bar of the screen. After selecting that the next screen is going to be displayed:
+
+![Mobile App Report view](imgs-github/Picture12.png)
+
+Here are going to appear the “inconsistencies” of the inventory, this is going to be helpful to track the advance of the items already checked on the inventory. Once the user feels ready to declare an inventory as finished, we only are going to push the button “FINALIZE” and the app is going to export a report.docx with all the issues.
+
+**Inventory History screen**
+
+In other part, if in the home, we select the option “Historial” the App is going to display a list of the previous inventories with its state (finished or working)
+
+![Mobile App History selection](imgs-github/Picture13.png)
+
+![Mobile App History view](imgs-github/Picture14.png)
+
+**Inventory settings screen**
+
+In other part, if in the home, we select the option “Ajustes” the App is going to display the following settings: the notification, account settings, and the version of the app.
+
+![Mobile App settings selection](imgs-github/Picture15.png)
+
+![Mobile App settings view](imgs-github/Picture16.png)
+
+The selection of the option “About” is going to show the information of the App and its developers.
+
+![Mobile App settings developers](imgs-github/Picture17.png)
+
+**Inventory Log out screen**
+
+Finally, the option “salir” is going to close the app.
+
+![Mobile App logout view](imgs-github/Picture18.png)
+
+
+
