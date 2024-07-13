@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,13 +10,13 @@ final TextEditingController _passwordController = TextEditingController();
 
 /// Main widget for the login screen.
 class LoginApp extends StatefulWidget {
-  const LoginApp({Key? key}) : super(key: key);
+  const LoginApp({super.key});
 
   @override
-  _LoginAppState createState() => _LoginAppState();
+  LoginAppState createState() => LoginAppState();
 }
 
-class _LoginAppState extends State<LoginApp> {
+class LoginAppState extends State<LoginApp> {
   @override
   void dispose() {
     _usernameController.dispose();
@@ -29,19 +30,23 @@ class _LoginAppState extends State<LoginApp> {
     final String password = _passwordController.text;
 
     try {
-      final response = await http.post(
+      final http.Response response = await http.post(
         Uri.parse('http://127.0.0.1:8000/login'), // Use your local machine IP
-        body: json.encode({'username': username, 'password': password}),
-        headers: {
+        body: json.encode(<String, String>{'username': username, 'password': password}),
+        headers: <String, String>{
           'Content-Type': 'application/json',
         },
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      if (kDebugMode) {
+        print('Response status: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('Response body: ${response.body}');
+      }
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        final dynamic data = json.decode(response.body);
         final String token = data['Token'];
 
         // Store the token or handle the response as needed
@@ -56,7 +61,9 @@ class _LoginAppState extends State<LoginApp> {
         _showErrorDialog(context, 'Invalid username or password');
       }
     } catch (e) {
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
       _showErrorDialog(context, 'An error occurred. Please try again.');
     }
   }

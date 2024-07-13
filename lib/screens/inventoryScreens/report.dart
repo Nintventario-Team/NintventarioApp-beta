@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
@@ -132,14 +133,18 @@ class ReportScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Logic to finalize
+                    if(kDebugMode){
+                      print(globalProducts[1].name);
+                    }
+                    saveAndUploadProductsAsJson(globalProducts);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
                   ),
-                  child: const Text('FINALIZE'),
+                  child: const Text('Finalizar'),
                 ),
               ),
             ],

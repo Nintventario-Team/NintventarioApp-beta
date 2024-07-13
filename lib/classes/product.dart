@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
 /// An enumeration representing the state of a product.
 ///
 /// A product can be marked as [checked] or [unchecked].
@@ -47,3 +53,53 @@ class Product {
   });
 }
 
+/// Extension method for the Product class to convert it to a JSON-compatible map.
+extension ProductJson on Product {
+  /// Map to save de product list in a JSON.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'codigo': id,
+      'nombre': name,
+      'stock_inicial': stockAnterior,
+      'stock_final': stockActual,
+    };
+  }
+}
+
+/// Sends the list of products to the server as a JSON object.
+///
+/// This function converts the given list of product maps to a JSON string
+/// and sends it to the specified server URL using an HTTP POST request.
+///
+/// [productList] is the list of product maps to be sent to the server.
+Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
+  try {
+    final List<Map<String, dynamic>> jsonList = products.map((Product product) => product.toJson()).toList();
+    final String jsonString = jsonEncode(jsonList);
+
+    // Obtener el directorio de documentos del dispositivo
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/data.json');
+    await file.writeAsString(jsonString);
+    print(jsonString);
+
+    // Enviar el archivo JSON al servidor
+    final http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:8000/upload-json'));
+    request.files.add(await http.MultipartFile.fromPath('file', file.path));
+    final http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      if (kDebugMode) {
+        print('JSON file uploaded successfully!');
+      }
+    } else {
+      if (kDebugMode) {
+        print('Failed to upload JSON file. Status code: ${response.statusCode}');
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error saving or uploading JSON file: $e');
+    }
+  }
+}

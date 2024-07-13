@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nintventario/classes/draft.dart';
+import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 import '../../widgets/date_selector_widget.dart';
 import 'package:nintventario/screens/history.dart';
@@ -36,15 +39,25 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
   /// List of drafts.
   final List<Map<String, String>> drafts = <Map<String, String>>[];
 
+
   /// Saves a draft.
   void _saveDraft() {
-    drafts.add(<String, String>{
-      'id': inventoryId,
-      'employee': _employeeController.text,
-      'duration': _durationController.text,
-      'creationDate': globalDate,
-    });
+    final Draft newDraft = Draft(
+      id: inventoryId,
+      employee: _employeeController.text,
+      duration: _durationController.text,
+      creationDate: globalDate,
+      state: DraftState.notCompleted, // or DraftState.completed depending on the condition
+      products: List<Product>.from(globalProducts), // Copy of globalProducts to avoid direct modification
+    );
+    
+    globalDrafts.add(newDraft);
+    
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Draft saved!')));
+
+    if (kDebugMode) {
+        print(globalDrafts);
+      }
   }
 
   @override

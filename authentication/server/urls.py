@@ -23,4 +23,6 @@ urlpatterns = [
     re_path('login', views.login),
     re_path('register', views.register),
     re_path('profile', views.profile),
+    re_path('upload-json/', views.upload_json, name='upload_json'),
+    re_path('get-json/', views.get_json, name='get_json'),
 ]
