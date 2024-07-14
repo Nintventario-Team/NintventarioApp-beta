@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/screens/inventoryScreens/product_details.dart';
+import 'package:nintventario/widgets/qr_scanner_widget.dart';
 
 /// A StatefulWidget that displays a list of products.
 class ProductsList extends StatefulWidget {
@@ -16,7 +17,8 @@ class ProductsList extends StatefulWidget {
 }
 
 /// State class for [ProductsList].
-class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClientMixin {
+class ProductsListState extends State<ProductsList>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -37,12 +39,15 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
         final String term = searchTerm.toLowerCase();
         final String productName = product.name.toLowerCase();
         final String productId = product.id.toLowerCase();
-        final String productState = product.state.toString().split('.').last.toLowerCase();
+        final String productState =
+            product.state.toString().split('.').last.toLowerCase();
 
         return productName.contains(term) ||
             productId.contains(term) ||
-            (term == 'checked' && productState == 'checked') || // Filter by checked state
-            (term == 'unchecked' && productState == 'unchecked'); // Filter by unchecked state
+            (term == 'checked' &&
+                productState == 'checked') || // Filter by checked state
+            (term == 'unchecked' &&
+                productState == 'unchecked'); // Filter by unchecked state
       }).toList();
       _sortProducts();
     });
@@ -51,9 +56,11 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
   /// Sorts the products, giving priority to unchecked products.
   void _sortProducts() {
     _filteredProducts.sort((Product a, Product b) {
-      if (a.state == ProductState.unchecked && b.state != ProductState.unchecked) {
+      if (a.state == ProductState.unchecked &&
+          b.state != ProductState.unchecked) {
         return -1;
-      } else if (a.state != ProductState.unchecked && b.state == ProductState.unchecked) {
+      } else if (a.state != ProductState.unchecked &&
+          b.state == ProductState.unchecked) {
         return 1;
       }
       return 0;
@@ -70,60 +77,81 @@ class ProductsListState extends State<ProductsList> with AutomaticKeepAliveClien
     }
   }
 
+  void _showScannerWidget() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            QRScannerWidget(), // Navega al widget del escáner
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: <Widget>[
-        SearchBar(onChanged: _onSearchChanged),
-        Expanded(
-          child: ListView.separated(
-            itemCount: _filteredProducts.length,
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-            itemBuilder: (BuildContext context, int index) {
-              final Product product = _filteredProducts[index];
-              final String productName = product.name;
-              final String productId = product.id;
-              final String stockAnterior = product.stockAnterior.toString();
-              final String stockActual = product.stockActual.toString();
-              final String productState = product.state.toString().split('.').last;
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          SearchBar(onChanged: _onSearchChanged),
+          Expanded(
+            child: ListView.separated(
+              itemCount: _filteredProducts.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+              itemBuilder: (BuildContext context, int index) {
+                final Product product = _filteredProducts[index];
+                final String productName = product.name;
+                final String productId = product.id;
+                final String stockAnterior = product.stockAnterior.toString();
+                final String stockActual = product.stockActual.toString();
+                final String productState =
+                    product.state.toString().split('.').last;
 
-              return ListTile(
-                title: Text(
-                  productName,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _getStateColor(product.state),
-                  ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('ID: $productId'),
-                    Text('Anterior Stock: $stockAnterior'),
-                    Text('Actual Stock: $stockActual'),
-                    Text('Estado: $productState'),
-                  ],
-                ),
-                onTap: () async {
-                  final Product? updatedProduct = await Navigator.push<Product>(
-                    context,
-                    MaterialPageRoute<Product>(
-                      builder: (BuildContext context) => ProductDetails(product: product),
+                return ListTile(
+                  title: Text(
+                    productName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: _getStateColor(product.state),
                     ),
-                  );
-                  if (updatedProduct != null) {
-                    setState(() {
-                      globalProducts[globalProducts.indexOf(product)] = updatedProduct;
-                      _onSearchChanged('');
-                    });
-                  }
-                },
-              );
-            },
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('ID: $productId'),
+                      Text('Anterior Stock: $stockAnterior'),
+                      Text('Actual Stock: $stockActual'),
+                      Text('Estado: $productState'),
+                    ],
+                  ),
+                  onTap: () async {
+                    final Product? updatedProduct =
+                        await Navigator.push<Product>(
+                      context,
+                      MaterialPageRoute<Product>(
+                        builder: (BuildContext context) =>
+                            ProductDetails(product: product),
+                      ),
+                    );
+                    if (updatedProduct != null) {
+                      setState(() {
+                        globalProducts[globalProducts.indexOf(product)] =
+                            updatedProduct;
+                        _onSearchChanged('');
+                      });
+                    }
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showScannerWidget,
+        child: Icon(Icons.qr_code_scanner),
+      ),
     );
   }
 }
