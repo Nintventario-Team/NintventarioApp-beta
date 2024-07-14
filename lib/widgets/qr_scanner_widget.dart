@@ -4,6 +4,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 final MobileScannerController controller = MobileScannerController();
 
 class QRScannerWidget extends StatefulWidget {
+  const QRScannerWidget({super.key});
+
   @override
   _QRScannerWidgetState createState() => _QRScannerWidgetState();
 }
@@ -18,7 +20,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
       body: MobileScanner(
         controller: cameraController,
         allowDuplicates: false,
-        onDetect: (barcode, args) {
+        onDetect: (Barcode barcode, MobileScannerArguments? args) {
           final String? code = barcode.rawValue;
           if (code != null) {
             debugPrint('Barcode found! $code');
@@ -27,7 +29,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => cameraController.switchCamera(),
-        child: Icon(Icons.switch_camera),
+        child: const Icon(Icons.switch_camera),
       ),
     );
   }

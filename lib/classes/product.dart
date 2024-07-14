@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 /// An enumeration representing the state of a product.
 ///
@@ -67,39 +65,39 @@ extension ProductJson on Product {
 }
 
 /// Sends the list of products to the server as a JSON object.
-///
-/// This function converts the given list of product maps to a JSON string
-/// and sends it to the specified server URL using an HTTP POST request.
-///
-/// [productList] is the list of product maps to be sent to the server.
 Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
   try {
+    // Convert list of Product objects to a list of JSON-compatible maps
     final List<Map<String, dynamic>> jsonList = products.map((Product product) => product.toJson()).toList();
-    final String jsonString = jsonEncode(jsonList);
 
-    // Obtener el directorio de documentos del dispositivo
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/data.json');
-    await file.writeAsString(jsonString);
-    print(jsonString);
+    // Wrap the JSON list with a key 'json_data'
+    final Map<String, dynamic> jsonDataMap = <String, dynamic>{'json_data': jsonList};
 
-    // Enviar el archivo JSON al servidor
-    final http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:8000/upload-json'));
-    request.files.add(await http.MultipartFile.fromPath('file', file.path));
-    final http.StreamedResponse response = await request.send();
+    // Encode the map to a JSON string
+    final String jsonString = jsonEncode(jsonDataMap);
+    if (kDebugMode) {
+      print(jsonString);
+    }
+
+    // Send the JSON string to the server
+    final http.Response response = await http.post(
+      Uri.parse('http://192.168.56.1:8000/upload-json'), // Adjust URL as needed
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonString,
+    );
 
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        print('JSON file uploaded successfully!');
+        print('JSON data uploaded successfully!');
       }
     } else {
       if (kDebugMode) {
-        print('Failed to upload JSON file. Status code: ${response.statusCode}');
+        print('Failed to upload JSON data. Status code: ${response.statusCode}');
       }
     }
   } catch (e) {
     if (kDebugMode) {
-      print('Error saving or uploading JSON file: $e');
+      print('Error saving or uploading JSON data: $e');
     }
   }
 }

@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id','username','email', 'password']
 
 class ProductSerializer(serializers.Serializer):
-    codigo = serializers.CharField(max_length=100)
-    nombre = serializers.CharField(max_length=100)
+    codigo = serializers.CharField()
+    nombre = serializers.CharField()
     stock_inicial = serializers.IntegerField()
     stock_final = serializers.IntegerField()

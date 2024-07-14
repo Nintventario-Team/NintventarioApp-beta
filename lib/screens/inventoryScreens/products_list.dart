@@ -82,7 +82,7 @@ class ProductsListState extends State<ProductsList>
       context,
       MaterialPageRoute(
         builder: (BuildContext context) =>
-            QRScannerWidget(), // Navega al widget del escáner
+            const QRScannerWidget(), // Navega al widget del escáner
       ),
     );
   }
@@ -150,7 +150,7 @@ class ProductsListState extends State<ProductsList>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showScannerWidget,
-        child: Icon(Icons.qr_code_scanner),
+        child: const Icon(Icons.qr_code_scanner),
       ),
     );
   }

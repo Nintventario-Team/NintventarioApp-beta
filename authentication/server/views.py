@@ -1,6 +1,6 @@
 import json
 import os
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponseBadRequest, HttpResponseServerError, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . serializers import ProductSerializer, UserSerializer
@@ -54,31 +54,50 @@ def profile(request):
     return Response("You are logged with {}".format(request.user.username), status=status.HTTP_200_OK)
 
 
-
 @api_view(['POST'])
 def upload_json(request):
     try:
-        if 'file' not in request.FILES:
-            return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
+        # Verifica si hay datos JSON en la solicitud
+        if 'json_data' not in request.data:
+            return HttpResponseBadRequest(json.dumps({"error": "No JSON data provided"}), content_type='application/json')
 
-        json_file = request.FILES['file']
-        json_data = json.load(json_file)
+        # Obtiene la lista de productos desde json_data
+        products_list = request.data['json_data']
 
+        # Verifica si json_data es una lista
+        if not isinstance(products_list, list):
+            return HttpResponseBadRequest(json.dumps({"error": "Invalid JSON format. Expected a list of products."}), content_type='application/json')
+
+        # Crea el directorio de subida si no existe
         if not os.path.exists(UPLOAD_DIR):
             os.makedirs(UPLOAD_DIR)
 
         file_path = os.path.join(UPLOAD_DIR, 'data.json')
+        
+        # Guarda el contenido JSON en un archivo
         with open(file_path, 'w') as f:
-            json.dump(json_data, f)
+            json.dump(products_list, f)
 
-        return Response({"message": "JSON file processed and saved successfully!"}, status=status.HTTP_200_OK)
+        return JsonResponse({"message": "JSON data processed and saved successfully!"}, status=status.HTTP_200_OK)
+
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return HttpResponseServerError(json.dumps({"error": str(e)}), content_type='application/json')
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def get_json(request):
     file_path = os.path.join(UPLOAD_DIR, 'data.json')
-    if os.path.exists(file_path):
-        return FileResponse(open(file_path, 'rb'), content_type='application/json')
-    else:
-        return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), content_type='application/json')
+        else:
+            return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'DELETE':
+        try:
+            # Verifica si el archivo existe y lo elimina
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                return Response({"message": "File deleted successfully"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return HttpResponseServerError(json.dumps({"error": str(e)}), content_type='application/json')
