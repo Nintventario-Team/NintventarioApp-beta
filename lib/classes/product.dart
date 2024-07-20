@@ -81,7 +81,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
     // Send the JSON string to the server
     final http.Response response = await http.post(
-      Uri.parse('http://192.168.56.1:8000/upload-json'), // Adjust URL as needed
+      Uri.parse('http://192.168.1.8:8000/upload-json/'), // Adjust URL as needed
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonString,
     );

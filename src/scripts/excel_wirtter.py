@@ -3,7 +3,7 @@ from openpyxl import Workbook
 import requests
 
 # URL del archivo JSON en el servidor Django
-json_url = 'http://127.0.0.1:8000/get-json'
+json_url = 'http://192.168.1.8:8000/get-json'
 
 # Hacer la solicitud HTTP para descargar el archivo JSON
 response = requests.get(json_url)
