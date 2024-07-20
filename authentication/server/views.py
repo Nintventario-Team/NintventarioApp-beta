@@ -1,6 +1,7 @@
 import json
 import os
-from django.http import FileResponse, HttpResponseBadRequest, HttpResponseServerError, JsonResponse
+import subprocess
+from django.http import FileResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseServerError, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . serializers import ProductSerializer, UserSerializer
@@ -13,7 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
 
-UPLOAD_DIR = 'uploads'  # Directorio donde se guardarán los archivos JSON
+UPLOAD_DIR = 'uploads'
+PYTHON_SCRIPT_PATH = 'src/scripts/excel_wirtter.py'
 
 @api_view(['POST'])
 def login(request):
@@ -101,3 +103,42 @@ def get_json(request):
                 return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return HttpResponseServerError(json.dumps({"error": str(e)}), content_type='application/json')
+        
+
+@api_view(['POST'])
+def upload_excel(request):
+    if 'file' not in request.FILES:
+        return HttpResponseBadRequest("No file provided")
+
+    file = request.FILES['file']
+    
+    if not file.name.endswith('.xlsx'):
+        return HttpResponseBadRequest("Invalid file type. Only .xlsx files are allowed")
+
+    file_path = os.path.join(UPLOAD_DIR, 'uploaded_file.xlsx')
+
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
+
+    with open(file_path, 'wb') as f:
+        for chunk in file.chunks():
+            f.write(chunk)
+
+    # Ejecutar el script de Python después de guardar el archivo
+    try:
+        result = subprocess.run(['python', PYTHON_SCRIPT_PATH, file_path], capture_output=True, text=True)
+        if result.returncode == 0:
+            return JsonResponse({"message": "File uploaded and processed successfully!"}, status=status.HTTP_200_OK)
+        else:
+            return JsonResponse({"error": f"Script error: {result.stderr}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def download_excel(request):
+    file_path = os.path.join(UPLOAD_DIR, 'uploaded_file.xlsx')
+    
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename='uploaded_file.xlsx')
+    else:
+        return HttpResponseNotFound("File not found")

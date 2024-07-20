@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -98,6 +100,47 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
   } catch (e) {
     if (kDebugMode) {
       print('Error saving or uploading JSON data: $e');
+    }
+  }
+}
+
+Future<void> downloadAndSaveExcel() async {
+  try {
+    // Descargar el archivo desde el servidor
+    final http.Response response = await http.get(Uri.parse('http://192.168.1.8:8000/download-excel/'));
+
+    if (response.statusCode == 200) {
+      // Abrir el diálogo para seleccionar la ubicación del archivo
+      final FilePickerResult? result = (await FilePicker.platform.saveFile(
+        dialogTitle: 'Selecciona dónde guardar el archivo',
+        fileName: 'products.xlsx',
+        type: FileType.custom,
+        allowedExtensions: ['xlsx'],
+      )) as FilePickerResult?;
+
+      if (result != null) {
+        final String filePath = result.files.single.path!;
+        final File file = File(filePath);
+
+        // Guardar el archivo en la ubicación seleccionada
+        await file.writeAsBytes(response.bodyBytes);
+
+        if (kDebugMode) {
+          print('File downloaded and saved to $filePath');
+        }
+      } else {
+        if (kDebugMode) {
+          print('User cancelled file save');
+        }
+      }
+    } else {
+      if (kDebugMode) {
+        print('Failed to download file. Status code: ${response.statusCode}');
+      }
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error downloading or saving file: $e');
     }
   }
 }

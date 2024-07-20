@@ -25,4 +25,6 @@ urlpatterns = [
     re_path('profile', views.profile),
     re_path('upload-json/', views.upload_json, name='upload_json'),
     re_path('get-json/', views.get_json, name='get_json'),
+    re_path('upload-excel/', views.upload_excel, name='upload_excel'),
+    re_path('download-excel/', views.download_excel, name='download_excel'),
 ]
