@@ -1,7 +1,11 @@
+import datetime
 import json
+import logging
 import os
 import subprocess
-from django.http import FileResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+import uuid
+from django.http import FileResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . serializers import ProductSerializer, UserSerializer
@@ -15,7 +19,8 @@ from rest_framework.authentication import TokenAuthentication
 
 
 UPLOAD_DIR = 'uploads'
-PYTHON_SCRIPT_PATH = 'src/scripts/excel_wirtter.py'
+PYTHON_SCRIPT_PATH = '../src/scripts/excel_wirtter.py'
+UPLOAD_URL = 'http://192.168.1.3:8000/upload-excel/'
 
 @api_view(['POST'])
 def login(request):
@@ -105,38 +110,55 @@ def get_json(request):
             return HttpResponseServerError(json.dumps({"error": str(e)}), content_type='application/json')
         
 
+# Configurar logging para depuración
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 @api_view(['POST'])
 def upload_excel(request):
-    if 'file' not in request.FILES:
-        return HttpResponseBadRequest("No file provided")
-
-    file = request.FILES['file']
-    
-    if not file.name.endswith('.xlsx'):
-        return HttpResponseBadRequest("Invalid file type. Only .xlsx files are allowed")
-
-    file_path = os.path.join(UPLOAD_DIR, 'uploaded_file.xlsx')
-
-    if not os.path.exists(UPLOAD_DIR):
-        os.makedirs(UPLOAD_DIR)
-
-    with open(file_path, 'wb') as f:
-        for chunk in file.chunks():
-            f.write(chunk)
-
-    # Ejecutar el script de Python después de guardar el archivo
+    request_id = str(uuid.uuid4())  # Generar un ID único para esta solicitud
+    logger.debug(f"Procesando solicitud {request_id}")
     try:
-        result = subprocess.run(['python', PYTHON_SCRIPT_PATH, file_path], capture_output=True, text=True)
-        if result.returncode == 0:
-            return JsonResponse({"message": "File uploaded and processed successfully!"}, status=status.HTTP_200_OK)
-        else:
+        if not os.path.exists(UPLOAD_DIR):
+            os.makedirs(UPLOAD_DIR)
+
+        output_file_path = os.path.join(UPLOAD_DIR, 'generated_file.xlsx')
+        logger.debug(f"Ejecutando script de Python para solicitud {request_id}...")
+
+        result = subprocess.run(
+            ['python', PYTHON_SCRIPT_PATH, output_file_path],
+            capture_output=True, text=True
+        )
+        logger.debug(f"Resultado del script para solicitud {request_id}: {result.stdout}")
+        logger.error(f"Errores del script para solicitud {request_id}: {result.stderr}")
+
+        if result.returncode != 0:
+            logger.error(f"Error en el script para solicitud {request_id}: {result.stderr}")
             return JsonResponse({"error": f"Script error: {result.stderr}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        logger.debug(f"Ruta del archivo generado para solicitud {request_id}: {output_file_path}")
+
+        with open(output_file_path, 'rb') as f:
+            file_data = f.read()
+
+        upload_response = requests.post(UPLOAD_URL, files={'file': file_data})
+        upload_response.raise_for_status()  
+        if upload_response.status_code == 200:
+            logger.debug(f"Archivo subido exitosamente para solicitud {request_id}!")
+            response = HttpResponse(file_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = 'attachment; filename="generated_file.xlsx"'
+            return response
+        else:
+            logger.error(f"Fallo al subir el archivo para solicitud {request_id}. Código de estado: {upload_response.status_code}")
+            return JsonResponse({"error": f"Upload failed with status {upload_response.status_code}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     except Exception as e:
+        logger.exception(f"Error en el endpoint upload_excel para solicitud {request_id}")
         return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def download_excel(request):
-    file_path = os.path.join(UPLOAD_DIR, 'uploaded_file.xlsx')
+    file_path = os.path.join(UPLOAD_DIR, 'generated_file.xlsx')
     
     if os.path.exists(file_path):
         return FileResponse(open(file_path, 'rb'), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename='uploaded_file.xlsx')

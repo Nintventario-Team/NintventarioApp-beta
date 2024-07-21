@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 /// An enumeration representing the state of a product.
 ///
@@ -83,7 +83,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
     // Send the JSON string to the server
     final http.Response response = await http.post(
-      Uri.parse('http://192.168.1.8:8000/upload-json/'), // Adjust URL as needed
+      Uri.parse('http://192.168.1.3:8000/upload-json/'), // Adjust URL as needed
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonString,
     );
@@ -102,45 +102,66 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
       print('Error saving or uploading JSON data: $e');
     }
   }
+  downloadExcelFile();
 }
 
-Future<void> downloadAndSaveExcel() async {
+/// Downloads the Excel file from the server and saves it to the Downloads directory.
+Future<void> downloadExcelFile() async {
   try {
-    // Descargar el archivo desde el servidor
-    final http.Response response = await http.get(Uri.parse('http://192.168.1.8:8000/download-excel/'));
+
+    final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
+
+    /// Do Post to upload Excel File
+    final http.Response responsePost = await http.post(
+      urlPost,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: '{}',
+    );
+
+    if (kDebugMode) {
+      print(responsePost.statusCode);
+    }
+    
+    /// URL of the API that returns the Excel file
+    final Uri url = Uri.parse('http://192.168.1.3:8000/download-excel/');
+
+    /// Perform the HTTP GET request to obtain the Excel file
+    final http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // Abrir el diálogo para seleccionar la ubicación del archivo
-      final FilePickerResult? result = (await FilePicker.platform.saveFile(
-        dialogTitle: 'Selecciona dónde guardar el archivo',
-        fileName: 'products.xlsx',
-        type: FileType.custom,
-        allowedExtensions: ['xlsx'],
-      )) as FilePickerResult?;
+      // Get the file content as bytes
+      final List<int> bytes = response.bodyBytes;
 
-      if (result != null) {
-        final String filePath = result.files.single.path!;
+      // Get the path to the Downloads directory
+      final Directory? directory = await getExternalStorageDirectory();
+      final String? downloadsPath = directory?.path;
+
+      if (downloadsPath != null) {
+        // Define the full path of the file to be saved
+        final String filePath = '$downloadsPath/uploaded_file.xlsx';
+
+        // Save the file at the Downloads directory
         final File file = File(filePath);
-
-        // Guardar el archivo en la ubicación seleccionada
-        await file.writeAsBytes(response.bodyBytes);
+        await file.writeAsBytes(bytes);
 
         if (kDebugMode) {
-          print('File downloaded and saved to $filePath');
+          print('Excel file downloaded and saved to $filePath');
         }
       } else {
         if (kDebugMode) {
-          print('User cancelled file save');
+          print('Could not access the Downloads directory.');
         }
       }
     } else {
       if (kDebugMode) {
-        print('Failed to download file. Status code: ${response.statusCode}');
+        print('Error downloading the Excel file. Status code: ${response.statusCode}');
       }
     }
   } catch (e) {
     if (kDebugMode) {
-      print('Error downloading or saving file: $e');
+      print('Error downloading or saving the Excel file: $e');
     }
   }
 }

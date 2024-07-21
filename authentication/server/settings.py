@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '192.168.1.8',
+    '192.168.1.3',
 ]
 
 
@@ -63,9 +63,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://192.168.100.70:8000",
     "http://tu-flutter-app-url.com",
+    'http://192.168.1.3:8000',
 ]
 CORS_ALLOW_METHODS = [
     "POST",
+    "GET"
 ]
 
 ROOT_URLCONF = 'server.urls'

@@ -1,54 +1,50 @@
 import sys
-import json
 from openpyxl import Workbook
 import requests
 
-def generate_excel_from_json(json_url, output_file):
+if len(sys.argv) != 2:
+    print("Uso: python python_script.py <output_file_path>")
+    sys.exit(1)
+
+file_path = sys.argv[1]
+json_url = 'http://192.168.1.3:8000/get-json'
+
+print(f"Solicitando JSON desde: {json_url}")
+
+# Descargar el archivo JSON
+try:
     response = requests.get(json_url)
+    response.raise_for_status()  
+    print(f"Estado de la respuesta del JSON: {response.status_code}")
 
-    if response.status_code == 200:
-        products = response.json()
+    products = response.json()
 
-        wb = Workbook()
-        ws = wb.active
-        ws.title = "Products"
+    # Crear un nuevo archivo Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Products"
 
-        headers = ["Código", "Nombre", "Stock Inicial", "Stock Final"]
-        ws.append(headers)
+    # Escribir los encabezados en la hoja de cálculo
+    headers = ["Código", "Nombre", "Stock Inicial", "Stock Final"]
+    ws.append(headers)
 
-        for product in products:
-            ws.append([
-                product['codigo'],
-                product['nombre'],
-                product['stock_inicial'],
-                product['stock_final']
-            ])
+    # Escribir los datos de los productos en la hoja de cálculo
+    for product in products:
+        ws.append([
+            product.get('codigo', 'N/A'),
+            product.get('nombre', 'N/A'),
+            product.get('stock_inicial', 'N/A'),
+            product.get('stock_final', 'N/A')
+        ])
 
-        wb.save(output_file)
-        return True
-    else:
-        print(f"Error al descargar el archivo JSON: {response.status_code}")
-        return False
+    # Guardar el archivo Excel
+    wb.save(file_path)
+    print(f"Archivo Excel guardado en: {file_path}")
+    sys.exit(1)
 
-def upload_file(file_path, upload_url):
-    with open(file_path, 'rb') as file:
-        response = requests.post(upload_url, files={'file': file})
-        if response.status_code == 200:
-            print("File uploaded successfully!")
-        else:
-            print(f"Failed to upload file. Status code: {response.status_code}")
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python python_script.py <output_file_path> <upload_url>")
-        sys.exit(1)
-
-    file_path = sys.argv[1]
-    upload_url = sys.argv[2]
-    json_url = 'http://192.168.1.8:8000/get-json'
-
-    if generate_excel_from_json(json_url, file_path):
-        print('Excel file created and saved successfully!')
-        upload_file(file_path, upload_url)
-    else:
-        print('Failed to create Excel file.')
+except requests.RequestException as e:
+    print(f"Error al descargar el archivo JSON: {e}")
+    sys.exit(1)
+except Exception as e:
+    print(f"Error al generar el archivo Excel: {e}")
+    sys.exit(1)
