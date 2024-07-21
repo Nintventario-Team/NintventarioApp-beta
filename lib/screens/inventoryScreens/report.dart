@@ -30,97 +30,22 @@ class ReportScreen extends StatelessWidget {
         title: const Text(
           'Reporte del Inventario',
           style: TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0), // Title text color (light blue)
+            color: Color.fromARGB(255, 0, 0, 0), // Title text color (black)
           ),
-        ), // AppBar background color (lighter blue)
+        ), // AppBar background color (light blue)
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 20),
-              const Text(
-                'Productos checkeados:',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.blueGrey.shade50, // Background color for container
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        checkedProductsCount.toString(),
-                        style: const TextStyle(color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              _buildDetailField('Productos checkeados:', checkedProductsCount.toString()),
               const SizedBox(height: 20),
-              const Text(
-                'Productos no checkeados:',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.blueGrey.shade50, // Background color for container
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        uncheckedProductsCount.toString(),
-                        style: const TextStyle(color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              _buildDetailField('Productos no checkeados:', uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
-              const Text(
-                'Fecha de creación:',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.blueGrey.shade50, // Background color for container
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        globalDate,
-                        style: const TextStyle(color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              _buildDetailField('Fecha de creación:', globalDate),
               const SizedBox(height: 20),
               const Text(
                 'Observaciones:',
@@ -149,7 +74,7 @@ class ReportScreen extends StatelessWidget {
                     saveAndUploadProductsAsJson(globalProducts);
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.white, // Text color for the button
                     backgroundColor: Colors.orange, // Button background color
                   ),
                   child: const Text('Finalizar'),
@@ -159,6 +84,47 @@ class ReportScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  /// Builds a [TextField] to display details with consistent styling.
+  Widget _buildDetailField(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.bold, // Label style
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey.shade300),
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.blueGrey.shade50, // Background color for containers
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: TextField(
+              controller: TextEditingController(text: value),
+              readOnly: true,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 6), // Further reduced height
+                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+              ),
+              style: const TextStyle(
+                color: Colors.grey, // Text color
+                fontSize: 14, // Slightly smaller font size
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
