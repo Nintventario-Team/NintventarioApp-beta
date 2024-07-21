@@ -39,7 +39,6 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
   /// List of drafts.
   final List<Map<String, String>> drafts = <Map<String, String>>[];
 
-
   /// Saves a draft.
   void _saveDraft() {
     final Draft newDraft = Draft(
@@ -50,14 +49,14 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
       state: DraftState.notCompleted, // or DraftState.completed depending on the condition
       products: List<Product>.from(globalProducts), // Copy of globalProducts to avoid direct modification
     );
-    
+
     globalDrafts.add(newDraft);
-    
+
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Draft saved!')));
 
     if (kDebugMode) {
-        print(globalDrafts);
-      }
+      print(globalDrafts);
+    }
   }
 
   @override
@@ -70,11 +69,16 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
       appBar: AppBar(
         title: const Text(
           'Inventory Details',
-          style: TextStyle(fontSize: _fontTitleSizeVar),
+          style: TextStyle(
+            fontSize: _fontTitleSizeVar
+          ),
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.list),
+            icon: const Icon(
+              Icons.list,
+              color: Color.fromARGB(255, 0, 0, 0), // Icon color
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -85,24 +89,43 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
           children: <Widget>[
-            const SizedBox(height: 20),
-            const Text('Inventory ID:'),
-            const SizedBox(height: 10),
+            const Text(
+              'Inventory ID:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1.5),
+                border: Border.all(color: Colors.blueGrey.shade300, width: 1.5),
                 borderRadius: BorderRadius.circular(8.0),
+                color: Colors.blueGrey.shade50, // Background color for container
               ),
               padding: const EdgeInsets.all(10),
-              child: Text(inventoryId),
+              child: Text(
+                inventoryId,
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
             ),
             const SizedBox(height: 20),
-            const Text('Inventory Manager: '),
-            const SizedBox(height: 10),
+            const Text(
+              'Inventory Manager:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: _employeeController,
               decoration: InputDecoration(
@@ -111,12 +134,21 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
                 ),
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                hintStyle: const TextStyle(color: Colors.grey),
               ),
+              style: const TextStyle(color: Colors.black, fontSize: 16),
             ),
             const SizedBox(height: 20),
-            const Text('Inventory Duration: '),
-            const SizedBox(height: 10),
+            const Text(
+              'Inventory Duration:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: _durationController,
               decoration: InputDecoration(
@@ -125,15 +157,24 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
                 ),
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                hintStyle: const TextStyle(color: Colors.grey),
               ),
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              style: const TextStyle(color: Colors.black, fontSize: 16),
             ),
             const SizedBox(height: 20),
-            const Text('Creation Date: '),
+            const Text(
+              'Creation Date:',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 10),
             DateSelectorWidget(
               onDateSelected: (DateTime newDate) {
@@ -142,7 +183,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                 });
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 32),
             Center(
               child: ElevatedButton(
                 onPressed: _saveDraft,
@@ -152,6 +193,9 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   textStyle: const TextStyle(fontSize: 20),
                   foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 child: const Text('SAVE DRAFT'),
               ),

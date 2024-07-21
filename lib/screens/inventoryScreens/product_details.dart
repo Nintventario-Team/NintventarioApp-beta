@@ -38,50 +38,39 @@ class ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Details'),
+        title: const Text(
+          'Product Details',
+          style: TextStyle(color: Colors.white), // Title text color
+        ),
+        backgroundColor: Colors.blue, // AppBar color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
-            const Text('Product ID:', style: TextStyle(color: Colors.grey)), // Text color change
-            const SizedBox(height: 8),
-            TextField(
-              controller: TextEditingController(text: widget.product.id),
-              readOnly: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            ),
+            _buildDetailField('Product ID:', widget.product.id),
+            _buildDetailField('Product Name:', widget.product.name),
+            _buildDetailField(
+                'Previous Stock:', widget.product.stockAnterior.toString()),
             const SizedBox(height: 16),
-            const Text('Product Name:', style: TextStyle(color: Colors.grey)), // Text color change
-            const SizedBox(height: 8),
-            TextField(
-              controller: TextEditingController(text: widget.product.name),
-              readOnly: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+            const Text(
+              'Current Stock:',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold), // Label style
             ),
-            const SizedBox(height: 16),
-            const Text('Previous Stock:', style: TextStyle(color: Colors.grey)), // Text color change
-            const SizedBox(height: 8),
-            TextField(
-              controller: TextEditingController(text: widget.product.stockAnterior.toString()),
-              readOnly: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text('Current Stock:'),
             const SizedBox(height: 8),
             TextField(
               controller: _stockActualController,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
                 hintText: 'Enter current stock',
+                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12, vertical: 15),
               ),
               keyboardType: TextInputType.number,
             ),
@@ -89,7 +78,9 @@ class ProductDetailsState extends State<ProductDetails> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  final int newStockActual = int.tryParse(_stockActualController.text) ?? widget.product.stockActual;
+                  final int newStockActual =
+                      int.tryParse(_stockActualController.text) ??
+                          widget.product.stockActual;
                   setState(() {
                     if (newStockActual != _initialStockActual) {
                       widget.product.state = ProductState.checked;
@@ -99,17 +90,66 @@ class ProductDetailsState extends State<ProductDetails> {
                   Navigator.pop(context, widget.product);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.blue, // Button background color
                   minimumSize: const Size(200, 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  textStyle: const TextStyle(
+                      fontSize: 20, color: Colors.white), // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
                 ),
-                child: const Text('CONFIRM'),
+                child: const Text(
+                  'CONFIRM', // Text inside the button
+                  style: TextStyle(
+                      color:
+                          Colors.white), // Explicitly set text color to white
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// Builds a [TextField] to display product details with consistent styling.
+  Widget _buildDetailField(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          label,
+          style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold), // Label style
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey.shade300),
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.blueGrey.shade50, // Background color for containers
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: TextField(
+              controller: TextEditingController(text: value),
+              readOnly: true,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 15),
+                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+              ),
+              style: const TextStyle(
+                  color: Colors.grey, fontSize: 16), // Text color
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

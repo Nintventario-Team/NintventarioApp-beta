@@ -27,7 +27,12 @@ class ReportScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Reporte del Inventario'),
+        title: const Text(
+          'Reporte del Inventario',
+          style: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0), // Title text color (light blue)
+          ),
+        ), // AppBar background color (lighter blue)
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,11 +56,12 @@ class ReportScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1.5),
                         borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.blueGrey.shade50, // Background color for container
                       ),
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         checkedProductsCount.toString(),
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.black87),
                       ),
                     ),
                   ),
@@ -77,11 +83,12 @@ class ReportScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1.5),
                         borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.blueGrey.shade50, // Background color for container
                       ),
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         uncheckedProductsCount.toString(),
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.black87),
                       ),
                     ),
                   ),
@@ -103,11 +110,12 @@ class ReportScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1.5),
                         borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.blueGrey.shade50, // Background color for container
                       ),
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         globalDate,
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.black87),
                       ),
                     ),
                   ),
@@ -135,14 +143,14 @@ class ReportScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     // Logic to finalize
-                    if(kDebugMode){
+                    if (kDebugMode) {
                       print(globalProducts[1].name);
                     }
                     saveAndUploadProductsAsJson(globalProducts);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.orange, // Button background color
                   ),
                   child: const Text('Finalizar'),
                 ),
