@@ -32,7 +32,8 @@ class LoginAppState extends State<LoginApp> {
     try {
       final http.Response response = await http.post(
         Uri.parse('http://127.0.0.1:8000/login'), // Use your local machine IP
-        body: json.encode(<String, String>{'username': username, 'password': password}),
+        body: json.encode(
+            <String, String>{'username': username, 'password': password}),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
