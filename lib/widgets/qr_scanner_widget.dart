@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:nintventario/classes/product.dart';
+import 'package:nintventario/screens/inventoryScreens/product_details.dart';
+import 'package:nintventario/screens/home.dart';
 
 final MobileScannerController controller = MobileScannerController();
 
@@ -13,6 +16,38 @@ class QRScannerWidget extends StatefulWidget {
 class _QRScannerWidgetState extends State<QRScannerWidget> {
   final MobileScannerController cameraController = MobileScannerController();
 
+  void _handleBarcodeDetection(String code) {
+    try {
+      final Product product = globalProducts.firstWhere(
+        (product) => product.id == code,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductDetails(product: product),
+        ),
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Producto no encontrado'),
+            content: Text('No se encontró ningún producto con el ID $code.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +59,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
           final String? code = barcode.rawValue;
           if (code != null) {
             debugPrint('Barcode found! $code');
+            _handleBarcodeDetection(code);
           }
         },
       ),
