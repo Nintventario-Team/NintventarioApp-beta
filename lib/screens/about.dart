@@ -27,41 +27,77 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('About'),
+        backgroundColor: Colors.blueAccent, // Darker blue for AppBar
+        elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Ninventario $version',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Container(
+        color: Colors.blue[50], // Light blue background color
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Ninventario $version',
+                      style: TextStyle(
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold, 
+                        color: Colors.blue[800], // Darker blue for title
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Created by:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue[700], // Medium blue for section title
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: creators.map((String creator) {
+                        return Text(
+                          creator,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.blue[600], // Slightly lighter blue for creators
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Creation Date:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue[700], // Medium blue for section title
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      currentDate,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue[600], // Slightly lighter blue for date
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Created by:',
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Column(
-              children: creators.map((String creator) {
-                return Text(
-                  creator,
-                  style: const TextStyle(fontSize: 16),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Creation Date:',
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              currentDate,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -73,5 +109,9 @@ void main() {
   runApp(MaterialApp(
     // Sets the home screen of the application to AboutScreen.
     home: AboutScreen(),
+    theme: ThemeData(
+      useMaterial3: true,
+      primarySwatch: Colors.blue, // Primary blue theme for the app
+    ),
   ));
 }

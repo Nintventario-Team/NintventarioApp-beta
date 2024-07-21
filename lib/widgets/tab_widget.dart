@@ -13,6 +13,7 @@ const double _fontTitleSize = 40;
 class CustomTabBar extends StatelessWidget {
   /// The initial index of the tab to be selected.
   final int initialIndex;
+
   /// Creates an instance of [CustomTabBar].
   const CustomTabBar({super.key, this.initialIndex = 0});
 
@@ -29,6 +30,7 @@ class CustomTabBar extends StatelessWidget {
 class InventoryTabBar extends StatefulWidget {
   /// The initial index of the tab to be selected.
   final int initialIndex;
+
   /// Creates an instance of [InventoryTabBar].
   const InventoryTabBar({super.key, this.initialIndex = 0});
 
@@ -92,15 +94,16 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     );
   }
 
+  /// Builds the loading screen.
   Widget _buildLoading() {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize),
+          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -110,20 +113,23 @@ class InventoryTabBarState extends State<InventoryTabBar> {
             );
           },
         ),
+        backgroundColor: Colors.blue.shade700,
+        elevation: 0,
       ),
       body: const Center(child: CircularProgressIndicator()),
     );
   }
 
+  /// Builds the error screen.
   Widget _buildError(String errorMessage) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize),
+          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -133,20 +139,23 @@ class InventoryTabBarState extends State<InventoryTabBar> {
             );
           },
         ),
+        backgroundColor: Colors.blue.shade700,
+        elevation: 0,
       ),
-      body: Center(child: Text('Error: $errorMessage')),
+      body: Center(child: Text('Error: $errorMessage', style: const TextStyle(color: Colors.red))),
     );
   }
 
+  /// Builds the screen when no products are found.
   Widget _buildNoProductsFound() {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize),
+          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -156,11 +165,14 @@ class InventoryTabBarState extends State<InventoryTabBar> {
             );
           },
         ),
+        backgroundColor: Colors.blue.shade700,
+        elevation: 0,
       ),
-      body: const Center(child: Text('No products found')),
+      body: const Center(child: Text('No products found', style: TextStyle(color: Colors.blue))),
     );
   }
 
+  /// Builds the tab bar with the list of products.
   Widget _buildTabBar(List<Product> products) {
     return DefaultTabController(
       length: 3,
@@ -169,10 +181,10 @@ class InventoryTabBarState extends State<InventoryTabBar> {
         appBar: AppBar(
           title: const Text(
             'Nintventario',
-            style: TextStyle(fontSize: _fontTitleSize),
+            style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
           ),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
@@ -182,6 +194,8 @@ class InventoryTabBarState extends State<InventoryTabBar> {
               );
             },
           ),
+          backgroundColor: Colors.blue.shade700,
+          elevation: 0,
         ),
         body: Column(
           children: <Widget>[
@@ -201,8 +215,8 @@ class InventoryTabBarState extends State<InventoryTabBar> {
               ),
             ),
             TabBar(
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
+              labelColor: Colors.blue.shade900,
+              unselectedLabelColor: Colors.blue.shade300,
               onTap: (int index) {
                 _pageController.animateToPage(
                   index,
@@ -216,6 +230,7 @@ class InventoryTabBarState extends State<InventoryTabBar> {
                 Tab(icon: Icon(Icons.edit_document), text: 'Reporte'),
               ],
               labelStyle: const TextStyle(fontSize: 12),
+              indicatorColor: Colors.blue.shade900,
             ),
           ],
         ),
@@ -223,4 +238,3 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     );
   }
 }
-

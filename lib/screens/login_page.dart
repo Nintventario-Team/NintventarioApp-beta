@@ -40,8 +40,6 @@ class LoginAppState extends State<LoginApp> {
 
       if (kDebugMode) {
         print('Response status: ${response.statusCode}');
-      }
-      if (kDebugMode) {
         print('Response body: ${response.body}');
       }
 
@@ -104,61 +102,95 @@ class LoginAppState extends State<LoginApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text(
+          'Login',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.blue[800], // Dark blue for AppBar
+        elevation: 4,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white, // White color for the back arrow
+          onPressed: () {
+            Navigator.pop(context); // Navigate back
+          },
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Stack(
-            alignment: Alignment.center,
+      body: Container(
+        color: Colors.blue[50], // Light blue background
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Positioned(
-                child: CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage('src/images/login.jpg'),
+              const CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage('src/images/login.jpg'),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
                 ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextField(
+                  obscureText: true,
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _login(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.blue[800], // Dark blue for button
+                  minimumSize: const Size(200, 50),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  textStyle: const TextStyle(fontSize: 18), // White text color
+                ),
+                child: const Text('Login'),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  _bypassLogin(context);
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.blue[800], // Dark blue for button text
+                ),
+                child: const Text('Bypass Login'),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: TextField(
-              obscureText: true,
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _login(context);
-            },
-            child: const Text('Login'),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              _bypassLogin(context);
-            },
-            child: const Text('Bypass Login'),
-          ),
-        ],
+        ),
       ),
     );
   }
