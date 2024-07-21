@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 
 /// An enumeration representing the state of a product.
 ///
@@ -102,9 +102,26 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
       print('Error saving or uploading JSON data: $e');
     }
   }
-  downloadExcelFile();
+
+    final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
+
+    /// Do Post to upload Excel File
+    final http.Response responsePost = await http.post(
+      urlPost,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: '{}',
+    );
+
+    if (kDebugMode) {
+      print(responsePost.statusCode);
+    }
+
+  //downloadExcelFile();
 }
 
+/*
 /// Downloads the Excel file from the server and saves it to the Downloads directory.
 Future<void> downloadExcelFile() async {
   try {
@@ -165,3 +182,4 @@ Future<void> downloadExcelFile() async {
     }
   }
 }
+*/

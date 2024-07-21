@@ -5,12 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:nintventario/classes/draft.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/history.dart';
+import 'package:nintventario/screens/sale_spots.dart';
 import 'package:nintventario/screens/settings.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 import 'package:flutter/services.dart';
   
-/// Global variable representing the place.
-String _place = '';
 
 /// Global list of drafts.
 List<Draft> globalDrafts = <Draft>[];
@@ -131,7 +130,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: spaceSize),
-            Text('Bienvenido a $_place'),
+            Text('Bienvenido a $local'),
             SizedBox(height: spaceSize),
             Expanded(
               child: GridView.count(
