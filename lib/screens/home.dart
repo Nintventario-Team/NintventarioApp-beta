@@ -40,7 +40,7 @@ double fontTitleSizeVar = 30;
 double fontTextSizeVar = 16;
 
 /// Global icon size.
-double iconSize = 50;
+double iconSize = 40;
 
 /// Entry point of the application.
 void main() {
@@ -121,69 +121,133 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'HOME',
-            style: TextStyle(
-              fontSize: fontTitleSizeVar,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-              color: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(120.0),
+          child: AppBar(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'HOME',
+                  style: TextStyle(
+                    fontSize: fontTitleSizeVar,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Bienvenido a Ceibos',
+                  style: TextStyle(
+                    fontSize: fontTextSizeVar,
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.blue.shade700,
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+              ),
             ),
           ),
-          backgroundColor: Colors.blue.shade700,
-          elevation: 0,
         ),
         body: Container(
-          color: Colors.blue.shade50,
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          color: Color.fromARGB(255, 255, 255, 255),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // Ajusta el tamaño del espacio aquí
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity, // Ensure full width for scrolling
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 150,
+                        height: 180, // Ensure enough height
+                        child: MenuItem(
+                          icon: Icons.edit_document,
+                          label: 'Crear Inventario',
+                          onTap: () => _navigateToCustomTabBar(context),
+                          color: Colors.blue.shade100,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150,
+                        height: 180,
+                        child: MenuItem(
+                          icon: Icons.history,
+                          label: 'Historial',
+                          onTap: () => _navigateToDraftsScreen(context),
+                          color: Colors.blue.shade100,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150,
+                        height: 180,
+                        child: MenuItem(
+                          icon: Icons.settings,
+                          label: 'Ajustes',
+                          onTap: () => _navigateToSettingsScreen(context),
+                          color: Colors.blue.shade100,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150,
+                        height: 180,
+                        child: MenuItem(
+                          icon: Icons.exit_to_app,
+                          label: 'Salir',
+                          onTap: () => _exitApp(context),
+                          color: Colors.blue.shade100,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               Text(
-                'Bienvenido a Ceibos',
+                'Últimas acciones',
                 style: TextStyle(
-                  fontSize: fontTitleSizeVar,
+                  fontSize: fontTextSizeVar,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                   color: Colors.blue.shade900,
                 ),
               ),
-              SizedBox(height: spaceSize),
-              Expanded(
-                child: GridView.count(
-                  crossAxisSpacing: crossAxisSpacingVar,
-                  crossAxisCount: 2,
-                  padding: const EdgeInsets.all(16.0),
-                  children: <Widget>[
-                    MenuItem(
-                      icon: Icons.edit_document,
-                      label: 'Crear Inventario',
-                      onTap: () => _navigateToCustomTabBar(context),
-                      color: Colors.blue.shade100,
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: MenuItem(
+                      imagePath: 'src/images/newestInv.png',
+                      label: 'Último Inventario',
+                      onTap: () {},
+                      color: const Color.fromARGB(255, 249, 209, 144),
+                      isLarge: true,
                     ),
-                    MenuItem(
-                      icon: Icons.history,
-                      label: 'Historial',
-                      onTap: () => _navigateToDraftsScreen(context),
-                      color: Colors.blue.shade200,
+                  ),
+                  Expanded(
+                    child: MenuItem(
+                      imagePath: 'src/images/report.png',
+                      label: 'Último Reporte',
+                      onTap: () {},
+                      color: Color.fromARGB(255, 249, 144, 235),
+                      isLarge: true,
                     ),
-                    MenuItem(
-                      icon: Icons.settings,
-                      label: 'Ajustes',
-                      onTap: () => _navigateToSettingsScreen(context),
-                      color: Colors.blue.shade300,
-                    ),
-                    MenuItem(
-                      icon: Icons.exit_to_app,
-                      label: 'Salir',
-                      onTap: () => _exitApp(context),
-                      color: Colors.blue.shade400,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -195,7 +259,8 @@ class Home extends StatelessWidget {
 /// Widget for the menu items.
 class MenuItem extends StatelessWidget {
   /// Icon for the menu item.
-  final IconData icon;
+  final IconData? icon; // Ícono opcional
+  final String? imagePath;
 
   /// Label for the menu item.
   final String label;
@@ -206,39 +271,54 @@ class MenuItem extends StatelessWidget {
   /// Background color for the menu item.
   final Color color;
 
+  /// Flag to indicate if the menu item should be large.
+  final bool isLarge;
+
   /// Creates an instance of [MenuItem].
   const MenuItem({
-    required this.icon,
+    this.imagePath,
+    this.icon,
     required this.label,
     required this.onTap,
     required this.color,
+    this.isLarge = false,
     super.key,
-  });
+  }) : assert(icon != null || imagePath != null,
+            'Debe proporcionar un icono o una ruta de imagen.');
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: color,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(color: Colors.grey.shade300),
-      ),
-      margin: const EdgeInsets.all(8),
-      child: InkWell(
-        onTap: onTap,
-        splashColor: Colors.grey.shade200,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(icon, size: iconSize, color: Colors.black54),
-            const SizedBox(height: 10),
+            if (imagePath != null) // Mostrar imagen si está proporcionada
+              Image.asset(
+                imagePath!,
+                width: isLarge ? 200 : 50,
+                height: isLarge ? 250 : 50,
+              )
+            else if (icon != null) // Mostrar ícono si está proporcionado
+              Icon(
+                icon!,
+                size: isLarge ? 50 : 30,
+                color: Colors.black54,
+              ),
+            const SizedBox(height: 8.0),
             Text(
               label,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: fontTextSizeVar,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                fontSize: isLarge ? 18 : 14,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],

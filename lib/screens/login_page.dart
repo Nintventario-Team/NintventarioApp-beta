@@ -102,6 +102,7 @@ class LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+/*
       appBar: AppBar(
         title: const Text(
           'Login',
@@ -120,18 +121,52 @@ class LoginAppState extends State<LoginApp> {
             Navigator.pop(context); // Navigate back
           },
         ),
-      ),
+      ), */
       body: Container(
-        color: Colors.blue[50], // Light blue background
+        color: Colors.white, // Light blue background
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const CircleAvatar(
-                radius: 80,
-                backgroundColor: Colors.white,
-                backgroundImage: AssetImage('src/images/login.jpg'),
+              // Contenedor con efecto de difuminación
+              Container(
+                padding:
+                    const EdgeInsets.all(4.0), // Espacio alrededor de la imagen
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1), // Fondo azul claro
+                  borderRadius: BorderRadius.circular(
+                      150), // Radio circular para la imagen
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue
+                          .withOpacity(0.5), // Sombra azul con opacidad
+                      spreadRadius: 4,
+                      blurRadius: 15,
+                      offset: const Offset(0, 0), // Sin desplazamiento
+                    ),
+                  ],
+                ),
+                child: const CircleAvatar(
+                  radius: 150, // Tamaño de la imagen
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage('src/images/login.jpg'),
+                ),
+              ),
+              const SizedBox(height: 60),
+              Container(
+                padding: const EdgeInsets.only(
+                    left: 20.0), // Ajusta el valor según tus necesidades
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  'Iniciar Sesión',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(
+                        255, 21, 105, 200), // Dark blue color for the text
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Padding(
@@ -139,11 +174,12 @@ class LoginAppState extends State<LoginApp> {
                 child: TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Usuario',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
                     filled: true,
                     fillColor: Colors.white,
                   ),
@@ -156,28 +192,35 @@ class LoginAppState extends State<LoginApp> {
                   obscureText: true,
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Contraseña',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
                     filled: true,
                     fillColor: Colors.white,
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _login(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.blue[800], // Dark blue for button
-                  minimumSize: const Size(200, 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                  textStyle: const TextStyle(fontSize: 18), // White text color
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _login(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue[800], // Dark blue for button
+                    minimumSize: const Size(double.infinity,
+                        50), // Ensure button's height is 50 and width is dynamic
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                    textStyle: const TextStyle(fontSize: 18), // Text size
+                  ),
+                  child: const Text('Login'),
                 ),
-                child: const Text('Login'),
               ),
               const SizedBox(height: 10),
               TextButton(
@@ -185,7 +228,8 @@ class LoginAppState extends State<LoginApp> {
                   _bypassLogin(context);
                 },
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue[800], // Dark blue for button text
+                  foregroundColor:
+                      Colors.blue[800], // Dark blue for button text
                 ),
                 child: const Text('Bypass Login'),
               ),
