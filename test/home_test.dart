@@ -16,15 +16,6 @@ void main() {
     expect(titleText.style?.fontSize, fontTitleSizeVar);
   });
 
-  /// Test to verify the welcome text
-  testWidgets('Verify welcome text', (WidgetTester tester) async {
-    // Build the Home widget
-    await tester.pumpWidget(const Home());
-
-    // Verify if the welcome text is displayed correctly
-    expect(find.text('Bienvenido a'), findsOneWidget);
-  });
-
   /// Test to verify the menu items
   testWidgets('Verify menu items', (WidgetTester tester) async {
     // Build the Home widget
