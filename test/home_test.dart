@@ -22,7 +22,7 @@ void main() {
     await tester.pumpWidget(const Home());
 
     // Verify if the welcome text is displayed correctly
-    expect(find.text('Bienvenido a '), findsOneWidget);
+    expect(find.text('Bienvenido a'), findsOneWidget);
   });
 
   /// Test to verify the menu items

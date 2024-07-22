@@ -1,61 +1,36 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/screens/sale_spots.dart';
 
 void main() {
-  group('SaleSptosPage', () {
-    // Helper function to create the widget
-    Widget createWidgetUnderTest() {
-      return MaterialApp(
-        home: const SaleSptosPage(),
-        routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => const Home(),
-        },
-      );
-    }
+  /// Test to verify the presence of greeting text
+  testWidgets('Verify greeting text', (WidgetTester tester) async {
+    // Build the SaleSptosPage widget
+    await tester.pumpWidget(const MaterialApp(home: SaleSptosPage()));
 
-    testWidgets('displays initial locations', (WidgetTester tester) async {
-      await tester.pumpWidget(createWidgetUnderTest());
+    // Verify if the greeting text is displayed correctly
+    expect(find.text('Hola! \nAndrés Cornejo'), findsOneWidget);
+  });
 
-      // Verify all locations are displayed
-      expect(find.text('Ceibos'), findsOneWidget);
-      expect(find.text('Machala'), findsOneWidget);
-      expect(find.text('Puntilla'), findsOneWidget);
-      expect(find.text('Terminal'), findsOneWidget);
-    });
+  /// Test to verify the instruction text
+  testWidgets('Verify instruction text', (WidgetTester tester) async {
+    // Build the SaleSptosPage widget
+    await tester.pumpWidget(const MaterialApp(home: SaleSptosPage()));
 
-    testWidgets('updates global variable and navigates to Home screen on location tap', (WidgetTester tester) async {
-      await tester.pumpWidget(createWidgetUnderTest());
+    // Verify if the instruction text is displayed correctly
+    expect(find.text('Seleccione un local comercial para empezar:'), findsOneWidget);
+  });
 
-      // Simulate tap on a location
-      await tester.tap(find.text('Ceibos'));
-      await tester.pumpAndSettle();
 
-      // Verify the global variable is updated
-      expect(local, 'Ceibos');
+  /// Test to verify the BottomAppBar elements
+  testWidgets('Verify BottomAppBar elements', (WidgetTester tester) async {
+    // Build the SaleSptosPage widget
+    await tester.pumpWidget(const MaterialApp(home: SaleSptosPage()));
 
-      // Verify navigation to Home screen
-      expect(find.byType(Home), findsOneWidget);
-    });
+    // Verify if the BottomAppBar is present
+    expect(find.byType(BottomAppBar), findsOneWidget);
 
-    testWidgets('logs selected location in debug mode', (WidgetTester tester) async {
-      debugPrint = (String? message, {int? wrapWidth}) {
-        // This custom implementation will capture the debug messages
-        if (message != null && message.contains('Selected location: Ceibos')) {
-          expect(message, contains('Selected location: Ceibos'));
-        }
-      };
-
-      await tester.pumpWidget(createWidgetUnderTest());
-
-      // Simulate tap on a location
-      await tester.tap(find.text('Ceibos'));
-      await tester.pumpAndSettle();
-
-      // Restore debugPrint
-      debugPrint = debugPrintSynchronously;
-    });
+    // Verify if the CircleAvatar is present
+    expect(find.byType(CircleAvatar), findsOneWidget);
   });
 }

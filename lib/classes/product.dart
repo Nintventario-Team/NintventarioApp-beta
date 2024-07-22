@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 //import 'package:path_provider/path_provider.dart';
@@ -70,10 +71,13 @@ extension ProductJson on Product {
 Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
   try {
     // Convert list of Product objects to a list of JSON-compatible maps
-    final List<Map<String, dynamic>> jsonList = products.map((Product product) => product.toJson()).toList();
+    final List<Map<String, dynamic>> jsonList =
+        products.map((Product product) => product.toJson()).toList();
 
     // Wrap the JSON list with a key 'json_data'
-    final Map<String, dynamic> jsonDataMap = <String, dynamic>{'json_data': jsonList};
+    final Map<String, dynamic> jsonDataMap = <String, dynamic>{
+      'json_data': jsonList
+    };
 
     // Encode the map to a JSON string
     final String jsonString = jsonEncode(jsonDataMap);
@@ -94,7 +98,8 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
       }
     } else {
       if (kDebugMode) {
-        print('Failed to upload JSON data. Status code: ${response.statusCode}');
+        print(
+            'Failed to upload JSON data. Status code: ${response.statusCode}');
       }
     }
   } catch (e) {
@@ -103,83 +108,68 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
     }
   }
 
-    final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
+  final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
 
-    /// Do Post to upload Excel File
-    final http.Response responsePost = await http.post(
-      urlPost,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: '{}',
-    );
+  /// Do Post to upload Excel File
+  final http.Response responsePost = await http.post(
+    urlPost,
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: '{}',
+  );
 
-    if (kDebugMode) {
-      print(responsePost.statusCode);
-    }
+  if (kDebugMode) {
+    print(responsePost.statusCode);
+  }
 
- //downloadExcelFile();
+  downloadExcelFile();
 }
 
-/*
-/// Downloads the Excel file from the server and saves it to the Downloads directory.
 Future<void> downloadExcelFile() async {
   try {
-
-    final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
-
-    /// Do Post to upload Excel File
-    final http.Response responsePost = await http.post(
-      urlPost,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: '{}',
-    );
-
-    if (kDebugMode) {
-      print(responsePost.statusCode);
-    }
-    
-    /// URL of the API that returns the Excel file
+    // URL del API que devuelve el archivo Excel
     final Uri url = Uri.parse('http://192.168.1.3:8000/download-excel/');
 
-    /// Perform the HTTP GET request to obtain the Excel file
+    // Realizar la solicitud HTTP GET para obtener el archivo Excel
     final http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // Get the file content as bytes
+      // Obtener el contenido del archivo como bytes
       final List<int> bytes = response.bodyBytes;
+      print(bytes);
 
-      // Get the path to the Downloads directory
-      final Directory? directory = await getExternalStorageDirectory();
-      final String? downloadsPath = directory?.path;
+      // Pedir al usuario dónde guardar el archivo
+      final String? fileName = await FilePicker.platform.saveFile(
+        dialogTitle: 'Seleccione la ubicación para guardar el archivo:',
+        fileName: 'inventario.xlsx',
+        type: FileType.custom,
+        allowedExtensions: ['xlsx'],
+      );
 
-      if (downloadsPath != null) {
-        // Define the full path of the file to be saved
-        final String filePath = '$downloadsPath/uploaded_file.xlsx';
-
-        // Save the file at the Downloads directory
-        final File file = File(filePath);
-        await file.writeAsBytes(bytes);
-
+      if (fileName == null) {
+        // Operación cancelada por el usuario
         if (kDebugMode) {
-          print('Excel file downloaded and saved to $filePath');
+          print('La operación de guardar el archivo fue cancelada por el usuario.');
         }
-      } else {
-        if (kDebugMode) {
-          print('Could not access the Downloads directory.');
-        }
+        return;
+      }
+
+      // Guardar el archivo en la ubicación seleccionada
+      final File file = File(fileName);
+      await file.writeAsBytes(bytes);
+
+      if (kDebugMode) {
+        print('Archivo Excel guardado en: $fileName');
       }
     } else {
       if (kDebugMode) {
-        print('Error downloading the Excel file. Status code: ${response.statusCode}');
+        print('Error al descargar el archivo Excel. Código de estado: ${response.statusCode}');
       }
     }
   } catch (e) {
     if (kDebugMode) {
-      print('Error downloading or saving the Excel file: $e');
+      print('Error al descargar o guardar el archivo Excel: $e');
     }
   }
 }
-*/

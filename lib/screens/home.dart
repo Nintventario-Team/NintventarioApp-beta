@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nintventario/classes/draft.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/history.dart';
+import 'package:nintventario/screens/sale_spots.dart';
 import 'package:nintventario/screens/settings.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 import 'package:flutter/services.dart';
@@ -138,7 +139,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Bienvenido a Ceibos',
+                  'Bienvenido a $local',
                   style: TextStyle(
                     fontSize: fontTextSizeVar,
                     fontFamily: 'Poppins',
@@ -156,99 +157,100 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
-        body: Container(
-          color: Color.fromARGB(255, 255, 255, 255),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Ajusta el tamaño del espacio aquí
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity, // Ensure full width for scrolling
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 150,
-                        height: 180, // Ensure enough height
-                        child: MenuItem(
-                          icon: Icons.edit_document,
-                          label: 'Crear Inventario',
-                          onTap: () => _navigateToCustomTabBar(context),
-                          color: Colors.blue.shade100,
+        body: SingleChildScrollView(
+          child: Container(
+            color: const Color.fromARGB(255, 255, 255, 255),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 150,
+                          height: 180,
+                          child: MenuItem(
+                            icon: Icons.edit_document,
+                            label: 'Crear Inventario',
+                            onTap: () => _navigateToCustomTabBar(context),
+                            color: Colors.blue.shade100,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        height: 180,
-                        child: MenuItem(
-                          icon: Icons.history,
-                          label: 'Historial',
-                          onTap: () => _navigateToDraftsScreen(context),
-                          color: Colors.blue.shade100,
+                        SizedBox(
+                          width: 150,
+                          height: 180,
+                          child: MenuItem(
+                            icon: Icons.history,
+                            label: 'Historial',
+                            onTap: () => _navigateToDraftsScreen(context),
+                            color: Colors.blue.shade100,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        height: 180,
-                        child: MenuItem(
-                          icon: Icons.settings,
-                          label: 'Ajustes',
-                          onTap: () => _navigateToSettingsScreen(context),
-                          color: Colors.blue.shade100,
+                        SizedBox(
+                          width: 150,
+                          height: 180,
+                          child: MenuItem(
+                            icon: Icons.settings,
+                            label: 'Ajustes',
+                            onTap: () => _navigateToSettingsScreen(context),
+                            color: Colors.blue.shade100,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        height: 180,
-                        child: MenuItem(
-                          icon: Icons.exit_to_app,
-                          label: 'Salir',
-                          onTap: () => _exitApp(context),
-                          color: Colors.blue.shade100,
+                        SizedBox(
+                          width: 150,
+                          height: 180,
+                          child: MenuItem(
+                            icon: Icons.exit_to_app,
+                            label: 'Salir',
+                            onTap: () => _exitApp(context),
+                            color: Colors.blue.shade100,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Últimas acciones',
-                style: TextStyle(
-                  fontSize: fontTextSizeVar,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                  color: Colors.blue.shade900,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: MenuItem(
-                      imagePath: 'src/images/newestInv.png',
-                      label: 'Último Inventario',
-                      onTap: () {},
-                      color: const Color.fromARGB(255, 249, 209, 144),
-                      isLarge: true,
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: MenuItem(
-                      imagePath: 'src/images/report.png',
-                      label: 'Último Reporte',
-                      onTap: () {},
-                      color: Color.fromARGB(255, 249, 144, 235),
-                      isLarge: true,
-                    ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Últimas acciones',
+                  style: TextStyle(
+                    fontSize: fontTextSizeVar,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                    color: Colors.blue.shade900,
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: MenuItem(
+                        imagePath: 'src/images/newestInv.png',
+                        label: 'Último Inventario',
+                        onTap: () {},
+                        color: const Color.fromARGB(255, 249, 209, 144),
+                        isLarge: true,
+                      ),
+                    ),
+                    Expanded(
+                      child: MenuItem(
+                        imagePath: 'src/images/report.png',
+                        label: 'Último Reporte',
+                        onTap: () {},
+                        color: const Color.fromARGB(255, 249, 144, 235),
+                        isLarge: true,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
@@ -259,7 +261,9 @@ class Home extends StatelessWidget {
 /// Widget for the menu items.
 class MenuItem extends StatelessWidget {
   /// Icon for the menu item.
-  final IconData? icon; // Ícono opcional
+  final IconData? icon; // Optional icon
+  
+   /// ImagePath
   final String? imagePath;
 
   /// Label for the menu item.
@@ -300,13 +304,13 @@ class MenuItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (imagePath != null) // Mostrar imagen si está proporcionada
+            if (imagePath != null) // Show image if provided
               Image.asset(
                 imagePath!,
                 width: isLarge ? 200 : 50,
                 height: isLarge ? 250 : 50,
               )
-            else if (icon != null) // Mostrar ícono si está proporcionado
+            else if (icon != null) // Show icon if provided
               Icon(
                 icon!,
                 size: isLarge ? 50 : 30,
