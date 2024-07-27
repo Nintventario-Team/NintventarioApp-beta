@@ -1,4 +1,4 @@
-name: Build and Release APK and iOS
+name: Build and Release APK
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    name: Build APK and iOS
-    runs-on: macos-latest
+    name: Build APK
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
@@ -26,17 +26,9 @@ jobs:
       if: contains(github.event.head_commit.message, '/build_apk')
       run: flutter build apk
 
-    - name: Build iOS
-      if: contains(github.event.head_commit.message, '/build_ios')
-      run: flutter build ios --release
-
-    - name: List iOS Build Output
-      if: contains(github.event.head_commit.message, '/build_ios')
-      run: ls -la ./build/ios/iphoneos/
-
     - name: Create Release
       id: create_release
-      if: contains(github.event.head_commit.message, '/build_apk') || contains(github.event.head_commit.message, '/build_ios')
+      if: contains(github.event.head_commit.message, '/build_apk')
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +36,7 @@ jobs:
         tag_name: v1-${{ github.run_number }}
         release_name: Release v1-${{ github.run_number }}
         body: |
-          Automatic build triggered by commit message.
+          Automatic APK build triggered by commit message.
         draft: false
         prerelease: false
 
@@ -58,14 +50,3 @@ jobs:
         asset_path: ./build/app/outputs/flutter-apk/app-release.apk
         asset_name: Nintventario.apk
         asset_content_type: application/vnd.android.package-archive
-
-    - name: Upload iOS App
-      if: contains(github.event.head_commit.message, '/build_ios')
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/ios/iphoneos/Runner.app
-        asset_name: Nintventario.app
-        asset_content_type: application/octet-stream
