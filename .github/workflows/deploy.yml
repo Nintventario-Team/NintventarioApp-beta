@@ -28,11 +28,6 @@ jobs:
           cd authentication/
           python manage.py migrate
 
-      - name: Collect static files
-        run: |
-          cd authentication/
-          python manage.py collectstatic --noinput
-
       - name: Deploy to production
         run: |
           cd authentication/
