@@ -206,3 +206,4 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
     );
   }
 }
+
