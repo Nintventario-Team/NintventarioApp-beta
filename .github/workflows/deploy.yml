@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to production
         run: |
-          # Ejemplo de despliegue, reemplaza con tu comando de despliegue
+          python manage.py runserver 0.0.0.0:8000
           echo "Deploying to production..."
 
 # Agrega más trabajos según tus necesidades (ej. pruebas, despliegue a diferentes entornos, etc.)
