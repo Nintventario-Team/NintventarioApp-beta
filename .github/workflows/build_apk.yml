@@ -30,6 +30,10 @@ jobs:
       if: contains(github.event.head_commit.message, '/build_ios')
       run: flutter build ios --no-codesign
 
+    - name: List iOS Build Output
+      if: contains(github.event.head_commit.message, '/build_ios')
+      run: ls -la ./build/ios/ipa/
+
     - name: Create Release
       id: create_release
       if: contains(github.event.head_commit.message, '/build_apk') || contains(github.event.head_commit.message, '/build_ios')
