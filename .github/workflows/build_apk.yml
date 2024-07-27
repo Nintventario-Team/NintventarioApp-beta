@@ -65,3 +65,4 @@ jobs:
         asset_path: ./build/ios/ipa/MyApp.ipa
         asset_name: Nintventario.ipa
         asset_content_type: application/octet-stream
+        
