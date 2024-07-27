@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:path_provider/path_provider.dart';
 
 /// An enumeration representing the state of a product.
@@ -87,7 +88,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
     // Send the JSON string to the server
     final http.Response response = await http.post(
-      Uri.parse('http://192.168.1.3:8000/upload-json/'), // Adjust URL as needed
+      Uri.parse('http://192.168.1.9:8000/upload-json/'), // Adjust URL as needed
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonString,
     );
@@ -108,7 +109,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
     }
   }
 
-  final Uri urlPost = Uri.parse('http://192.168.1.3:8000/upload-excel/');
+  final Uri urlPost = Uri.parse('http://192.168.1.9:8000/upload-excel/');
 
   /// Do Post to upload Excel File
   final http.Response responsePost = await http.post(
@@ -126,50 +127,10 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
   downloadExcelFile();
 }
 
+
 Future<void> downloadExcelFile() async {
-  try {
-    // URL del API que devuelve el archivo Excel
-    final Uri url = Uri.parse('http://192.168.1.3:8000/download-excel/');
-
-    // Realizar la solicitud HTTP GET para obtener el archivo Excel
-    final http.Response response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // Obtener el contenido del archivo como bytes
-      final List<int> bytes = response.bodyBytes;
-      print(bytes);
-
-      // Pedir al usuario dónde guardar el archivo
-      final String? fileName = await FilePicker.platform.saveFile(
-        dialogTitle: 'Seleccione la ubicación para guardar el archivo:',
-        fileName: 'inventario.xlsx',
-        type: FileType.custom,
-        allowedExtensions: ['xlsx'],
-      );
-
-      if (fileName == null) {
-        // Operación cancelada por el usuario
-        if (kDebugMode) {
-          print('La operación de guardar el archivo fue cancelada por el usuario.');
-        }
-        return;
-      }
-
-      // Guardar el archivo en la ubicación seleccionada
-      final File file = File(fileName);
-      await file.writeAsBytes(bytes);
-
-      if (kDebugMode) {
-        print('Archivo Excel guardado en: $fileName');
-      }
-    } else {
-      if (kDebugMode) {
-        print('Error al descargar el archivo Excel. Código de estado: ${response.statusCode}');
-      }
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error al descargar o guardar el archivo Excel: $e');
-    }
+  final Uri url = Uri.parse('http://192.168.1.9:8000/download-excel/');
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
   }
 }
