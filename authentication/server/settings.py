@@ -23,12 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_nlpr7l)0g^8efxzu=-+o76e-46t6s@#b*_y_v11$+*-x4+bw2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '192.168.1.3',
+    '192.168.1.9',
+    'nintventario-e2c3dcdyg5edfhdh.eastus-01.azurewebsites.net'
 ]
 
 
@@ -63,8 +64,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://192.168.100.70:8000",
     "http://tu-flutter-app-url.com",
-    'http://192.168.1.3:8000',
+    'http://192.168.1.9:8000',
+    'https://nintventario-e2c3dcdyg5edfhdh.eastus-01.azurewebsites.net'
 ]
+
 CORS_ALLOW_METHODS = [
     "POST",
     "GET"
@@ -145,3 +148,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_CREDENTIALS = True
+
+#DEBUG = False

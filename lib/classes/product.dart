@@ -127,7 +127,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
   downloadExcelFile();
 }
 
-
+/// Download the excel of product update.
 Future<void> downloadExcelFile() async {
   final Uri url = Uri.parse('http://192.168.1.9:8000/download-excel/');
   if (!await launchUrl(url)) {
