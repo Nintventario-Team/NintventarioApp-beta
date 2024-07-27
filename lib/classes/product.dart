@@ -88,7 +88,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
     // Send the JSON string to the server
     final http.Response response = await http.post(
-      Uri.parse('http://192.168.1.9:8000/upload-json/'), // Adjust URL as needed
+      Uri.parse('https://servernintventario.onrender.com/upload-json/'), // Adjust URL as needed
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonString,
     );
@@ -109,7 +109,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
     }
   }
 
-  final Uri urlPost = Uri.parse('http://192.168.1.9:8000/upload-excel/');
+  final Uri urlPost = Uri.parse('https://servernintventario.onrender.com/upload-excel/');
 
   /// Do Post to upload Excel File
   final http.Response responsePost = await http.post(
@@ -129,7 +129,7 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
 /// Download the excel of product update.
 Future<void> downloadExcelFile() async {
-  final Uri url = Uri.parse('http://192.168.1.9:8000/download-excel/');
+  final Uri url = Uri.parse('https://servernintventario.onrender.com/download-excel/');
   if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');
   }

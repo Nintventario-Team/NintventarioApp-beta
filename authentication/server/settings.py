@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '192.168.1.9',
-    'nintventario-e2c3dcdyg5edfhdh.eastus-01.azurewebsites.net'
+    'https://servernintventario.onrender.com'
 ]
 
 
