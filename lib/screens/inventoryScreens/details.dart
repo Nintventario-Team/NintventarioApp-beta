@@ -52,7 +52,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
 
     globalDrafts.add(newDraft);
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Draft saved!')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('¡Borrador guardado!')));
 
     if (kDebugMode) {
       print(globalDrafts);
@@ -68,7 +68,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Inventory Details',
+          'Detalles del inventario',
           style: TextStyle(
             fontSize: _fontTitleSizeVar
           ),
@@ -118,7 +118,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             ),
             const SizedBox(height: 20),
             const Text(
-              'Inventory Manager:',
+              'Encargado del inventario:',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -141,7 +141,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             ),
             const SizedBox(height: 20),
             const Text(
-              'Inventory Duration:',
+              'Duración del inventario (días):',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -152,7 +152,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             TextField(
               controller: _durationController,
               decoration: InputDecoration(
-                hintText: 'Enter the number of hours',
+                hintText: 'Ingresa el número de días',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
@@ -168,7 +168,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             ),
             const SizedBox(height: 20),
             const Text(
-              'Creation Date:',
+              'Fecha de creación:',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -197,7 +197,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const Text('SAVE DRAFT'),
+                child: const Text('Guardar borrador'),
               ),
             ),
           ],

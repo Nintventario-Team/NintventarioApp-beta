@@ -22,7 +22,8 @@ class ReportScreen extends StatelessWidget {
       }
     }
 
-    final TextEditingController observationsController = TextEditingController();
+    final TextEditingController observationsController =
+        TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -41,9 +42,11 @@ class ReportScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 20),
-              _buildDetailField('Productos checkeados:', checkedProductsCount.toString()),
+              _buildDetailField(
+                  'Productos checkeados:', checkedProductsCount.toString()),
               const SizedBox(height: 20),
-              _buildDetailField('Productos no checkeados:', uncheckedProductsCount.toString()),
+              _buildDetailField('Productos no checkeados:',
+                  uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
               _buildDetailField('Fecha de creación:', globalDate),
               const SizedBox(height: 20),
@@ -74,10 +77,24 @@ class ReportScreen extends StatelessWidget {
                     saveAndUploadProductsAsJson(globalProducts);
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, // Text color for the button
                     backgroundColor: Colors.orange, // Button background color
+                    foregroundColor: Colors.white, // Text color for the button
+                    minimumSize:
+                        const Size(200, 50), // Minimum size of the button
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
+                    textStyle: const TextStyle(
+                        fontSize: 20, color: Colors.white), // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                    ),
                   ),
-                  child: const Text('Finalizar'),
+                  child: const Text(
+                    'Finalizar', // Text inside the button
+                    style: TextStyle(
+                        color:
+                            Colors.white), // Explicitly set text color to white
+                  ),
                 ),
               ),
             ],
@@ -114,7 +131,8 @@ class ReportScreen extends StatelessWidget {
               readOnly: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 6), // Further reduced height
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 6), // Further reduced height
                 hintStyle: TextStyle(color: Colors.grey), // Hint text color
               ),
               style: const TextStyle(

@@ -39,7 +39,7 @@ class ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Product Details',
+          'Detalles del producto',
           style: TextStyle(color: Colors.white), // Title text color
         ),
         backgroundColor: Colors.blue, // AppBar color
@@ -48,13 +48,13 @@ class ProductDetailsState extends State<ProductDetails> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: <Widget>[
-            _buildDetailField('Product ID:', widget.product.id),
-            _buildDetailField('Product Name:', widget.product.name),
+            _buildDetailField('ID del producto:', widget.product.id),
+            _buildDetailField('Nombre del producto:', widget.product.name),
             _buildDetailField(
-                'Previous Stock:', widget.product.stockAnterior.toString()),
+                'Stock anterior:', widget.product.stockAnterior.toString()),
             const SizedBox(height: 16),
             const Text(
-              'Current Stock:',
+              'Stock Actual:',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -67,7 +67,7 @@ class ProductDetailsState extends State<ProductDetails> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
-                hintText: 'Enter current stock',
+                hintText: 'Ingresa el stock actual',
                 hintStyle: TextStyle(color: Colors.grey), // Hint text color
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 12, vertical: 15),
@@ -78,16 +78,22 @@ class ProductDetailsState extends State<ProductDetails> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  final int newStockActual =
-                      int.tryParse(_stockActualController.text) ??
-                          widget.product.stockActual;
-                  setState(() {
-                    if (newStockActual != _initialStockActual) {
-                      widget.product.state = ProductState.checked;
-                    }
-                    widget.product.stockActual = newStockActual;
-                  });
-                  Navigator.pop(context, widget.product);
+                  final int? newStockActual =
+                      int.tryParse(_stockActualController.text);
+                  if (newStockActual != null && newStockActual >= 0) {
+                    setState(() {
+                      if (newStockActual != _initialStockActual || newStockActual == 0) {
+                        widget.product.state = ProductState.checked;
+                      }
+                      widget.product.stockActual = newStockActual;
+                    });
+                    Navigator.pop(context, widget.product);
+                  } else {
+                    // Show an error message if the input is invalid.
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Ingresa un stock válido (>= 0).')),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Button background color
@@ -101,7 +107,7 @@ class ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 child: const Text(
-                  'CONFIRM', // Text inside the button
+                  'Confirmar', // Text inside the button
                   style: TextStyle(
                       color:
                           Colors.white), // Explicitly set text color to white

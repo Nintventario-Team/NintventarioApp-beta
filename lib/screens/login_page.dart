@@ -31,7 +31,7 @@ class LoginAppState extends State<LoginApp> {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/login'), // Use your local machine IP
+        Uri.parse('https://servernintventario.onrender.com/login'), // Use your local machine IP
         body: json.encode(
             <String, String>{'username': username, 'password': password}),
         headers: <String, String>{
@@ -57,13 +57,13 @@ class LoginAppState extends State<LoginApp> {
         );
       } else {
         // Handle error
-        _showErrorDialog(context, 'Invalid username or password');
+        _showErrorDialog(context, 'Usuario o contraseña incorrectos');
       }
     } catch (e) {
       if (kDebugMode) {
         print('Error: $e');
       }
-      _showErrorDialog(context, 'An error occurred. Please try again.');
+      _showErrorDialog(context, 'Un error ha ocurrido, inténtelo de nuevo.');
     }
   }
 
