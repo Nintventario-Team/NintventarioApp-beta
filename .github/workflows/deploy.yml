@@ -23,8 +23,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run migrations
+        run: |
+          cd authentication/
+          python manage.py migrate
+
+      - name: Collect static files
+        run: |
+          cd authentication/
+          python manage.py collectstatic --noinput
+
       - name: Deploy to production
         run: |
+          cd authentication/
           python manage.py runserver 0.0.0.0:8000
           echo "Deploying to production..."
 
