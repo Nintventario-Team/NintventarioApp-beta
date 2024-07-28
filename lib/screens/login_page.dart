@@ -137,7 +137,7 @@ class LoginAppState extends State<LoginApp> {
                   color: Colors.blue.withOpacity(0.1), // Fondo azul claro
                   borderRadius: BorderRadius.circular(
                       150), // Radio circular para la imagen
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: Colors.blue
                           .withOpacity(0.5), // Sombra azul con opacidad

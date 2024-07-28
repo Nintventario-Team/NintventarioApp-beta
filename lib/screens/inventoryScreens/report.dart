@@ -48,7 +48,7 @@ class ReportScreen extends StatelessWidget {
               _buildDetailField('Productos no checkeados:',
                   uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
-              _buildDetailField('Fecha de creación:', globalDate),
+              _buildDetailField('Fecha de creación:', globalDate.substring(0, 10)),
               const SizedBox(height: 20),
               const Text(
                 'Observaciones:',

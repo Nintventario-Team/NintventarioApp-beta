@@ -19,12 +19,12 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   void _handleBarcodeDetection(String code) {
     try {
       final Product product = globalProducts.firstWhere(
-        (product) => product.id == code,
+        (Product product) => product.id == code,
       );
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProductDetails(product: product),
+          builder: (BuildContext context) => ProductDetails(product: product),
         ),
       );
     } catch (e) {
@@ -32,14 +32,14 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Producto no encontrado'),
+            title: const Text('Producto no encontrado'),
             content: Text('No se encontró ningún producto con el ID $code.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

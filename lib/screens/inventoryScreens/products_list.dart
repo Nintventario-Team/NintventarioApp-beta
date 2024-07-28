@@ -6,7 +6,7 @@ import 'package:nintventario/widgets/qr_scanner_widget.dart';
 
 /// A StatefulWidget that displays a list of products.
 class ProductsList extends StatefulWidget {
-  /// The current page index.
+  /// The index of the current page.
   final int currentPageIndex;
 
   /// Creates an instance of [ProductsList].
@@ -16,58 +16,68 @@ class ProductsList extends StatefulWidget {
   ProductsListState createState() => ProductsListState();
 }
 
-/// State class for [ProductsList].
+/// The state class for [ProductsList].
 class ProductsListState extends State<ProductsList>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  /// List of filtered products to be displayed.
+  /// List of products filtered based on the search term and selected filter.
   late List<Product> _filteredProducts;
+
+  /// Currently selected filter (All, Checked, Unchecked).
+  String? _selectedFilter;
+
+  /// Current search term entered in the search bar.
+  String _searchTerm = '';
 
   @override
   void initState() {
     super.initState();
     _filteredProducts = List<Product>.from(globalProducts);
-    _sortProducts();
+    _filterAndSortProducts();
   }
 
-  /// Filters the products based on the search term.
-  void _onSearchChanged(String searchTerm) {
+  /// Filters and sorts the products based on the selected filter and search term.
+  void _filterAndSortProducts() {
     setState(() {
       _filteredProducts = globalProducts.where((Product product) {
-        final String term = searchTerm.toLowerCase();
-        final String productName = product.name.toLowerCase();
-        final String productId = product.id.toLowerCase();
-        final String productState =
-            product.state.toString().split('.').last.toLowerCase();
+        final bool matchesSearchTerm = _searchTerm.isEmpty ||
+            product.name.toLowerCase().contains(_searchTerm) ||
+            product.id.toLowerCase().contains(_searchTerm);
 
-        return productName.contains(term) ||
-            productId.contains(term) ||
-            (term == 'checked' &&
-                productState == 'checked') || // Filter by checked state
-            (term == 'unchecked' &&
-                productState == 'unchecked'); // Filter by unchecked state
+        if (_selectedFilter == null || _selectedFilter == 'Todos') {
+          return matchesSearchTerm;
+        } else if (_selectedFilter == 'checkeados') {
+          return matchesSearchTerm && product.state == ProductState.checked;
+        } else if (_selectedFilter == 'no-checkeados') {
+          return matchesSearchTerm && product.state == ProductState.unchecked;
+        }
+        return false;
       }).toList();
-      _sortProducts();
+
+      _filteredProducts.sort((Product a, Product b) {
+        if (a.state == ProductState.unchecked &&
+            b.state != ProductState.unchecked) {
+          return -1;
+        } else if (a.state != ProductState.unchecked &&
+            b.state == ProductState.unchecked) {
+          return 1;
+        }
+        return 0;
+      });
     });
   }
 
-  /// Sorts the products, giving priority to unchecked products.
-  void _sortProducts() {
-    _filteredProducts.sort((Product a, Product b) {
-      if (a.state == ProductState.unchecked &&
-          b.state != ProductState.unchecked) {
-        return -1;
-      } else if (a.state != ProductState.unchecked &&
-          b.state == ProductState.unchecked) {
-        return 1;
-      }
-      return 0;
+  /// Handles changes in the search bar input.
+  void _onSearchChanged(String searchTerm) {
+    setState(() {
+      _searchTerm = searchTerm.toLowerCase();
+      _filterAndSortProducts();
     });
   }
 
-  /// Returns the color associated with the product state.
+  /// Returns the color associated with the product's state.
   Color _getStateColor(ProductState state) {
     switch (state) {
       case ProductState.checked:
@@ -77,12 +87,12 @@ class ProductsListState extends State<ProductsList>
     }
   }
 
+  /// Navigates to the QR scanner widget.
   void _showScannerWidget() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            const QRScannerWidget(), // Navega al widget del escáner
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const QRScannerWidget(),
       ),
     );
   }
@@ -91,8 +101,48 @@ class ProductsListState extends State<ProductsList>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Lista de productos',
+          style: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0), // Title text color (black)
+          ),
+        ), // AppBar background color (light blue)
+      ),
       body: Column(
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Filtro:',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: _selectedFilter,
+                  hint: const Text('Select Filter'),
+                  items: <String>['Todos', 'checkeados', 'no-checkeados']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedFilter = newValue;
+                      _searchTerm =
+                          ''; // Clear the search term when the filter changes
+                      _filterAndSortProducts();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
           SearchBar(onChanged: _onSearchChanged),
           Expanded(
             child: ListView.separated(
@@ -120,8 +170,8 @@ class ProductsListState extends State<ProductsList>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('ID: $productId'),
-                      Text('Anterior Stock: $stockAnterior'),
-                      Text('Actual Stock: $stockActual'),
+                      Text('Stock anterior: $stockAnterior'),
+                      Text('Stock actual: $stockActual'),
                       Text('Estado: $productState'),
                     ],
                   ),
@@ -138,7 +188,7 @@ class ProductsListState extends State<ProductsList>
                       setState(() {
                         globalProducts[globalProducts.indexOf(product)] =
                             updatedProduct;
-                        _onSearchChanged('');
+                        _filterAndSortProducts();
                       });
                     }
                   },
@@ -156,9 +206,9 @@ class ProductsListState extends State<ProductsList>
   }
 }
 
-/// A stateless widget that represents a search bar.
+/// A stateless widget representing a search bar.
 class SearchBar extends StatelessWidget {
-  /// Callback function to handle search term changes.
+  /// Callback function to handle changes in the search term.
   final ValueChanged<String> onChanged;
 
   /// Creates an instance of [SearchBar].
@@ -171,7 +221,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         decoration: const InputDecoration(
-          labelText: 'Search by ID, name, or state',
+          labelText: 'Search by ID or name',
           prefixIcon: Icon(Icons.search),
         ),
       ),

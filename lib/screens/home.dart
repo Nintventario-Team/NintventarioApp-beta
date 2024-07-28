@@ -17,7 +17,7 @@ List<Draft> globalDrafts = <Draft>[];
 List<Product> globalProducts = <Product>[];
 
 /// Global inventory identifier.
-String inventoryId = '99999';
+String inventoryId = '';
 
 /// Global time.
 String globalTime = '';
@@ -26,7 +26,7 @@ String globalTime = '';
 String globalDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
 /// Global employee name.
-String globalEmployeeName = 'Kevin Daniel Mawyin Pilozo';
+String globalEmployeeName = '';
 
 /// Global space size.
 double spaceSize = 20;
@@ -43,10 +43,8 @@ double fontTextSizeVar = 16;
 /// Global icon size.
 double iconSize = 40;
 
-/// Entry point of the application.
-void main() {
-  runApp(const Home());
-}
+/// Current draft
+Draft currentDraft = Draft();
 
 /// Class to manage global state.
 class GlobalState extends ChangeNotifier {
@@ -69,6 +67,8 @@ class Home extends StatelessWidget {
 
   /// Method to navigate to the custom tab bar screen.
   void _navigateToCustomTabBar(BuildContext context) {
+    currentDraft = Draft(); /// new draft default
+    currentDraft.updateGlobalVariables();
     if (kDebugMode) {
       print('Create Inventory pressed');
     }

@@ -141,7 +141,7 @@ class SaleSptosPage extends StatelessWidget {
         clipBehavior: Clip.none,
         children: <Widget>[
           BottomAppBar(
-            color: Color.fromARGB(
+            color: const Color.fromARGB(
                 204, 21, 101, 192), // Dark blue color for BottomAppBar
             shape:
                 const CircularNotchedRectangle(), // Shape to make room for the circle

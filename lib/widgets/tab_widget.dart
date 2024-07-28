@@ -3,9 +3,6 @@ import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/screens/inventoryScreens/details.dart';
 import 'package:nintventario/screens/inventoryScreens/report.dart';
 import 'package:nintventario/screens/inventoryScreens/products_list.dart';
-import 'package:nintventario/classes/product.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 
 const double _fontTitleSize = 40;
 
@@ -40,15 +37,12 @@ class InventoryTabBar extends StatefulWidget {
 
 /// The state for the `InventoryTabBar` widget.
 class InventoryTabBarState extends State<InventoryTabBar> {
-  late Future<List<Product>> _futureProducts;
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _futureProducts = loadProducts();
-
     _pageController.addListener(() {
       setState(() {
         _currentPageIndex = _pageController.page!.round();
@@ -56,126 +50,10 @@ class InventoryTabBarState extends State<InventoryTabBar> {
     });
   }
 
-  /// Loads the list of products from a JSON file.
-  Future<List<Product>> loadProducts() async {
-    try {
-      final String response = await rootBundle.loadString('src/files/inventario.json');
-      final List<dynamic> data = jsonDecode(response);
-      globalProducts = data.map((dynamic product) {
-        return Product(
-          id: product['codigo'],
-          name: product['nombre'],
-          stockAnterior: product['stock'],
-          state: ProductState.unchecked, // Default state is unchecked
-        );
-      }).toList();
-      return globalProducts;
-    } catch (e) {
-      throw Exception('Error loading JSON: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Product>>(
-      future: _futureProducts,
-      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildLoading();
-        } else if (snapshot.hasError) {
-          return _buildError(snapshot.error.toString());
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return _buildNoProductsFound();
-        } else {
-          final List<Product> products = snapshot.data!;
-          return _buildTabBar(products);
-        }
-      },
-    );
-  }
-
-  /// Builds the loading screen.
-  Widget _buildLoading() {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const Home(),
-              ),
-            );
-          },
-        ),
-        backgroundColor: Colors.blue.shade700,
-        elevation: 0,
-      ),
-      body: const Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  /// Builds the error screen.
-  Widget _buildError(String errorMessage) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const Home(),
-              ),
-            );
-          },
-        ),
-        backgroundColor: Colors.blue.shade700,
-        elevation: 0,
-      ),
-      body: Center(child: Text('Error: $errorMessage', style: const TextStyle(color: Colors.red))),
-    );
-  }
-
-  /// Builds the screen when no products are found.
-  Widget _buildNoProductsFound() {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Nintventario',
-          style: TextStyle(fontSize: _fontTitleSize, color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const Home(),
-              ),
-            );
-          },
-        ),
-        backgroundColor: Colors.blue.shade700,
-        elevation: 0,
-      ),
-      body: const Center(child: Text('No products found', style: TextStyle(color: Colors.blue))),
-    );
-  }
-
-  /// Builds the tab bar with the list of products.
-  Widget _buildTabBar(List<Product> products) {
     return DefaultTabController(
-      length: 3,
+      length: 3, // Number of tabs
       initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
