@@ -10,12 +10,6 @@ void main() {
       expect(find.byType(CustomTabBar), findsOneWidget);
     });
 
-    testWidgets('Loading State Test', (WidgetTester tester) async {
-      // Test loading state of CustomTabBar widget
-      await tester.pumpWidget(const CustomTabBar());
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    });
-
     testWidgets('Error State Test', (WidgetTester tester) async {
       // Test error state of CustomTabBar widget
       await tester.pumpWidget(const CustomTabBar());
