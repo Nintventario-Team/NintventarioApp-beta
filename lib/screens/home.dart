@@ -46,6 +46,9 @@ double iconSize = 40;
 /// Current draft
 Draft currentDraft = Draft();
 
+///Observations
+String globalObservations = 'Escriba aquí sus observaciones';
+
 /// Class to manage global state.
 class GlobalState extends ChangeNotifier {
   String _globalDate = DateTime.now().toString();
@@ -88,7 +91,7 @@ class Home extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => DraftsScreen(drafts: globalDrafts),
+        builder: (BuildContext context) => const DraftsScreen(),
       ),
     );
   }

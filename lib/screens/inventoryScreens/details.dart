@@ -36,26 +36,24 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
   /// Controller for the duration input field.
   final TextEditingController _durationController = TextEditingController(text: '0');
 
-  /// List of drafts.
-  final List<Map<String, String>> drafts = <Map<String, String>>[];
-
   /// Saves a draft.
-  void _saveDraft() {
+  void _saveDraft() async {
     final Draft newDraft = Draft(
       id: inventoryId,
       employee: _employeeController.text,
       duration: _durationController.text,
       creationDate: globalDate,
       state: DraftState.notCompleted, // or DraftState.completed depending on the condition
-      products: List<Product>.from(globalProducts), // Copy of globalProducts to avoid direct modification
+      products: List<Product>.from(globalProducts),
+      observations: globalObservations // Copy of globalProducts to avoid direct modification
     );
 
-    globalDrafts.add(newDraft);
+    await newDraft.saveDraft();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('¡Borrador guardado!')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('¡Borrador guardado exitosamente!')));
 
     if (kDebugMode) {
-      print(globalDrafts);
+      print('Draft saved: ${newDraft.toJson()}');
     }
   }
 
@@ -68,7 +66,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Detalles del inventario',
+          'Detalles del Inventario',
           style: TextStyle(
             fontSize: _fontTitleSizeVar
           ),
@@ -82,7 +80,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute<Widget>(builder: (BuildContext context) => DraftsScreen(drafts: globalDrafts)),
+                MaterialPageRoute<Widget>(builder: (BuildContext context) => const DraftsScreen()),
               );
             },
           ),
@@ -93,7 +91,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
         child: ListView(
           children: <Widget>[
             const Text(
-              'Inventory ID:',
+              'Inventario ID:',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -118,7 +116,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             ),
             const SizedBox(height: 20),
             const Text(
-              'Encargado del inventario:',
+              'Inventory Manager:',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -129,7 +127,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             TextField(
               controller: _employeeController,
               decoration: InputDecoration(
-                hintText: 'Enter your name',
+                hintText: 'Ingresa tu nombre',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
@@ -206,4 +204,3 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
     );
   }
 }
-

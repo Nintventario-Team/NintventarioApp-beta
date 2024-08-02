@@ -221,7 +221,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         decoration: const InputDecoration(
-          labelText: 'Search by ID or name',
+          labelText: 'Busca por nombre o ID',
           prefixIcon: Icon(Icons.search),
         ),
       ),

@@ -23,17 +23,17 @@ class ReportScreen extends StatelessWidget {
     }
 
     final TextEditingController observationsController =
-        TextEditingController();
+        TextEditingController(text: globalObservations);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'Reporte del Inventario',
+          'Reporte del inventario',
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0), // Title text color (black)
           ),
-        ), // AppBar background color (light blue)
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -45,7 +45,7 @@ class ReportScreen extends StatelessWidget {
               _buildDetailField(
                   'Productos checkeados:', checkedProductsCount.toString()),
               const SizedBox(height: 20),
-              _buildDetailField('Productos no checkeados:',
+              _buildDetailField('Productos no-checkeados:',
                   uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
               _buildDetailField('Fecha de creación:', globalDate.substring(0, 10)),
@@ -62,15 +62,24 @@ class ReportScreen extends StatelessWidget {
                 controller: observationsController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Escribe tus observaciones aquí...',
+                  hintText: 'Escriba sus observaciones aquí...',
                 ),
                 maxLines: 3,
+                onChanged: (String newValue) {
+                  // Update the global observations variable with the text field value
+                  globalObservations = newValue;
+
+                  // Print to console for debugging
+                  if (kDebugMode) {
+                    print('Observations: $globalObservations');
+                  }
+                },
               ),
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    // Logic to finalize
+                    // Print to console for debugging
                     if (kDebugMode) {
                       print(globalProducts[1].name);
                     }
@@ -78,22 +87,17 @@ class ReportScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange, // Button background color
-                    foregroundColor: Colors.white, // Text color for the button
-                    minimumSize:
-                        const Size(200, 50), // Minimum size of the button
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    textStyle: const TextStyle(
-                        fontSize: 20, color: Colors.white), // Text color
+                    foregroundColor: Colors.white, // Button text color
+                    minimumSize: const Size(200, 50), // Minimum button size
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 20, color: Colors.white), // Text color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8), // Rounded corners
                     ),
                   ),
                   child: const Text(
-                    'Finalizar', // Text inside the button
-                    style: TextStyle(
-                        color:
-                            Colors.white), // Explicitly set text color to white
+                    'Generar Excel', // Text inside the button
+                    style: TextStyle(color: Colors.white), // Explicitly set text color to white
                   ),
                 ),
               ),
@@ -131,8 +135,7 @@ class ReportScreen extends StatelessWidget {
               readOnly: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 6), // Further reduced height
+                contentPadding: EdgeInsets.symmetric(vertical: 6), // Further reduced height
                 hintStyle: TextStyle(color: Colors.grey), // Hint text color
               ),
               style: const TextStyle(

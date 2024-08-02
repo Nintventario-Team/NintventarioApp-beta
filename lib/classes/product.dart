@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:path_provider/path_provider.dart';
 
 /// An enumeration representing the state of a product.
 ///
@@ -49,19 +48,36 @@ class Product {
     required this.name,
     required this.stockAnterior,
     this.stockActual = 0,
-    required this.state,
+    this.state = ProductState.unchecked, // Ensure default is unchecked
   });
+
+  /// Creates a Product object from a JSON map.
+  ///
+  /// [json] is a map with product data.
+  /// Returns a [Product] instance.
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['codigo'] as String,
+      name: json['nombre'] as String,
+      stockAnterior: json['stock_inicial'] as int,
+      stockActual: json['stock_final'] as int,
+      state: json['state'] == 'unchecked' ? ProductState.unchecked : ProductState.checked,
+    );
+  }
 }
 
 /// Extension method for the Product class to convert it to a JSON-compatible map.
 extension ProductJson on Product {
-  /// Map to save de product list in a JSON.
+  /// Converts the product to a JSON-compatible map.
+  ///
+  /// Returns a map with product properties.
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'codigo': id,
       'nombre': name,
       'stock_inicial': stockAnterior,
       'stock_final': stockActual,
+      'state': state == ProductState.unchecked ? 'unchecked' : 'checked',
     };
   }
 }
