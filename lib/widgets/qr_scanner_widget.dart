@@ -4,16 +4,22 @@ import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/inventoryScreens/product_details.dart';
 import 'package:nintventario/screens/home.dart';
 
+/// Main widget for the QR scanner screen.
 final MobileScannerController controller = MobileScannerController();
 
+/// Widget for the QR scanner screen.
 class QRScannerWidget extends StatefulWidget {
+  /// Constant constructor for the QRScannerWidget class.
   const QRScannerWidget({super.key});
 
   @override
-  _QRScannerWidgetState createState() => _QRScannerWidgetState();
+
+  QRScannerWidgetState createState() => QRScannerWidgetState();
 }
 
-class _QRScannerWidgetState extends State<QRScannerWidget> {
+/// State of the QR scanner screen.
+class QRScannerWidgetState extends State<QRScannerWidget> {
+  /// Function to handle barcode detection.
   final MobileScannerController cameraController = MobileScannerController();
 
   void _handleBarcodeDetection(String code) {
@@ -23,7 +29,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => ProductDetails(product: product),
         ),
       );

@@ -47,8 +47,8 @@ class LoginAppState extends State<LoginApp> {
       }
 
       if (response.statusCode == 200) {
-        final dynamic data = json.decode(response.body);
-        final String token = data['Token'];
+        ///final dynamic data = json.decode(response.body);
+        //final String token = data['Token'];
 
         // Store the token or handle the response as needed
         Navigator.push(

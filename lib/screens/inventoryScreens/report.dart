@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 
+/// Main widget for the report screen.
 class ReportScreen extends StatelessWidget {
+  /// Constant constructor for the ReportScreen class.
   const ReportScreen({super.key});
 
   @override
