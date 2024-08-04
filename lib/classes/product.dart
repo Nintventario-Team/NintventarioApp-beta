@@ -155,6 +155,7 @@ Future<void> downloadExcelFile() async {
   }
 }
 
+/// Generate the pdf file with data.
 Future<void> saveAndUploadProductsAsPdf(List<Product> products) async {
   try {
     // Convert list of Product objects to a list of JSON-compatible maps
@@ -177,9 +178,13 @@ Future<void> saveAndUploadProductsAsPdf(List<Product> products) async {
     );
 
     if (response.statusCode == 200) {
-      print('JSON data uploaded successfully!');
+      if (kDebugMode) {
+        print('JSON data uploaded successfully!');
+      }
     } else {
-      print('Failed to upload JSON data. Status code: ${response.statusCode}');
+      if (kDebugMode) {
+        print('Failed to upload JSON data. Status code: ${response.statusCode}');
+      }
     }
 
     // Request PDF generation from the server
@@ -194,26 +199,32 @@ Future<void> saveAndUploadProductsAsPdf(List<Product> products) async {
     );
 
     if (responsePost.statusCode == 200) {
-      print('PDF request sent successfully!');
+      if (kDebugMode) {
+        print('PDF request sent successfully!');
+      }
     } else {
-      print(
+      if (kDebugMode) {
+        print(
           'Failed to request PDF generation. Status code: ${responsePost.statusCode}');
+      }
     }
 
-    // Download the generated PDF
-    print('No se llega hasta aqui?');
+    if (kDebugMode) {
+      print('No se llega hasta aqui?');
+    }
     await downloadPdfFile();
   } catch (e) {
-    print('Error saving or uploading data: $e');
+    if (kDebugMode) {
+      print('Error saving or uploading data: $e');
+    }
   }
 }
 
+/// Download the generated PDF
 Future<void> downloadPdfFile() async {
   final Uri url =
-      Uri.parse('https://servernintventario.onrender.com/download-pdf/');
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
+      Uri.parse('https://servernintventario.onrender.com/download-excel/');
+  if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');
   }
 }

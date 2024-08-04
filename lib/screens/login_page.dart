@@ -10,12 +10,14 @@ final TextEditingController _passwordController = TextEditingController();
 
 /// Main widget for the login screen.
 class LoginApp extends StatefulWidget {
+  /// Constant constructor for the LoginApp class.
   const LoginApp({super.key});
 
   @override
   LoginAppState createState() => LoginAppState();
 }
 
+/// State of the login screen.
 class LoginAppState extends State<LoginApp> {
   @override
   void dispose() {
