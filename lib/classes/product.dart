@@ -61,7 +61,9 @@ class Product {
       name: json['nombre'] as String,
       stockAnterior: json['stock_inicial'] as int,
       stockActual: json['stock_final'] as int,
-      state: json['state'] == 'unchecked' ? ProductState.unchecked : ProductState.checked,
+      state: json['state'] == 'unchecked'
+          ? ProductState.unchecked
+          : ProductState.checked,
     );
   }
 }
@@ -102,7 +104,8 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
     // Send the JSON string to the server
     final http.Response response = await http.post(
-      Uri.parse('https://servernintventario.onrender.com/upload-json/'), // Adjust URL as needed
+      Uri.parse(
+          'https://servernintventario.onrender.com/upload-json/'), // Adjust URL as needed
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonString,
     );
@@ -123,12 +126,14 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
     }
   }
 
-  final Uri urlPost = Uri.parse('https://servernintventario.onrender.com/upload-excel/');
+  final Uri urlPost =
+      Uri.parse('https://servernintventario.onrender.com/upload-excel/');
 
   /// Do Post to upload Excel File
   final http.Response responsePost = await http.post(
     urlPost,
     headers: <String, String>{
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
     },
     body: '{}',
@@ -143,8 +148,72 @@ Future<void> saveAndUploadProductsAsJson(List<Product> products) async {
 
 /// Download the excel of product update.
 Future<void> downloadExcelFile() async {
-  final Uri url = Uri.parse('https://servernintventario.onrender.com/download-excel/');
+  final Uri url =
+      Uri.parse('https://servernintventario.onrender.com/download-excel/');
   if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
+  }
+}
+
+Future<void> saveAndUploadProductsAsPdf(List<Product> products) async {
+  try {
+    // Convert list of Product objects to a list of JSON-compatible maps
+    final List<Map<String, dynamic>> jsonList =
+        products.map((Product product) => product.toJson()).toList();
+
+    // Wrap the JSON list with a key 'json_data'
+    final Map<String, dynamic> jsonDataMap = <String, dynamic>{
+      'json_data': jsonList
+    };
+
+    // Encode the map to a JSON string
+    final String jsonString = jsonEncode(jsonDataMap);
+
+    // Send the JSON string to the server
+    final http.Response response = await http.post(
+      Uri.parse('https://servernintventario.onrender.com/upload-json/'),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonString,
+    );
+
+    if (response.statusCode == 200) {
+      print('JSON data uploaded successfully!');
+    } else {
+      print('Failed to upload JSON data. Status code: ${response.statusCode}');
+    }
+
+    // Request PDF generation from the server
+    final Uri urlPost =
+        Uri.parse('https://servernintventario.onrender.com/upload-pdf/');
+    final http.Response responsePost = await http.post(
+      urlPost,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: '{}',
+    );
+
+    if (responsePost.statusCode == 200) {
+      print('PDF request sent successfully!');
+    } else {
+      print(
+          'Failed to request PDF generation. Status code: ${responsePost.statusCode}');
+    }
+
+    // Download the generated PDF
+    print('No se llega hasta aqui?');
+    await downloadPdfFile();
+  } catch (e) {
+    print('Error saving or uploading data: $e');
+  }
+}
+
+Future<void> downloadPdfFile() async {
+  final Uri url =
+      Uri.parse('https://servernintventario.onrender.com/download-pdf/');
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
+  } else {
     throw Exception('Could not launch $url');
   }
 }

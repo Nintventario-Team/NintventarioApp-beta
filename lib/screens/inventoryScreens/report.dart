@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 
-/// A stateless widget that represents the report screen.
 class ReportScreen extends StatelessWidget {
-  /// Creates an instance of [ReportScreen].
   const ReportScreen({super.key});
 
   @override
@@ -13,7 +11,6 @@ class ReportScreen extends StatelessWidget {
     int checkedProductsCount = 0;
     int uncheckedProductsCount = 0;
 
-    // Count checked and unchecked products
     for (Product product in globalProducts) {
       if (product.state == ProductState.checked) {
         checkedProductsCount++;
@@ -31,7 +28,7 @@ class ReportScreen extends StatelessWidget {
         title: const Text(
           'Reporte del inventario',
           style: TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0), // Title text color (black)
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
       ),
@@ -48,7 +45,8 @@ class ReportScreen extends StatelessWidget {
               _buildDetailField('Productos no-checkeados:',
                   uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
-              _buildDetailField('Fecha de creación:', globalDate.substring(0, 10)),
+              _buildDetailField(
+                  'Fecha de creación:', globalDate.substring(0, 10)),
               const SizedBox(height: 20),
               const Text(
                 'Observaciones:',
@@ -66,40 +64,66 @@ class ReportScreen extends StatelessWidget {
                 ),
                 maxLines: 3,
                 onChanged: (String newValue) {
-                  // Update the global observations variable with the text field value
                   globalObservations = newValue;
-
-                  // Print to console for debugging
                   if (kDebugMode) {
                     print('Observations: $globalObservations');
                   }
                 },
               ),
               const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    // Print to console for debugging
-                    if (kDebugMode) {
-                      print(globalProducts[1].name);
-                    }
-                    saveAndUploadProductsAsJson(globalProducts);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange, // Button background color
-                    foregroundColor: Colors.white, // Button text color
-                    minimumSize: const Size(200, 50), // Minimum button size
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    textStyle: const TextStyle(fontSize: 20, color: Colors.white), // Text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (kDebugMode) {
+                        print(globalProducts[1].name);
+                      }
+                      saveAndUploadProductsAsJson(globalProducts);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(150, 50),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      textStyle:
+                          const TextStyle(fontSize: 16, color: Colors.white),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Generar Excel',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  child: const Text(
-                    'Generar Excel', // Text inside the button
-                    style: TextStyle(color: Colors.white), // Explicitly set text color to white
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (kDebugMode) {
+                        print(globalProducts[1].name);
+                      }
+                      saveAndUploadProductsAsPdf(globalProducts);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(150, 50),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      textStyle:
+                          const TextStyle(fontSize: 16, color: Colors.white),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Generar PDF',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -108,7 +132,6 @@ class ReportScreen extends StatelessWidget {
     );
   }
 
-  /// Builds a [TextField] to display details with consistent styling.
   Widget _buildDetailField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +141,7 @@ class ReportScreen extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
-            fontWeight: FontWeight.bold, // Label style
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
@@ -126,7 +149,7 @@ class ReportScreen extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.blueGrey.shade300),
             borderRadius: BorderRadius.circular(8),
-            color: Colors.blueGrey.shade50, // Background color for containers
+            color: Colors.blueGrey.shade50,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -135,12 +158,12 @@ class ReportScreen extends StatelessWidget {
               readOnly: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 6), // Further reduced height
-                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                contentPadding: EdgeInsets.symmetric(vertical: 6),
+                hintStyle: TextStyle(color: Colors.grey),
               ),
               style: const TextStyle(
-                color: Colors.grey, // Text color
-                fontSize: 14, // Slightly smaller font size
+                color: Colors.grey,
+                fontSize: 14,
               ),
             ),
           ),
