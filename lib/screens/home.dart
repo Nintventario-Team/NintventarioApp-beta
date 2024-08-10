@@ -6,6 +6,8 @@ import 'package:nintventario/classes/draft.dart';
 import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/history.dart';
 import 'package:nintventario/screens/sale_spots.dart';
+import 'package:nintventario/screens/last_report.dart';
+import 'package:nintventario/screens/last_inventory.dart';
 import 'package:nintventario/screens/settings.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 import 'package:flutter/services.dart';
@@ -123,6 +125,25 @@ class Home extends StatelessWidget {
     }
   }
 
+  void _navigateToLastReport(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const LastReport(),
+      ),
+    );
+  }
+
+  // Método para navegar a la página del último inventario
+  void _navigateToLastInventory(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const LastInventory(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get the screen size to calculate button sizes and other elements.
@@ -215,16 +236,16 @@ class Home extends StatelessWidget {
                           buttonSize: buttonSize,
                         ),
                         MenuItem(
-                          imagePath: 'src/images/newestInv.png',
+                          icon: Icons.last_page_rounded,
                           label: 'Último Inventario',
-                          onTap: () {},
+                          onTap: () => _navigateToLastReport(context),
                           color: Colors.white,
                           buttonSize: buttonSize,
                         ),
                         MenuItem(
-                          imagePath: 'src/images/report.png',
+                          icon: Icons.last_page_rounded,
                           label: 'Último Reporte',
-                          onTap: () {},
+                          onTap: () => _navigateToLastInventory(context),
                           color: Colors.white,
                           buttonSize: buttonSize,
                         ),
@@ -301,8 +322,8 @@ class MenuItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: buttonSize,
-        height: buttonSize,
+        width: 1,
+        height: 1,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(15), // Rounded corners

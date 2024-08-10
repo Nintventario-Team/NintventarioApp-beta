@@ -27,11 +27,18 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('About'),
-        backgroundColor: Colors.blueAccent, // Darker blue for AppBar
-        elevation: 0,
+        backgroundColor: Colors.teal[700], // Darker teal for AppBar
+        elevation: 4,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
-        color: Colors.blue[50], // Light blue background color
+        color: Colors.white, // White background color
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -49,9 +56,9 @@ class AboutScreen extends StatelessWidget {
                     Text(
                       'Ninventario $version',
                       style: TextStyle(
-                        fontSize: 24, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.blue[800], // Darker blue for title
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal[800], // Darker teal for title
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -60,7 +67,8 @@ class AboutScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue[700], // Medium blue for section title
+                        color:
+                            Colors.teal[700], // Medium teal for section title
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -71,7 +79,8 @@ class AboutScreen extends StatelessWidget {
                           creator,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.blue[600], // Slightly lighter blue for creators
+                            color: const Color.fromARGB(255, 0, 0,
+                                0), // Slightly lighter teal for creators
                           ),
                         );
                       }).toList(),
@@ -82,7 +91,8 @@ class AboutScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.blue[700], // Medium blue for section title
+                        color:
+                            Colors.teal[700], // Medium teal for section title
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -90,7 +100,8 @@ class AboutScreen extends StatelessWidget {
                       currentDate,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue[600], // Slightly lighter blue for date
+                        color: const Color.fromARGB(
+                            255, 0, 0, 0), // Slightly lighter teal for date
                       ),
                     ),
                   ],
@@ -111,7 +122,7 @@ void main() {
     home: AboutScreen(),
     theme: ThemeData(
       useMaterial3: true,
-      primarySwatch: Colors.blue, // Primary blue theme for the app
+      primarySwatch: Colors.teal, // Primary teal theme for the app
     ),
   ));
 }

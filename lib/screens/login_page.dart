@@ -19,6 +19,8 @@ class LoginApp extends StatefulWidget {
 
 /// State of the login screen.
 class LoginAppState extends State<LoginApp> {
+  static String currentUsername = '';
+
   @override
   void dispose() {
     _usernameController.dispose();
@@ -33,7 +35,8 @@ class LoginAppState extends State<LoginApp> {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse('https://servernintventario.onrender.com/login'), // Use your local machine IP
+        Uri.parse(
+            'https://servernintventario.onrender.com/login'), // Use your local machine IP
         body: json.encode(
             <String, String>{'username': username, 'password': password}),
         headers: <String, String>{
@@ -47,18 +50,19 @@ class LoginAppState extends State<LoginApp> {
       }
 
       if (response.statusCode == 200) {
-        ///final dynamic data = json.decode(response.body);
-        //final String token = data['Token'];
-
-        // Store the token or handle the response as needed
+        // Navegar a la siguiente pantalla
         Navigator.push(
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const SaleSptosPage(),
           ),
         );
+
+        // Limpiar los controladores después de la navegación
+        _usernameController.clear();
+        _passwordController.clear();
       } else {
-        // Handle error
+        // Manejar error
         _showErrorDialog(context, 'Usuario o contraseña incorrectos');
       }
     } catch (e) {
@@ -67,6 +71,10 @@ class LoginAppState extends State<LoginApp> {
       }
       _showErrorDialog(context, 'Un error ha ocurrido, inténtelo de nuevo.');
     }
+
+    setState(() {
+      currentUsername = username;
+    });
   }
 
   /// Function to show an error dialog.
@@ -104,26 +112,6 @@ class LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/*
-      appBar: AppBar(
-        title: const Text(
-          'Login',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.blue[800], // Dark blue for AppBar
-        elevation: 4,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.white, // White color for the back arrow
-          onPressed: () {
-            Navigator.pop(context); // Navigate back
-          },
-        ),
-      ), */
       body: Container(
         color: Colors.white, // Light blue background
         child: Padding(
