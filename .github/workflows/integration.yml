@@ -28,6 +28,5 @@ jobs:
 
     - name: Run all integration tests
       run: |
-        for file in integration_test/*.dart; do
-          flutter drive --target="$file"
+        flutter drive
         done
