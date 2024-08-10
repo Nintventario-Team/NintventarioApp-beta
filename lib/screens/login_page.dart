@@ -20,6 +20,7 @@ class LoginApp extends StatefulWidget {
 
 /// State of the login screen.
 class LoginAppState extends State<LoginApp> {
+  /// Current username
   static String currentUsername = '';
 
   @override
@@ -60,8 +61,8 @@ class LoginAppState extends State<LoginApp> {
         );
 
         // Limpiar los controladores después de la navegación
-        _usernameController.clear();
-        _passwordController.clear();
+        usernameController.clear();
+        passwordController.clear();
       } else {
         // Manejar error
         _showErrorDialog(context, 'Usuario o contraseña incorrectos');

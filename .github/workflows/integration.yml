@@ -1,0 +1,30 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.1' # Cambia a la versión que estás usando
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run unit tests
+      run: flutter test
+
+    - name: Run integration tests
+      run: flutter drive --target=integration_test/app_test.dart

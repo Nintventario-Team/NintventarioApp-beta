@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 
+/// Function to show the account information dialog.
 void showAccountInfo(BuildContext context) {
   showDialog(
     context: context,

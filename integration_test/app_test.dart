@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nintventario/screens/home.dart';
-import 'package:nintventario/screens/inventoryScreens/details.dart';
-import 'package:nintventario/screens/inventoryScreens/products_list.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 
 void main() {
