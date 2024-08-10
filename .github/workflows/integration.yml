@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Flutter Integration Tests
 
 on:
   push:
@@ -26,5 +26,8 @@ jobs:
     - name: Run unit tests
       run: flutter test
 
-    - name: Run integration tests
-      run: flutter drive --target=integration_test/app_test.dart
+    - name: Run all integration tests
+      run: |
+        for file in integration_test/*.dart; do
+          flutter drive --target="$file"
+        done
