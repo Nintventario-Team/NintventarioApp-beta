@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:nintventario/screens/login_page.dart';
 import 'package:nintventario/screens/sale_spots.dart';
 import 'about.dart';
+import 'account_info.dart';
 
 double _spaceSize = 20;
 double _fontOptionSize = 18;
-double _fontTitleSize = 22;
+double _fontTitleSize = 24;
 double _hButton = 16;
 double _vButton = 12;
 
@@ -27,127 +28,106 @@ class SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: RichText(
-          text: TextSpan(
-            text: 'Settings',
-            style: TextStyle(
-              fontSize: _fontTitleSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white, // White color for "Settings"
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                text: ' Settings', // Additional text
-                style: TextStyle(
-                  fontSize: _fontTitleSize,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800], // Dark blue for additional text
-                ),
-              ),
-            ],
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontSize: _fontTitleSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.blue[800], // Dark blue for AppBar
+        backgroundColor: Colors.teal[700],
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          color: Colors.white, // White color for the back arrow
+          color: Colors.white,
           onPressed: () {
-            Navigator.pop(context); // Navigate back
+            Navigator.pop(context);
           },
         ),
       ),
       body: Container(
-        color: Colors.blue[50], // Light blue background
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: _spaceSize),
-              ListTile(
-                leading: Icon(Icons.notifications, color: Colors.blue[700]), // Blue icon
-                title: Text('Notifications',
-                    style: TextStyle(fontSize: _fontOptionSize, color: Colors.blue[800])),
-                trailing: Switch(
-                  value: _notificationsEnabled,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _notificationsEnabled = value;
-                      if (kDebugMode) {
-                        print(_notificationsEnabled);
-                      }
-                    });
-                  },
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search for a setting...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
               SizedBox(height: _spaceSize),
               ListTile(
-                leading: Icon(Icons.manage_accounts, color: Colors.blue[700]), // Blue icon
+                leading: Icon(Icons.info, color: Colors.grey[700]),
                 title: Text(
-                  'Account Settings',
-                  style: TextStyle(fontSize: _fontOptionSize, color: Colors.blue[800]),
+                  'Acerca de nostros',
+                  style: TextStyle(
+                      fontSize: _fontOptionSize, color: Colors.grey[800]),
                 ),
+                trailing:
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
                 onTap: () {
-                  // Navigate to the account settings screen
-                },
-              ),
-              SizedBox(height: _spaceSize),
-              ListTile(
-                leading: Icon(Icons.info, color: Colors.blue[700]), // Blue icon
-                title: Text(
-                  'About',
-                  style: TextStyle(fontSize: _fontOptionSize, color: Colors.blue[800]),
-                ),
-                onTap: () {
-                  // Navigate to the about screen
                   Navigator.push(
                     context,
-                    MaterialPageRoute<dynamic>(builder: (BuildContext context) => AboutScreen()),
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => AboutScreen()),
                   );
                 },
               ),
-              const Spacer(),
-              // Buttons to navigate to other screens
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to the sale spots screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => const SaleSptosPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.blue[800], // Dark blue for button
-                    minimumSize: const Size(200, 50),
-                    padding: EdgeInsets.symmetric(horizontal: _hButton, vertical: _vButton),
-                    textStyle: const TextStyle(fontSize: 18), // White text color
-                  ),
-                  child: const Text('Establishment'),
+              ListTile(
+                leading: Icon(Icons.person, color: Colors.grey[700]),
+                title: Text(
+                  'Account',
+                  style: TextStyle(
+                      fontSize: _fontOptionSize, color: Colors.grey[800]),
                 ),
+                trailing:
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
+                onTap: () {
+                  showAccountInfo(context);
+                },
               ),
-              SizedBox(height: _spaceSize),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to the login screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(builder: (BuildContext context) => const LoginApp()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.red[700], // Dark red for button
-                    minimumSize: const Size(200, 50),
-                    padding: EdgeInsets.symmetric(horizontal: _hButton, vertical: _vButton),
-                    textStyle: const TextStyle(fontSize: 18), // White text color
-                  ),
-                  child: const Text('Log Out'),
+              ListTile(
+                leading: Icon(Icons.store, color: Colors.grey[700]),
+                title: Text(
+                  'Cambiar Establecimiento',
+                  style: TextStyle(
+                      fontSize: _fontOptionSize, color: Colors.grey[800]),
                 ),
+                trailing:
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            const SaleSptosPage()),
+                  );
+                },
               ),
-              SizedBox(height: _spaceSize),
+              ListTile(
+                leading: Icon(Icons.logout, color: Colors.grey[700]),
+                title: Text(
+                  'Cerrar Sesión',
+                  style: TextStyle(
+                      fontSize: _fontOptionSize, color: Colors.grey[800]),
+                ),
+                trailing:
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey[700]),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => const LoginApp()),
+                  );
+                },
+              ),
             ],
           ),
         ),
