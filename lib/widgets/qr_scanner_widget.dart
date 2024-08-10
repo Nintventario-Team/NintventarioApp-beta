@@ -21,8 +21,8 @@ class QRScannerWidget extends StatefulWidget {
 class QRScannerWidgetState extends State<QRScannerWidget> {
   /// Function to handle barcode detection.
   final MobileScannerController cameraController = MobileScannerController();
-
-  void _handleBarcodeDetection(String code) {
+  /// Function to handle barcode detection.
+  void handleBarcodeDetection(String code) {
     try {
       final Product product = globalProducts.firstWhere(
         (Product product) => product.id == code,
@@ -65,7 +65,7 @@ class QRScannerWidgetState extends State<QRScannerWidget> {
           final String? code = barcode.rawValue;
           if (code != null) {
             debugPrint('Barcode found! $code');
-            _handleBarcodeDetection(code);
+            handleBarcodeDetection(code);
           }
         },
       ),

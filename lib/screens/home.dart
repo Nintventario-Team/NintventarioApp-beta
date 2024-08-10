@@ -140,9 +140,9 @@ class Home extends StatelessWidget {
               child: Container(
                 width: screenSize.width * 2.20, // Diameter of the semicircle
                 height: screenSize.width * 1.50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color.fromARGB(204, 21, 101, 192),
+                  color: Color.fromARGB(204, 21, 101, 192),
                 ),
               ),
             ),
@@ -158,7 +158,7 @@ class Home extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'HOME',
                           style: TextStyle(
                             fontSize: 30,
@@ -170,7 +170,7 @@ class Home extends StatelessWidget {
                         ),
                         Text(
                           'Bienvenido a $local',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontFamily: 'Poppins',
                             color: Colors.black87,
@@ -306,7 +306,7 @@ class MenuItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(15), // Rounded corners
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
