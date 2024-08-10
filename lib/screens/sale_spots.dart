@@ -37,7 +37,7 @@ class SaleSptosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue[50], // Light blue background
+        color: Colors.blue[90], // Light blue background
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
