@@ -73,6 +73,34 @@ void main() {
 
     // Verify that the product has the updated stock
     // Here you could verify that the list is updated, if necessary
-    
+    Future<dynamic>.delayed(const Duration(seconds: 60));
+    // Tap on "Detalles" to open the inventory details
+    await tester.tap(find.text('Detalles'));
+    await tester.pumpAndSettle();
+
+    // Verify that the Inventory Details screen is displayed
+    expect(find.text('Detalles del Inventario'), findsOneWidget);
+
+    // Change the inventory manager name
+    await tester.enterText(find.byType(TextField).first, 'Juan Pérez');
+    await tester.pumpAndSettle();
+
+// Simulate pressing the 'Done' or 'Return' key on the keyboard
+await tester.testTextInput.receiveAction(TextInputAction.done);
+await tester.pumpAndSettle();
+
+    Future<dynamic>.delayed(const Duration(seconds: 120));
+
+    // Verify that the name has been updated
+    expect(find.text('Juan Pérez'), findsOneWidget);
+
+    // Simulate the tap on the "Guardar borrador" button
+    await tester.tap(find.text('Guardar borrador'));
+    await tester.pumpAndSettle();
+
+    // Verify that the confirmation message is displayed
+    expect(find.text('¡Borrador guardado exitosamente!'), findsOneWidget);
+
+    // You can add more assertions here to verify the correct behavior after saving the draft
   });
 }
