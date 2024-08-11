@@ -68,7 +68,7 @@ class IChangeStockTo extends When1WithWorld<String, FlutterWorld> {
 
   @override
   Future<void> executeStep(String stock) async {
-    final textField = find.byType('TextField'); // Assuming it's the first TextField on the screen
+    final SerializableFinder textField = find.byType('TextField'); // Assuming it's the first TextField on the screen
     await FlutterDriverUtils.tap(world.driver, textField);
     await FlutterDriverUtils.enterText(world.driver, textField, stock);
   }
@@ -112,7 +112,7 @@ class IChangeInventoryManagerName extends When1WithWorld<String, FlutterWorld> {
 
   @override
   Future<void> executeStep(String name) async {
-    final textField = find.byType('TextField'); // Assuming it's the first TextField
+    final SerializableFinder textField = find.byType('TextField'); // Assuming it's the first TextField
     await FlutterDriverUtils.tap(world.driver, textField);
     await FlutterDriverUtils.enterText(world.driver, textField, name);
   }
