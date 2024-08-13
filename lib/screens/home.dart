@@ -311,7 +311,7 @@ class MenuItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(15), // Rounded corners
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,

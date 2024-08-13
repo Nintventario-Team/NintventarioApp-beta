@@ -16,7 +16,7 @@ class ProductDetails extends StatefulWidget {
 /// State class for [ProductDetails].
 class ProductDetailsState extends State<ProductDetails> {
   /// Controller for the current stock input field.
-  final TextEditingController _stockActualController = TextEditingController();
+  final TextEditingController stockActualController = TextEditingController();
 
   /// Initial value of the current stock.
   late final int _initialStockActual;
@@ -25,12 +25,12 @@ class ProductDetailsState extends State<ProductDetails> {
   void initState() {
     super.initState();
     _initialStockActual = widget.product.stockActual;
-    _stockActualController.text = widget.product.stockActual.toString();
+    stockActualController.text = widget.product.stockActual.toString();
   }
 
   @override
   void dispose() {
-    _stockActualController.dispose();
+    stockActualController.dispose();
     super.dispose();
   }
 
@@ -62,7 +62,7 @@ class ProductDetailsState extends State<ProductDetails> {
             ),
             const SizedBox(height: 8),
             TextField(
-              controller: _stockActualController,
+              controller: stockActualController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -79,7 +79,7 @@ class ProductDetailsState extends State<ProductDetails> {
               child: ElevatedButton(
                 onPressed: () {
                   final int? newStockActual =
-                      int.tryParse(_stockActualController.text);
+                      int.tryParse(stockActualController.text);
                   if (newStockActual != null && newStockActual >= 0) {
                     setState(() {
                       if (newStockActual != _initialStockActual || newStockActual == 0) {

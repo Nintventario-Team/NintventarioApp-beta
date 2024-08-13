@@ -5,8 +5,9 @@ import 'dart:convert';
 import 'sale_spots.dart'; // Import your existing class
 
 /// Controllers for input fields
-final TextEditingController _usernameController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
+final TextEditingController usernameController = TextEditingController();
+/// Controllers for input fields
+final TextEditingController passwordController = TextEditingController();
 
 /// Main widget for the login screen.
 class LoginApp extends StatefulWidget {
@@ -19,19 +20,20 @@ class LoginApp extends StatefulWidget {
 
 /// State of the login screen.
 class LoginAppState extends State<LoginApp> {
+  /// Current username
   static String currentUsername = '';
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   /// Function to handle login process.
-  Future<void> _login(BuildContext context) async {
-    final String username = _usernameController.text;
-    final String password = _passwordController.text;
+  Future<void> login(BuildContext context) async {
+    final String username = usernameController.text;
+    final String password = passwordController.text;
 
     try {
       final http.Response response = await http.post(
@@ -59,8 +61,8 @@ class LoginAppState extends State<LoginApp> {
         );
 
         // Limpiar los controladores después de la navegación
-        _usernameController.clear();
-        _passwordController.clear();
+        usernameController.clear();
+        passwordController.clear();
       } else {
         // Manejar error
         _showErrorDialog(context, 'Usuario o contraseña incorrectos');
@@ -162,7 +164,7 @@ class LoginAppState extends State<LoginApp> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: TextField(
-                  controller: _usernameController,
+                  controller: usernameController,
                   decoration: InputDecoration(
                     labelText: 'Usuario',
                     border: OutlineInputBorder(
@@ -180,7 +182,7 @@ class LoginAppState extends State<LoginApp> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: TextField(
                   obscureText: true,
-                  controller: _passwordController,
+                  controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
                     border: OutlineInputBorder(
@@ -198,7 +200,7 @@ class LoginAppState extends State<LoginApp> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    _login(context);
+                    login(context);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

@@ -85,9 +85,9 @@ class AboutScreen extends StatelessWidget {
                       children: creators.map((String creator) {
                         return Text(
                           creator,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
-                            color: const Color.fromARGB(255, 0, 0,
+                            color: Color.fromARGB(255, 0, 0,
                                 0), // Slightly lighter teal for creators
                           ),
                         );
@@ -106,9 +106,9 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       currentDate,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
-                        color: const Color.fromARGB(
+                        color: Color.fromARGB(
                             255, 0, 0, 0), // Slightly lighter teal for date
                       ),
                     ),

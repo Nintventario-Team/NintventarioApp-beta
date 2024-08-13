@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nintventario/screens/login_page.dart';
 import 'package:nintventario/screens/sale_spots.dart';
@@ -8,8 +7,6 @@ import 'account_info.dart';
 double _spaceSize = 20;
 double _fontOptionSize = 18;
 double _fontTitleSize = 24;
-double _hButton = 16;
-double _vButton = 12;
 
 /// Class for the settings screen.
 class SettingsScreen extends StatefulWidget {
@@ -22,7 +19,6 @@ class SettingsScreen extends StatefulWidget {
 
 /// State class for the settings screen.
 class SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +60,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Search for a setting...',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
