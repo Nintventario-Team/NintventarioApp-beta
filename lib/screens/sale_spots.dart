@@ -141,14 +141,19 @@ class SaleSptosPage extends StatelessWidget {
         clipBehavior: Clip.none,
         children: <Widget>[
           BottomAppBar(
-            color: const Color.fromARGB(
-                204, 21, 101, 192), // Dark blue color for BottomAppBar
             shape:
                 const CircularNotchedRectangle(), // Shape to make room for the circle
             notchMargin:
                 8.0, // Margin between the circle and the bottom app bar
             child: Container(
               height: 90.0, // Height of the bottom app bar
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+                ),
+              ),
             ),
           ),
           const Positioned(

@@ -146,139 +146,123 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the screen size to calculate button sizes and other elements.
     final Size screenSize = MediaQuery.of(context).size;
     final double buttonSize = screenSize.width * 0.4;
 
     return MaterialApp(
       home: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            // Background semicircle
-            Positioned(
-              top: -screenSize.width * 0.70, // Position the circle at the top
-              left: -screenSize.width * 0.80,
-              child: Container(
-                width: screenSize.width * 2.20, // Diameter of the semicircle
-                height: screenSize.width * 1.50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color.fromARGB(204, 21, 101, 192),
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              // Background gradient to mimic the image design
+              Container(
+                height: screenSize.height * 0.25,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-            ),
-            // Content
-            SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 50),
-                    // Texts "HOME" and "Bienvenido a $local"
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'HOME',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Text(
-                          'Bienvenido a $local',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 40,
+                      right: 20,
+                      child: const CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage('src/images/login.jpg'),
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    // Buttons arranged in 2 columns, 3 rows
-                    GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: <Widget>[
-                        MenuItem(
-                          icon: Icons.edit_document,
-                          label: 'Crear Inventario',
-                          onTap: () => _navigateToCustomTabBar(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                        MenuItem(
-                          icon: Icons.history,
-                          label: 'Historial',
-                          onTap: () => _navigateToDraftsScreen(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                        MenuItem(
-                          icon: Icons.settings,
-                          label: 'Ajustes',
-                          onTap: () => _navigateToSettingsScreen(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                        MenuItem(
-                          icon: Icons.exit_to_app,
-                          label: 'Salir',
-                          onTap: () => _exitApp(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                        MenuItem(
-                          icon: Icons.last_page_rounded,
-                          label: 'Último Inventario',
-                          onTap: () => _navigateToLastReport(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                        MenuItem(
-                          icon: Icons.last_page_rounded,
-                          label: 'Último Reporte',
-                          onTap: () => _navigateToLastInventory(context),
-                          color: Colors.white,
-                          buttonSize: buttonSize,
-                        ),
-                      ],
+                    Positioned(
+                      top: 100,
+                      left: 20,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Bienvenido a $local',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Last Update 25 Feb 2023',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            BottomAppBar(
-              color: const Color.fromARGB(204, 21, 101, 192),
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8.0,
-              child: Container(
-                height: 90.0,
+              // Content
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: <Widget>[
+                      MenuItem(
+                        icon: Icons.edit_document,
+                        label: 'Crear Inventario',
+                        onTap: () => _navigateToCustomTabBar(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                      MenuItem(
+                        icon: Icons.history,
+                        label: 'Historial',
+                        onTap: () => _navigateToDraftsScreen(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                      MenuItem(
+                        icon: Icons.settings,
+                        label: 'Ajustes',
+                        onTap: () => _navigateToSettingsScreen(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                      MenuItem(
+                        icon: Icons.exit_to_app,
+                        label: 'Salir',
+                        onTap: () => _exitApp(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                      MenuItem(
+                        icon: Icons.last_page_rounded,
+                        label: 'Último Inventario',
+                        onTap: () => _navigateToLastReport(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                      MenuItem(
+                        icon: Icons.last_page_rounded,
+                        label: 'Último Reporte',
+                        onTap: () => _navigateToLastInventory(context),
+                        color: Colors.white,
+                        buttonSize: buttonSize,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            const Positioned(
-              top: -30.0,
-              child: CircleAvatar(
-                radius: 47,
-                backgroundColor: Colors.white,
-                backgroundImage: AssetImage('src/images/login.jpg'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -322,8 +306,8 @@ class MenuItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 1,
-        height: 1,
+        width: buttonSize,
+        height: buttonSize,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(15), // Rounded corners
@@ -348,8 +332,8 @@ class MenuItem extends StatelessWidget {
             else if (icon != null) // Show icon if provided
               Icon(
                 icon!,
-                size: 30,
-                color: Colors.black54,
+                size: 40,
+                color: Colors.blue,
               ),
             const SizedBox(height: 8.0),
             Text(
@@ -358,6 +342,7 @@ class MenuItem extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
+                color: Colors.black54,
               ),
             ),
           ],

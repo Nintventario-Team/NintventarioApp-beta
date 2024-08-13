@@ -36,7 +36,15 @@ class SettingsScreenState extends State<SettingsScreen> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.teal[700],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+            ),
+          ),
+        ),
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
