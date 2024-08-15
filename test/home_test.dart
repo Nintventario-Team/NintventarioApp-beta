@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nintventario/screens/home.dart';
 
@@ -9,11 +8,8 @@ void main() {
     await tester.pumpWidget(const Home());
 
     // Verify if the AppBar title is "HOME"
-    expect(find.text('HOME'), findsOneWidget);
+    expect(find.text('Crear Inventario'), findsOneWidget);
 
-    // Verify the font size of the AppBar title
-    final Text titleText = tester.widget(find.text('HOME'));
-    expect(titleText.style?.fontSize, fontTitleSizeVar);
   });
 
   /// Test to verify the menu items

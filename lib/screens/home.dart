@@ -159,7 +159,7 @@ class Home extends StatelessWidget {
                 height: screenSize.height * 0.25,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+                    colors: <Color>[Color(0xFF0D47A1), Color(0xFF1976D2)],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -169,11 +169,11 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 child: Stack(
-                  children: [
-                    Positioned(
+                  children: <Widget>[
+                    const Positioned(
                       top: 40,
                       right: 20,
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 25,
                         backgroundImage: AssetImage('src/images/login.jpg'),
                       ),
@@ -186,14 +186,14 @@ class Home extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             'Bienvenido a $local',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 5),
-                          Text(
+                          const SizedBox(height: 5),
+                          const Text(
                             'Last Update 25 Feb 2023',
                             style: TextStyle(
                               fontSize: 16,

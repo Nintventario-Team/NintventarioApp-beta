@@ -151,7 +151,7 @@ class SaleSptosPage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
+                  colors: <Color>[Color(0xFF0D47A1), Color(0xFF1976D2)],
                 ),
               ),
             ),
