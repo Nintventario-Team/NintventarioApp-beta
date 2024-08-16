@@ -7,7 +7,7 @@ void showAccountInfo(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Account Information'),
+        title: const Text('Información de la cuenta'),
         content: Text('El usuario actual es: ${LoginAppState.currentUsername}'),
         actions: <Widget>[
           TextButton(

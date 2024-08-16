@@ -10,8 +10,8 @@ class AboutScreen extends StatelessWidget {
   final List<String> creators = <String>[
     'Cornejo Andrés',
     'Mawyin Jorge',
-    'Roldan Kevin',
-    'Tomala Angel'
+    'Roldán Kevin',
+    'Tomalá Angel'
   ];
 
   /// Formatted current date.
@@ -26,7 +26,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About'),
+        title: const Text('Acerca de nosotros', style: TextStyle(color: Colors.white),),
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -71,7 +71,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Created by:',
+                      'Creado por:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -95,7 +95,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Creation Date:',
+                      'Fecha de creación:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -104,9 +104,9 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      currentDate,
-                      style: const TextStyle(
+                    const Text(
+                      '24 de mayo, 2024',
+                      style: TextStyle(
                         fontSize: 16,
                         color: Color.fromARGB(
                             255, 0, 0, 0), // Slightly lighter teal for date
