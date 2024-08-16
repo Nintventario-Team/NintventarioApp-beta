@@ -64,7 +64,11 @@ class LastInventoryState extends State<LastInventory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Último Inventario'),
+        title: const Text(
+          'Último Inventario',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF0D47A1),
       ),
       body: FutureBuilder<Draft?>(
         future: _lastDraftFuture,
@@ -77,60 +81,73 @@ class LastInventoryState extends State<LastInventory> {
             return const Center(child: Text('No hay inventarios disponibles.'));
           } else {
             final Draft draft = snapshot.data!;
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              elevation: 4,
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                title: Text(
-                  'ID: ${draft.id}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+            return Center(
+              child: Card(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  width: 500,
+                  height:
+                      200, // Ancho específico para hacer el contenedor compacto
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    title: Text(
+                      'ID: ${draft.id}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Empleado: ${draft.employee}',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                        Text(
+                          'Duración: ${draft.duration} horas',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                        Text(
+                          'Fecha: ${draft.creationDate.length > 10 ? draft.creationDate.substring(0, 10) : draft.creationDate}',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Observaciones',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          draft.observations,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          'Estado: ${draft.state == DraftState.completed ? 'Completado' : 'No Completado'}',
+                          style: TextStyle(
+                            color: draft.state == DraftState.completed
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () =>
+                        _onDraftSelected(draft), // Navegar al hacer clic
                   ),
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Empleado: ${draft.employee}',
-                      style: const TextStyle(color: Colors.black54),
-                    ),
-                    Text(
-                      'Duración: ${draft.duration} horas',
-                      style: const TextStyle(color: Colors.black54),
-                    ),
-                    Text(
-                      'Fecha: ${draft.creationDate.length > 10 ? draft.creationDate.substring(0, 10) : draft.creationDate}',
-                      style: const TextStyle(color: Colors.black54),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Observaciones',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      draft.observations,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      'Estado: ${draft.state == DraftState.completed ? 'Completado' : 'No Completado'}',
-                      style: TextStyle(
-                        color: draft.state == DraftState.completed
-                            ? Colors.green
-                            : Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () => _onDraftSelected(draft), // Navegar al hacer clic
               ),
             );
           }

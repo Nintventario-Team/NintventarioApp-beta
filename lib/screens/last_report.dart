@@ -9,11 +9,11 @@ class LastReport extends StatefulWidget {
   const LastReport({super.key});
 
   @override
-  ReportScreenState createState() => ReportScreenState();
+  LastReportState createState() => LastReportState();
 }
 
 /// State of the LastReport widget.
-class ReportScreenState extends State<LastReport> {
+class LastReportState extends State<LastReport> {
   late Future<Map<String, String>> _reportPreviewFuture;
 
   @override
@@ -78,7 +78,11 @@ class ReportScreenState extends State<LastReport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vista Previa del Reporte'),
+        title: const Text(
+          'Vista Previa del Reporte',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF0D47A1),
       ),
       body: FutureBuilder<Map<String, String>>(
         future: _reportPreviewFuture,
