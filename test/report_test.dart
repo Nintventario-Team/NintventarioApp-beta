@@ -20,7 +20,7 @@ void main() {
 
       // Assert
       expect(find.text('Productos checkeados:'), findsOneWidget);
-      expect(find.text('Productos no-checkeados:'), findsOneWidget);
+      expect(find.text('Productos no checkeados:'), findsOneWidget);
     });
 
     testWidgets('should allow observation editing and display updated value', (WidgetTester tester) async {
