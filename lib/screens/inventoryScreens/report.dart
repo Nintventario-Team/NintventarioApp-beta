@@ -4,9 +4,18 @@ import 'package:nintventario/classes/product.dart';
 import 'package:nintventario/screens/home.dart';
 
 /// Main widget for the report screen.
-class ReportScreen extends StatelessWidget {
+class ReportScreen extends StatefulWidget {
   /// Constant constructor for the ReportScreen class.
   const ReportScreen({super.key});
+
+  @override
+  ReportScreenState createState() => ReportScreenState();
+}
+
+/// State class for the report screen.
+class ReportScreenState extends State<ReportScreen> {
+  bool _isGeneratingExcel = false;
+  bool _isGeneratingPdf = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +53,8 @@ class ReportScreen extends StatelessWidget {
               _buildDetailField(
                   'Productos checkeados:', checkedProductsCount.toString()),
               const SizedBox(height: 20),
-              _buildDetailField('Productos no-checkeados:',
-                  uncheckedProductsCount.toString()),
+              _buildDetailField(
+                  'Productos no checkeados:', uncheckedProductsCount.toString()),
               const SizedBox(height: 20),
               _buildDetailField(
                   'Fecha de creación:', globalDate.substring(0, 10)),
@@ -62,7 +71,7 @@ class ReportScreen extends StatelessWidget {
                 controller: observationsController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Escriba sus observaciones aquí...',
+                  hintText: 'Escribe tus observaciones aquí...',
                 ),
                 maxLines: 3,
                 onChanged: (String newValue) {
@@ -73,15 +82,37 @@ class ReportScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
+              if (_isGeneratingExcel || _isGeneratingPdf) ...<Widget>[
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    _isGeneratingExcel
+                        ? 'Generando Excel...'
+                        : 'Generando PDF...',
+                    style: const TextStyle(
+                      color: Colors.orange,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ElevatedButton(
                     onPressed: () async {
-                      if (kDebugMode) {
-                        print(globalProducts[1].name);
-                      }
-                      saveAndUploadProductsAsJson(globalProducts);
+                      setState(() {
+                        _isGeneratingExcel = true;
+                      });
+                      await _generateExcel();
+                      setState(() {
+                        _isGeneratingExcel = false;
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
@@ -103,10 +134,13 @@ class ReportScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      if (kDebugMode) {
-                        print(globalProducts[1].name);
-                      }
-                      saveAndUploadProductsAsPdf(globalProducts);
+                      setState(() {
+                        _isGeneratingPdf = true;
+                      });
+                      await _generatePdf();
+                      setState(() {
+                        _isGeneratingPdf = false;
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
@@ -134,6 +168,7 @@ class ReportScreen extends StatelessWidget {
     );
   }
 
+  /// Builds a detail field with a label and value.
   Widget _buildDetailField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,5 +207,25 @@ class ReportScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  /// Simulates generating an Excel file and uploading it.
+  Future<void> _generateExcel() async {
+    if (kDebugMode) {
+      print(globalProducts[1].name);
+    }
+    await saveAndUploadProductsAsJson(globalProducts);
+    // Simulate a delay for the operation
+    await Future<dynamic>.delayed(const Duration(seconds: 2));
+  }
+
+  /// Simulates generating a PDF file and uploading it.
+  Future<void> _generatePdf() async {
+    if (kDebugMode) {
+      print(globalProducts[1].name);
+    }
+    await saveAndUploadProductsAsPdf(globalProducts);
+    // Simulate a delay for the operation
+    await Future<dynamic>.delayed(const Duration(seconds: 2));
   }
 }

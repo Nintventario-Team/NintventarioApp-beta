@@ -6,31 +6,32 @@ import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Pantalla que muestra una lista de borradores guardados y permite la selección.
+/// Screen that displays a list of saved drafts and allows selection.
 class DraftsScreen extends StatefulWidget {
-  /// Crea una instancia de [DraftsScreen].
+  /// Creates an instance of [DraftsScreen].
   const DraftsScreen({super.key});
 
   @override
   DraftsScreenState createState() => DraftsScreenState();
 }
 
-/// Clase de estado para [DraftsScreen].
+/// State class for [DraftsScreen].
 class DraftsScreenState extends State<DraftsScreen> {
   late Future<List<Draft>> _draftsFuture;
-  String _filter = 'All'; // Estado actual del filtro
-  String _sortOrder = 'Newest'; // Orden de clasificación actual
+  String _filter = 'Todos'; // Current filter state
+  String _sortOrder = 'Recientes'; // Current sort order
 
   @override
   void initState() {
     super.initState();
-    _draftsFuture = Draft.loadDrafts(); // Cargar borradores cuando se inicializa la pantalla
+    _draftsFuture = Draft.loadDrafts(); // Load drafts when the screen initializes
   }
 
+  /// Handles draft selection and navigates to the inventory detail page.
   void _onDraftSelected(Draft draft) {
-    currentDraft = draft; // Establecer el borrador seleccionado como el borrador actual
+    currentDraft = draft; // Set the selected draft as the current draft
     currentDraft.updateGlobalVariables();
-    // Navegar a la página de detalles del inventario y pasar el borrador seleccionado
+    // Navigate to the inventory details page and pass the selected draft
     Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
@@ -39,11 +40,12 @@ class DraftsScreenState extends State<DraftsScreen> {
     );
   }
 
+  /// Deletes a draft from the saved drafts.
   Future<void> _deleteDraft(Draft draft) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> draftsList = prefs.getStringList('drafts') ?? <String>[];
 
-    // Eliminar borrador con el ID coincidente
+    // Find and remove the draft with the matching ID
     final int draftIndex = draftsList.indexWhere((String draftStr) {
       final Map<String, dynamic> draftJson = jsonDecode(draftStr);
       return draftJson['id'] == draft.id;
@@ -53,18 +55,19 @@ class DraftsScreenState extends State<DraftsScreen> {
       draftsList.removeAt(draftIndex);
       await prefs.setStringList('drafts', draftsList);
       setState(() {
-        _draftsFuture = Draft.loadDrafts(); // Recargar borradores después de la eliminación
+        _draftsFuture = Draft.loadDrafts(); // Reload drafts after deletion
       });
     }
   }
 
+  /// Confirms with the user before deleting a draft.
   Future<void> _confirmDeleteDraft(Draft draft) async {
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmación de Borrado'),
-          content: Text('¿Estás seguro que quieres borrar el borrador? ID: ${draft.id}?'),
+          title: const Text('¿Confirmar borrado?'),
+          content: Text('¿Estás seguro de que quieres borrar el borrador con ID: ${draft.id}?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -84,6 +87,7 @@ class DraftsScreenState extends State<DraftsScreen> {
     }
   }
 
+  /// Toggles the completion status of a draft.
   Future<void> _toggleDraftStatus(Draft draft) async {
     final Draft updatedDraft = Draft(
       id: draft.id,
@@ -100,7 +104,7 @@ class DraftsScreenState extends State<DraftsScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> draftsList = prefs.getStringList('drafts') ?? <String>[];
 
-    // Actualizar borrador en la lista
+    // Update the draft in the list
     final int draftIndex = draftsList.indexWhere((String draftStr) {
       final Map<String, dynamic> draftJson = jsonDecode(draftStr);
       return draftJson['id'] == draft.id;
@@ -110,8 +114,26 @@ class DraftsScreenState extends State<DraftsScreen> {
       draftsList[draftIndex] = jsonEncode(updatedDraft.toJson());
       await prefs.setStringList('drafts', draftsList);
       setState(() {
-        _draftsFuture = Draft.loadDrafts(); // Recargar borradores después de la actualización
+        _draftsFuture = Draft.loadDrafts(); // Reload drafts after the update
       });
+    }
+  }
+
+  /// Formats the creation date to ensure it is safe to use with substring.
+  String _formatCreationDate(String creationDate) {
+    if (creationDate.length >= 10) {
+      return creationDate.substring(0, 10); // Get the date (YYYY-MM-DD)
+    } else {
+      return creationDate; // Return original value if too short
+    }
+  }
+
+  /// Formats the creation time to ensure it is safe to use with substring.
+  String _formatCreationTime(String creationDate) {
+    if (creationDate.length > 11) {
+      return creationDate.substring(11); // Get the time (HH:MM:SS)
+    } else {
+      return ''; // Return an empty string if too short
     }
   }
 
@@ -121,7 +143,7 @@ class DraftsScreenState extends State<DraftsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: const Text(
-          'Borradores Guardados',
+          'Borrador Guardados',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -129,7 +151,7 @@ class DraftsScreenState extends State<DraftsScreen> {
           PopupMenuButton<String>(
             onSelected: (String value) {
               setState(() {
-                if (value == 'Sort') {
+                if (value == 'Ordenar') {
                   _showSortDialog();
                 } else {
                   _filter = value;
@@ -138,20 +160,20 @@ class DraftsScreenState extends State<DraftsScreen> {
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
-                value: 'All',
+                value: 'Todos',
                 child: Text('Todos'),
               ),
               const PopupMenuItem<String>(
-                value: 'Completed',
+                value: 'Completados',
                 child: Text('Completados'),
               ),
               const PopupMenuItem<String>(
-                value: 'NotCompleted',
+                value: 'No Completados',
                 child: Text('No Completados'),
               ),
               const PopupMenuDivider(),
               const PopupMenuItem<String>(
-                value: 'Sort',
+                value: 'Ordenar',
                 child: Text('Ordenar'),
               ),
             ],
@@ -169,28 +191,28 @@ class DraftsScreenState extends State<DraftsScreen> {
             return const Center(child: Text('No hay borradores disponibles.'));
           } else {
             List<Draft> drafts = snapshot.data!;
-            if (_filter == 'Completed') {
+            if (_filter == 'Completados') {
               drafts = drafts.where((Draft draft) => draft.state == DraftState.completed).toList();
-            } else if (_filter == 'NotCompleted') {
+            } else if (_filter == 'No Completados') {
               drafts = drafts.where((Draft draft) => draft.state == DraftState.notCompleted).toList();
             }
 
-            if (_sortOrder == 'Newest') {
+            if (_sortOrder == 'Recientes') {
               drafts.sort((Draft a, Draft b) {
-                final int dateComparison = b.creationDate.substring(0, 10).compareTo(a.creationDate.substring(0, 10));
+                final int dateComparison = _formatCreationDate(b.creationDate).compareTo(_formatCreationDate(a.creationDate));
                 if (dateComparison != 0) {
                   return dateComparison;
                 }
-                final int timeComparison = b.creationDate.substring(11).compareTo(a.creationDate.substring(11));
+                final int timeComparison = _formatCreationTime(b.creationDate).compareTo(_formatCreationTime(a.creationDate));
                 return timeComparison;
               });
-            } else if (_sortOrder == 'Oldest') {
+            } else if (_sortOrder == 'Antiguos') {
               drafts.sort((Draft a, Draft b) {
-                final int dateComparison = a.creationDate.substring(0, 10).compareTo(b.creationDate.substring(0, 10));
+                final int dateComparison = _formatCreationDate(a.creationDate).compareTo(_formatCreationDate(b.creationDate));
                 if (dateComparison != 0) {
                   return dateComparison;
                 }
-                final int timeComparison = a.creationDate.substring(11).compareTo(b.creationDate.substring(11));
+                final int timeComparison = _formatCreationTime(a.creationDate).compareTo(_formatCreationTime(b.creationDate));
                 return timeComparison;
               });
             }
@@ -215,7 +237,7 @@ class DraftsScreenState extends State<DraftsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Empleado: ${draft.employee}',
+                          'Encargado: ${draft.employee}',
                           style: const TextStyle(color: Colors.black54),
                         ),
                         Text(
@@ -223,12 +245,12 @@ class DraftsScreenState extends State<DraftsScreen> {
                           style: const TextStyle(color: Colors.black54),
                         ),
                         Text(
-                          'Fecha: ${draft.creationDate.length > 10 ? draft.creationDate.substring(0, 10) : draft.creationDate}',
+                          'Fecha: ${_formatCreationDate(draft.creationDate)}',
                           style: const TextStyle(color: Colors.black54),
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'Observaciones',
+                          'Observaciones:',
                           style: TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.bold,
@@ -270,7 +292,7 @@ class DraftsScreenState extends State<DraftsScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 20), // Espaciado adicional entre los íconos
+                        const SizedBox(width: 20), // Additional spacing between icons
                         GestureDetector(
                           onTap: () => _confirmDeleteDraft(draft),
                           child: Container(
@@ -295,18 +317,19 @@ class DraftsScreenState extends State<DraftsScreen> {
     );
   }
 
+  /// Displays a dialog to select the sort order for drafts.
   void _showSortDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Ordenar Borradores'),
+          title: const Text('Ordenar borradores'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               RadioListTile<String>(
-                title: const Text('Más Recientes'),
-                value: 'Newest',
+                title: const Text('Recientes'),
+                value: 'Recientes',
                 groupValue: _sortOrder,
                 onChanged: (String? value) {
                   setState(() {
@@ -316,8 +339,8 @@ class DraftsScreenState extends State<DraftsScreen> {
                 },
               ),
               RadioListTile<String>(
-                title: const Text('Más Antiguos'),
-                value: 'Oldest',
+                title: const Text('Antiguos'),
+                value: 'Antiguos',
                 groupValue: _sortOrder,
                 onChanged: (String? value) {
                   setState(() {
