@@ -167,7 +167,7 @@ class ReportScreenState extends State<ReportScreen> {
       ),
     );
   }
-
+ 
   /// Builds a detail field with a label and value.
   Widget _buildDetailField(String label, String value) {
     return Column(
