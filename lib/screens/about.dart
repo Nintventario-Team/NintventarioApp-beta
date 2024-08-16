@@ -26,7 +26,10 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Acerca de nosotros', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Acerca de nosotros',
+          style: TextStyle(color: Colors.white),
+        ),
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -127,6 +130,7 @@ class AboutScreen extends StatelessWidget {
 void main() {
   runApp(MaterialApp(
     // Sets the home screen of the application to AboutScreen.
+    debugShowCheckedModeBanner: false,
     home: AboutScreen(),
     theme: ThemeData(
       useMaterial3: true,

@@ -12,6 +12,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: SaleSptosPage(),
       ),
     );

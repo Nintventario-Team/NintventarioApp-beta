@@ -150,6 +150,7 @@ class Home extends StatelessWidget {
     final double buttonSize = screenSize.width * 0.4;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
           child: Column(

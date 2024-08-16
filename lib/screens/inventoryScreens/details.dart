@@ -14,6 +14,7 @@ const double _fontTitleSizeVar = 25;
 void main() {
   runApp(
     const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: InventoryDetails(),
     ),
   );
@@ -29,28 +30,34 @@ class InventoryDetails extends StatefulWidget {
 }
 
 /// State class for [InventoryDetails].
-class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliveClientMixin {
+class _DetailsWidgetState extends State<InventoryDetails>
+    with AutomaticKeepAliveClientMixin {
   /// Controller for the employee name input field.
-  final TextEditingController _employeeController = TextEditingController(text: globalEmployeeName);
+  final TextEditingController _employeeController =
+      TextEditingController(text: globalEmployeeName);
 
   /// Controller for the duration input field.
-  final TextEditingController _durationController = TextEditingController(text: '0');
+  final TextEditingController _durationController =
+      TextEditingController(text: '0');
 
   /// Saves a draft.
   void _saveDraft() async {
     final Draft newDraft = Draft(
-      id: inventoryId,
-      employee: _employeeController.text,
-      duration: _durationController.text,
-      creationDate: globalDate,
-      state: DraftState.notCompleted, // or DraftState.completed depending on the condition
-      products: List<Product>.from(globalProducts),
-      observations: globalObservations // Copy of globalProducts to avoid direct modification
-    );
+        id: inventoryId,
+        employee: _employeeController.text,
+        duration: _durationController.text,
+        creationDate: globalDate,
+        state: DraftState
+            .notCompleted, // or DraftState.completed depending on the condition
+        products: List<Product>.from(globalProducts),
+        observations:
+            globalObservations // Copy of globalProducts to avoid direct modification
+        );
 
     await newDraft.saveDraft();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('¡Borrador guardado exitosamente!')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('¡Borrador guardado exitosamente!')));
 
     if (kDebugMode) {
       print('Draft saved: ${newDraft.toJson()}');
@@ -67,9 +74,7 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
       appBar: AppBar(
         title: const Text(
           'Detalles del Inventario',
-          style: TextStyle(
-            fontSize: _fontTitleSizeVar
-          ),
+          style: TextStyle(fontSize: _fontTitleSizeVar),
         ),
         actions: <Widget>[
           IconButton(
@@ -80,7 +85,8 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute<Widget>(builder: (BuildContext context) => const DraftsScreen()),
+                MaterialPageRoute<Widget>(
+                    builder: (BuildContext context) => const DraftsScreen()),
               );
             },
           ),
@@ -103,7 +109,8 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.blueGrey.shade300, width: 1.5),
                 borderRadius: BorderRadius.circular(8.0),
-                color: Colors.blueGrey.shade50, // Background color for container
+                color:
+                    Colors.blueGrey.shade50, // Background color for container
               ),
               padding: const EdgeInsets.all(10),
               child: Text(
@@ -132,7 +139,8 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                 hintStyle: const TextStyle(color: Colors.grey),
               ),
               style: const TextStyle(color: Colors.black, fontSize: 16),
@@ -155,7 +163,8 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: const BorderSide(color: Colors.black, width: 1.5),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                 hintStyle: const TextStyle(color: Colors.grey),
               ),
               keyboardType: TextInputType.number,
@@ -188,7 +197,8 @@ class _DetailsWidgetState extends State<InventoryDetails> with AutomaticKeepAliv
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
                   minimumSize: const Size(200, 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   textStyle: const TextStyle(fontSize: 20),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
