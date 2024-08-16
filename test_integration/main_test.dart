@@ -7,7 +7,9 @@ import 'package:nintventario/screens/home.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Test SaleSptosPage, Home, and Inventory Creation Navigation with Filter Selection and Stock Update', (WidgetTester tester) async {
+  testWidgets(
+      'Test SaleSptosPage, Home, and Inventory Creation Navigation with Filter Selection and Stock Update',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: SaleSptosPage(),
@@ -19,13 +21,13 @@ void main() {
 
     // Verify that the SaleSptosPage is displayed
     expect(find.byType(SaleSptosPage), findsOneWidget);
-    
+
     // Verify that the text "Hola! \nAndrés Cornejo" is displayed
     expect(find.text('Hola! \nAndrés Cornejo'), findsOneWidget);
 
     // Verify that the GridView is displayed
     expect(find.byType(GridView), findsOneWidget);
-    
+
     // Simulate the tap on the "Ceibos" sale spot
     await tester.tap(find.text('Ceibos'));
     await tester.pumpAndSettle();
@@ -43,7 +45,9 @@ void main() {
     // Select the "Todos" filter
     await tester.tap(find.text('Select Filter'), warnIfMissed: false);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Todos').last); // .last to ensure the dropdown menu item is selected
+    await tester.tap(find
+        .text('Todos')
+        .last); // .last to ensure the dropdown menu item is selected
     await tester.pumpAndSettle();
 
     // Verify that the "Todos" filter has been selected
@@ -61,7 +65,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // Hide the keyboard by tapping outside the TextField
-    await tester.tap(find.byType(Scaffold)); // Taps anywhere on the screen outside of the TextField
+    await tester.tap(find.byType(
+        Scaffold)); // Taps anywhere on the screen outside of the TextField
     await tester.pumpAndSettle();
 
     // Simulate the tap on the "Confirmar" button
@@ -86,8 +91,8 @@ void main() {
     await tester.pumpAndSettle();
 
 // Simulate pressing the 'Done' or 'Return' key on the keyboard
-await tester.testTextInput.receiveAction(TextInputAction.done);
-await tester.pumpAndSettle();
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle();
 
     Future<dynamic>.delayed(const Duration(seconds: 120));
 

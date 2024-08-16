@@ -123,7 +123,7 @@ class ProductsListState extends State<ProductsList>
                 const SizedBox(width: 10),
                 DropdownButton<String>(
                   value: _selectedFilter,
-                  hint: const Text('Select Filter'),
+                  hint: const Text('Seleccione un filtro'),
                   items: <String>['Todos', 'checkeados', 'no-checkeados']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
