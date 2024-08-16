@@ -245,14 +245,14 @@ class Home extends StatelessWidget {
                       ),
                       MenuItem(
                         icon: Icons.last_page_rounded,
-                        label: 'Último Inventario',
+                        label: 'Último Reporte',
                         onTap: () => _navigateToLastReport(context),
                         color: Colors.white,
                         buttonSize: buttonSize,
                       ),
                       MenuItem(
                         icon: Icons.last_page_rounded,
-                        label: 'Último Reporte',
+                        label: 'Último Inventario',
                         onTap: () => _navigateToLastInventory(context),
                         color: Colors.white,
                         buttonSize: buttonSize,
