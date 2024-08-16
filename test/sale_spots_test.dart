@@ -9,7 +9,7 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: SaleSptosPage()));
 
     // Verify if the greeting text is displayed correctly
-    expect(find.text('Hola! \nAndrés Cornejo'), findsOneWidget);
+    expect(find.text('Ceibos'), findsOneWidget);
   });
 
   /// Test to verify the instruction text

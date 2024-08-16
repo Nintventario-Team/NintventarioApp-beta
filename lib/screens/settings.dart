@@ -25,7 +25,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Settings',
+          'Ajustes',
           style: TextStyle(
             fontSize: _fontTitleSize,
             fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search for a setting...',
+                  hintText: 'Busca algún ajuste...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -87,7 +87,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 leading: Icon(Icons.person, color: Colors.grey[700]),
                 title: Text(
-                  'Account',
+                  'Cuenta',
                   style: TextStyle(
                       fontSize: _fontOptionSize, color: Colors.grey[800]),
                 ),

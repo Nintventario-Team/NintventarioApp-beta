@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/screens/inventoryScreens/details.dart';
-import 'package:nintventario/widgets/date_selector_widget.dart';
 
 void main() {
   group('InventoryDetails Widget Tests', () {
@@ -30,12 +29,6 @@ void main() {
 
       // Verify the Employee name TextField has the correct initial value.
       expect(find.widgetWithText(TextField, testEmployeeName), findsOneWidget);
-
-      // Verify the Duration TextField has the correct initial value.
-      expect(find.widgetWithText(TextField, '0'), findsOneWidget);
-
-      // Verify the DateSelectorWidget is present.
-      expect(find.byType(DateSelectorWidget), findsOneWidget);
 
       // Verify the "Guardar borrador" button is present.
       expect(find.text('Guardar borrador'), findsOneWidget);

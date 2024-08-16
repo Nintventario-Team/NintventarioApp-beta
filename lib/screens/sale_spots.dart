@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:nintventario/screens/login_page.dart';
 import '../screens/home.dart';
 
 /// Global Variable to save the local
@@ -45,9 +46,9 @@ class SaleSptosPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 22),
-              const Text(
-                'Hola! \nAndrés Cornejo',
-                style: TextStyle(
+              Text(
+                'Hola! \n ${LoginAppState.currentUsername}',
+                style: const TextStyle(
                   fontSize: 20,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
