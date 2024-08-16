@@ -38,7 +38,7 @@ class _DetailsWidgetState extends State<InventoryDetails>
 
   /// Controller for the duration input field.
   final TextEditingController _durationController =
-      TextEditingController(text: '0');
+      TextEditingController(text: globalTime);
 
   /// Saves a draft.
   void _saveDraft() async {
@@ -123,7 +123,7 @@ class _DetailsWidgetState extends State<InventoryDetails>
             ),
             const SizedBox(height: 20),
             const Text(
-              'Inventory Manager:',
+              'Encargado del inventario:',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,

@@ -148,7 +148,6 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double buttonSize = screenSize.width * 0.4;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -195,7 +194,7 @@ class Home extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           const Text(
-                            'Last Update 25 Feb 2023',
+                            'Última actualización: 25 Feb 2023',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white70,

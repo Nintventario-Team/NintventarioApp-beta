@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Widget para la pantalla de vista previa del reporte.
+/// Widget to display the last report preview.
 class LastReport extends StatefulWidget {
+  /// Constructor constant of the LastReport class.
   const LastReport({super.key});
 
   @override
-  _ReportScreenState createState() => _ReportScreenState();
+  ReportScreenState createState() => ReportScreenState();
 }
 
-class _ReportScreenState extends State<LastReport> {
+/// State of the LastReport widget.
+class ReportScreenState extends State<LastReport> {
   late Future<Map<String, String>> _reportPreviewFuture;
 
   @override
   void initState() {
     super.initState();
     _reportPreviewFuture =
-        _fetchLastReportPreview(); // Cargar la vista previa del último reporte
+        _fetchLastReportPreview(); // Load the last report preview on screen start
   }
 
   Future<Map<String, String>> _fetchLastReportPreview() async {
-    // Simulando la obtención de información del último reporte
-    // En un caso real, podrías obtener esta información desde una API o una base de datos
+    // Simulate the retrieval of the report information
+    // In a real application, this information would be obtained from the server
     return <String, String>{
       'name': 'Inventario de Productos',
       'date': '2024-08-16',
@@ -33,7 +34,7 @@ class _ReportScreenState extends State<LastReport> {
 
   Future<void> _downloadReport() async {
     try {
-      // Solicitar la generación del PDF desde el servidor
+      // Send a request to generate the PDF report
       final Uri urlPost =
           Uri.parse('https://servernintventario.onrender.com/upload-pdf/');
       final http.Response responsePost = await http.post(
@@ -55,7 +56,7 @@ class _ReportScreenState extends State<LastReport> {
         }
       }
 
-      // Descargar el archivo PDF generado
+      // Download the generated PDF report
       await downloadPdfFile();
     } catch (e) {
       if (kDebugMode) {
@@ -64,6 +65,7 @@ class _ReportScreenState extends State<LastReport> {
     }
   }
 
+  /// Downloads the PDF file from the server.
   Future<void> downloadPdfFile() async {
     final Uri url =
         Uri.parse('https://servernintventario.onrender.com/download-pdf/');

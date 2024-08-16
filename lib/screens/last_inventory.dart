@@ -1,20 +1,20 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nintventario/classes/draft.dart';
 import 'package:nintventario/screens/home.dart';
 import 'package:nintventario/widgets/tab_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Widget para la pantalla del último inventario.
 class LastInventory extends StatefulWidget {
+  /// Constructor constant of the LastInventory class.
   const LastInventory({super.key});
 
   @override
-  _LastInventoryState createState() => _LastInventoryState();
+  LastInventoryState createState() => LastInventoryState();
 }
 
-class _LastInventoryState extends State<LastInventory> {
+/// State of the LastInventory widget.
+class LastInventoryState extends State<LastInventory> {
   late Future<Draft?> _lastDraftFuture;
 
   @override
