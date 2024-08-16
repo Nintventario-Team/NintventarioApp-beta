@@ -89,7 +89,7 @@ class LastInventoryState extends State<LastInventory> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 500,
                   height:
                       200, // Ancho específico para hacer el contenedor compacto

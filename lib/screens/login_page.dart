@@ -100,16 +100,6 @@ class LoginAppState extends State<LoginApp> {
     );
   }
 
-  /// Function to handle bypassing the login.
-  void _bypassLogin(BuildContext context) {
-    // Action to execute when bypassing the login
-    Navigator.push(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => const SaleSptosPage(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,17 +203,6 @@ class LoginAppState extends State<LoginApp> {
                   ),
                   child: const Text('Login'),
                 ),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  _bypassLogin(context);
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor:
-                      Colors.blue[800], // Dark blue for button text
-                ),
-                child: const Text('Bypass Login'),
               ),
             ],
           ),
