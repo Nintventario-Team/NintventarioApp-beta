@@ -64,7 +64,10 @@ class _LastInventoryState extends State<LastInventory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Último Inventario'),
+        title: const Text(
+          'Último Inventario',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF0D47A1),
       ),
       body: FutureBuilder<Draft?>(

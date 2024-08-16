@@ -76,7 +76,10 @@ class _LastReportState extends State<LastReport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vista Previa del Reporte'),
+        title: const Text(
+          'Vista Previa del Reporte',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF0D47A1),
       ),
       body: FutureBuilder<Map<String, String>>(
